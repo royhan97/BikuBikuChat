@@ -2,6 +2,7 @@ package com.example.adhit.bikubiku.ui.register;
 
 import android.content.Context;
 
+import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.util.ShowAlert;
@@ -34,7 +35,8 @@ public class RegisterPresenter {
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
-                            boolean status = body.get("status").getAsBoolean();
+                            boolean status = body
+                                    .get("status").getAsBoolean();
                             if(status){
                                 registerView.showMessage(context.getResources().getString(R.string.text_register_success));
                             }else{

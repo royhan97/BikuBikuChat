@@ -7,7 +7,8 @@ package com.example.adhit.bikubiku.ui.login;
 public interface LoginView {
     void showMessage(String string);
 
-    void moveActivity(boolean b);
 
     void showMessageSnackbar(String message);
+
+    void gotoHome();
 }

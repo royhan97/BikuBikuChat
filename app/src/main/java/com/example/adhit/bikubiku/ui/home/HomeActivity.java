@@ -7,9 +7,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SQLLite;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
+import com.example.adhit.bikubiku.util.ShowAlert;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -18,7 +21,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
-
     }
 
     public  void initView(){

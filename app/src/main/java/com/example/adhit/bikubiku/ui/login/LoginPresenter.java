@@ -2,7 +2,10 @@ package com.example.adhit.bikubiku.ui.login;
 
 import android.content.Context;
 
+import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SQLLite;
+import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.util.ShowAlert;
@@ -31,6 +34,11 @@ public class LoginPresenter {
         this.loginView = loginView;
     }
 
+    public void checkLogin() {
+        if (Session.getInstance().isLogin()) loginView.gotoHome();
+    }
+
+
     public void Login(final Context context, String username, String password){
         ShowAlert.showProgresDialog(context);
         RetrofitClient.getInstance()
@@ -39,7 +47,6 @@ public class LoginPresenter {
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        loginView.moveActivity(false);
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
                             boolean status = body.get("status").getAsBoolean();
@@ -48,7 +55,9 @@ public class LoginPresenter {
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
-                                loginView.moveActivity(true);
+                                SQLLite.addUser(user);
+                                Session.getInstance().setLogin(true);
+                                loginView.gotoHome();
                                 loginView.showMessage("Selamat Datang " + user.getNama());
                             }else{
                                 String message = body.get("message").getAsString();

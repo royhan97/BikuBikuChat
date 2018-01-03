@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+        initPresenter();
     }
 
     public void initView(){
@@ -39,6 +40,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fabRegister.setOnClickListener(this);
         btnDaftarLine.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+    }
+
+    public  void initPresenter(){
+        loginPresenter = new LoginPresenter(this);
+        loginPresenter.checkLogin();
     }
 
     @Override
@@ -60,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }else if(password.isEmpty()){
                 etPassword.setError(getResources().getString(R.string.text_password_empty));
             } else {
-                loginPresenter = new LoginPresenter(this);
+
                 loginPresenter.Login(this, username, password);
             }
         }
@@ -72,17 +78,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        ShowAlert.showToast(this, string);
     }
 
-    @Override
-    public void moveActivity(boolean b) {
-        if(b){
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 
     @Override
     public void showMessageSnackbar(String message) {
         ShowAlert.showSnackBar(coordinatorLayout, message);
+    }
+
+    @Override
+    public void gotoHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
