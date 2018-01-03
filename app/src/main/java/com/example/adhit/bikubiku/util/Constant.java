@@ -6,4 +6,5 @@ package com.example.adhit.bikubiku.util;
 
 public class Constant {
     public static String BASE_URL = "http://barangimpian.com/bikubiku/v2/";
+    public static final String IS_LOGIN = "IS_LOGIN";
 }
