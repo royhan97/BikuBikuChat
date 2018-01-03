@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
                 ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_gender_empty));
             }else {
                 registerPresenter = new RegisterPresenter(this);
-                registerPresenter.register(name, username, password, email, "belajar");
+                registerPresenter.register(this, name, username, password, email, "belajar");
             }
         }
     }

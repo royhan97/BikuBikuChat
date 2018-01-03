@@ -39,8 +39,8 @@ public class LoginPresenter {
     }
 
 
-    public void Login(String username, String password){
-        ShowAlert.showProgresDialog(BikuBiku.getContext());
+    public void Login(final Context context, String username, String password){
+        ShowAlert.showProgresDialog(context);
         RetrofitClient.getInstance()
                 .getApi()
                 .login(username, password)
@@ -55,8 +55,7 @@ public class LoginPresenter {
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
-                                SQLLite sqlLite= new SQLLite(BikuBiku.getContext());
-                                sqlLite.addUser(user);
+                                SQLLite.addUser(user);
                                 Session.getInstance().setLogin(true);
                                 loginView.gotoHome();
                                 loginView.showMessage("Selamat Datang " + user.getNama());
@@ -65,13 +64,13 @@ public class LoginPresenter {
                                 loginView.showMessageSnackbar(message);
                             }
                         }else {
-                            loginView.showMessageSnackbar(BikuBiku.getContext().getResources().getString(R.string.text_login_failed));
+                            loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
                         }
                         ShowAlert.closeProgresDialog();
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        loginView.showMessageSnackbar(BikuBiku.getContext().getResources().getString(R.string.text_login_failed));
+                        loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
                         ShowAlert.closeProgresDialog();
                     }
                 });

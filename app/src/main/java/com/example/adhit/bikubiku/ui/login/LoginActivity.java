@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 etPassword.setError(getResources().getString(R.string.text_password_empty));
             } else {
 
-                loginPresenter.Login(username, password);
+                loginPresenter.Login(this, username, password);
             }
         }
     }

@@ -8,10 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.adhit.bikubiku.data.model.User;
+import com.example.adhit.bikubiku.util.SQLLiteUtil;
 
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
+import static com.example.adhit.bikubiku.util.Constant.DATABASE_NAME;
+import static com.example.adhit.bikubiku.util.Constant.DATABASE_VERSION;
 import static com.example.adhit.bikubiku.util.Constant.KEY_ALAMAT;
 import static com.example.adhit.bikubiku.util.Constant.KEY_APPROVAL_KABIM;
 import static com.example.adhit.bikubiku.util.Constant.KEY_BIO;
@@ -28,69 +31,19 @@ import static com.example.adhit.bikubiku.util.Constant.KEY_STATUS_KABIM;
 import static com.example.adhit.bikubiku.util.Constant.KEY_TOKEN;
 import static com.example.adhit.bikubiku.util.Constant.KEY_USERNAME;
 import static com.example.adhit.bikubiku.util.Constant.KEY_WA;
+import static com.example.adhit.bikubiku.util.Constant.TABLE_USER;
 
 /**
  * Created by adhit on 03/01/2018.
  */
 
-public class SQLLite extends SQLiteOpenHelper {
-
-    // All Static variables
-    // Database Version
-    private static final int DATABASE_VERSION = 1;
-
-    // Database Name
-    private static final String DATABASE_NAME = "android_api";
-
-    // Login table name
-    private static final String TABLE_USER = "user";
-
-    // Login Table Columns names
-
-    public SQLLite(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    // Creating Tables
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_USER + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_USERNAME + " TEXT UNIQUE,"
-                + KEY_EMAIL + " TEXT,"
-                + KEY_TOKEN + " TEXT,"
-                + KEY_KODE_SAKU + " TEXT,"
-                + KEY_STATUS_AKUN + " TEXT,"
-                + KEY_NAMA + " TEXT,"
-                + KEY_WA + " TEXT,"
-                + KEY_ID_LINE + " TEXT,"
-                + KEY_BIO + " TEXT,"
-                + KEY_JNS_KEL + " TEXT,"
-                + KEY_ALAMAT + " TEXT,"
-                + KEY_FOTO + " TEXT,"
-                + KEY_STATUS_KABIM + " TEXT,"
-                + KEY_APPROVAL_KABIM + " TEXT,"
-                + KEY_ID_HISTORY_USER + " TEXT "+ ")";
-        db.execSQL(CREATE_LOGIN_TABLE);
-
-        Log.d(TAG, "Database tables created");
-    }
-
-    // Upgrading database
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-
-        // Create tables again
-        onCreate(db);
-    }
+public class SQLLite {
 
     /**
      * Storing user details in database
      * */
-    public void addUser(User user) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public static void addUser(User user) {
+        SQLiteDatabase db = new SQLLiteUtil().getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ID, user.getId()); // Name
         values.put(KEY_USERNAME, user.getUsername());
@@ -109,10 +62,8 @@ public class SQLLite extends SQLiteOpenHelper {
         values.put(KEY_APPROVAL_KABIM, user.getApprovalKabim());
         values.put(KEY_ID_HISTORY_USER, user.getIdHistoryUser());
         // Inserting Row
-
         long id = db.insert(TABLE_USER, null, values);
         db.close(); // Closing database connection
-
         Log.d(TAG, "New user inserted into sqlite: " + id);
     }
 
@@ -120,11 +71,10 @@ public class SQLLite extends SQLiteOpenHelper {
     /**
      * Getting user data from database
      * */
-    public HashMap<String, String> getUserDetails() {
+    public static HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<String, String>();
         String selectQuery = "SELECT  * FROM " + TABLE_USER;
-
-        SQLiteDatabase db = this.getReadableDatabase();
+        SQLiteDatabase db = new SQLLiteUtil().getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Move to first row
         cursor.moveToFirst();
@@ -150,18 +100,16 @@ public class SQLLite extends SQLiteOpenHelper {
         db.close();
         // return user
         Log.d(TAG, "Fetching user from Sqlite: " + user.toString());
-
         return user;
     }
     /**
      * Re crate database Delete all tables and create them again
      * */
-    public void deleteUsers() {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public  static  void deleteUsers() {
+        SQLiteDatabase db = new SQLLiteUtil().getWritableDatabase();
         // Delete All Rows
         db.delete(TABLE_USER, null, null);
         db.close();
-
         Log.d(TAG, "Deleted all user info from sqlite");
     }
 

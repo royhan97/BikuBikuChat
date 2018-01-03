@@ -7,6 +7,9 @@ package com.example.adhit.bikubiku.util;
 public class Constant {
     public static String BASE_URL = "http://barangimpian.com/bikubiku/v2/";
     public static final String IS_LOGIN = "IS_LOGIN";
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "android_api";
+    public static final String TABLE_USER = "user";
     public static final String KEY_ID = "id";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_EMAIL = "email";
