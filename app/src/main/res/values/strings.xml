@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">BikuBiku</string>
+    <string name="text_login_line">Login Via Line</string>
+    <string name="text_daftar_line">Daftar Via Line</string>
+    <string name="text_login">Login</string>
+    <string name="text_username">Username</string>
+    <string name="text_password">Password</string>
+    <string name="text_forgot_password">Forgot Password</string>
+    <string name="text_register">Register</string>
+    <string name="text_email">Email</string>
+    <string name="text_male">Laki-Laki</string>
+    <string name="text_female">Perempuan</string>
+    <string name="text_name">Nama</string>
+    <string name="text_feature_not_available_now">Mohon maaf fitur belum tersedia saat ini</string>
+    <string name="text_nama_menu" />
+    <string name="text_saku_biku">Saku Biku</string>
+    <string name="text_user_name_empty">Username tidak boleh kosong</string>
+    <string name="text_password_empty">Password tidak boleh kosong</string>
+    <string name="text_email_empty">Email tidak boleh kosong</string>
+    <string name="text_name_empty">Nama tidak boleh kosong</string>
+    <string name="text_gender_empty">Anda belum memilih gender</string>
+    <string name="text_konsultasi_online">Konsultasi Online</string>
+    <string name="text_reload">Reload</string>
+    <string name="text_check_intenet_connection">Silahkan Periksa Koneksi Internet Anda</string>
+    <string name="text_no_data_found">No Data Found</string>
+    <string name="text_kabim_name">Nama Kabim</string>
+    <string name="text_participant_name">Nama Participant</string>
+    <string name="text_last_message">Last Message</string>
+    <string name="text_time_stamp">Waktu Chat</string>
+    <string name="text_logout">Keluar</string>
+    <string name="text_type_message">Ketik Pesan</string>
+    <string name="text_typing">Typing....</string>
+    <string name="text_rate_kabim">Rate Kabim</string>
+    <string name="text_loading">Silahkan tunggu beberapa saat.....</string>
+    <string name="text_account">Akun</string>
+    <string name="text_account_settings">Pengaturan Akun</string>
+    <string name="text_account_logout">Log Out</string>
+    <string name="text_kabim_register">Daftar Jadi Kabim</string>
+    <string name="text_kabim">Kabim</string>
+    <string name="text_register_success">Registrasi Berhasil</string>
+    <string name="text_register_failed">Registrasi Gagal</string>
+    <string name="text_login_success">Login Berhasil</string>
+    <string name="text_login_failed">Login Gagal</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>
