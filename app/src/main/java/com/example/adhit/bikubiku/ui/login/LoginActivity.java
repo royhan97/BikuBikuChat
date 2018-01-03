@@ -25,6 +25,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        initView();
+    }
+
+    public void initView(){
         coordinatorLayout = findViewById(R.id.coordinator);
         fabRegister = findViewById(R.id.fab_register);
         btnDaftarLine = (Button) findViewById(R.id.btn_login_line);

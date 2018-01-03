@@ -35,26 +35,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        fabLogin = findViewById(R.id.fab_login);
-        cvRegister = findViewById(R.id.cv_register);
-        btnDaftarLine = findViewById(R.id.bt_daftar_line);
-        btnRegister = findViewById(R.id.btn_register);
-        coordinatorLayout = findViewById(R.id.coordinator);
-        etName = findViewById(R.id.et_name);
-        etEmail = findViewById(R.id.et_email);
-        etUsername = findViewById(R.id.et_username);
-        etPassword = findViewById(R.id.et_password);
-        rgGender = findViewById(R.id.rg_gender);
-        fabLogin.setOnClickListener(this);
-        btnDaftarLine.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
         initView();
-        if(savedInstanceState != null){
-            etEmail.setText(savedInstanceState.getString("email"));
-            etUsername.setText(savedInstanceState.getString("username"));
-            etPassword.setText(savedInstanceState.getString("password"));
-            etName.setText(savedInstanceState.getString("name"));
-        }
 
     }
 
@@ -110,6 +91,20 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     }
 
     private void initView(){
+        fabLogin = findViewById(R.id.fab_login);
+        cvRegister = findViewById(R.id.cv_register);
+        btnDaftarLine = findViewById(R.id.bt_daftar_line);
+        btnRegister = findViewById(R.id.btn_register);
+        coordinatorLayout = findViewById(R.id.coordinator);
+        etName = findViewById(R.id.et_name);
+        etEmail = findViewById(R.id.et_email);
+        etUsername = findViewById(R.id.et_username);
+        etPassword = findViewById(R.id.et_password);
+        rgGender = findViewById(R.id.rg_gender);
+        fabLogin.setOnClickListener(this);
+        btnDaftarLine.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             RegisterAnimation.ShowEnterAnimation(this, cvRegister, fabLogin, btnDaftarLine);
         }

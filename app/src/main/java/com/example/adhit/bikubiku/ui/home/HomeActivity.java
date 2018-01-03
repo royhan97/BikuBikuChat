@@ -13,7 +13,26 @@ import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 
 public class HomeActivity extends AppCompatActivity {
 
-        
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        initView();
+
+    }
+
+    public  void initView(){
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        getSupportFragmentManager().beginTransaction().
+                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                add(R.id.frame_container,
+                        new HomeFragment(),
+                        HomeFragment.class.getSimpleName()).commit();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -34,20 +53,5 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        getSupportFragmentManager().beginTransaction().
-                setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                add(R.id.frame_container,
-                        new HomeFragment(),
-                        HomeFragment.class.getSimpleName()).commit();
-    }
 
 }
