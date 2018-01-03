@@ -2,7 +2,9 @@ package com.example.adhit.bikubiku.ui.login;
 
 import android.content.Context;
 
+import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SQLLite;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
@@ -37,8 +39,8 @@ public class LoginPresenter {
     }
 
 
-    public void Login(final Context context, String username, String password){
-        ShowAlert.showProgresDialog(context);
+    public void Login(String username, String password){
+        ShowAlert.showProgresDialog(BikuBiku.getContext());
         RetrofitClient.getInstance()
                 .getApi()
                 .login(username, password)
@@ -53,6 +55,8 @@ public class LoginPresenter {
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
+                                SQLLite sqlLite= new SQLLite(BikuBiku.getContext());
+                                sqlLite.addUser(user);
                                 Session.getInstance().setLogin(true);
                                 loginView.gotoHome();
                                 loginView.showMessage("Selamat Datang " + user.getNama());
@@ -61,13 +65,13 @@ public class LoginPresenter {
                                 loginView.showMessageSnackbar(message);
                             }
                         }else {
-                            loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
+                            loginView.showMessageSnackbar(BikuBiku.getContext().getResources().getString(R.string.text_login_failed));
                         }
                         ShowAlert.closeProgresDialog();
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
+                        loginView.showMessageSnackbar(BikuBiku.getContext().getResources().getString(R.string.text_login_failed));
                         ShowAlert.closeProgresDialog();
                     }
                 });
