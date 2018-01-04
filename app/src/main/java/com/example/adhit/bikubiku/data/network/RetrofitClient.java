@@ -1,8 +1,16 @@
 package com.example.adhit.bikubiku.data.network;
 
+import android.util.Log;
+
 import com.example.adhit.bikubiku.util.Constant;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -32,8 +40,23 @@ public class RetrofitClient {
     }
 
     public Retrofit getRetrofit(){
+//        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
+//            @Override
+//            public Response intercept(Chain chain) throws IOException {
+//                Request request = chain.request();
+//                Request newRequest;
+//
+//                newRequest = request.newBuilder()
+//                        .addHeader("Authorization", O_AUTH_AUTHENTICATION)
+//                        .build();
+//
+//                return chain.proceed(newRequest);
+//            }
+//        }).build();
+
         return new Retrofit.Builder()
                 .baseUrl(Constant.BASE_URL)
+                //.client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
