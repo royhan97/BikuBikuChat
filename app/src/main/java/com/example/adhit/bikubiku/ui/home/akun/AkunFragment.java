@@ -83,7 +83,8 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
                     setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                     replace(R.id.frame_container,
                             new ProfilFragment(),
-                            ProfilFragment.class.getSimpleName()).commit();
+                            ProfilFragment.class.getSimpleName())
+                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
         }
         if(string.equals("Log Out")){
             presenter.userLogOut();

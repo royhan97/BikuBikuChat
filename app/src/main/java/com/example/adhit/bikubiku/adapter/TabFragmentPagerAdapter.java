@@ -6,48 +6,48 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
+import com.example.adhit.bikubiku.data.model.Fraggment;
 import com.example.adhit.bikubiku.ui.profil.PengaturanAkunFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
-    //nama tab nya
-    String[] title = new String[]{
-            "Profil", "Alamat", "Social/Messenger", "Ubah Password"
-    };
+    /**
+     * Contains all the fragments.
+     */
+    private List<Fraggment> fragments = new ArrayList<>();
 
-    public TabFragmentPagerAdapter(FragmentManager fragmentManager) {
+    /**
+     * Creates a new PagerAdapter instance.
+     *
+     * @param fragmentManager The FragmentManager.
+     */
+    public TabFragmentPagerAdapter(FragmentManager fragmentManager ) {
         super(fragmentManager);
+
+
     }
 
-    //method ini yang akan memanipulasi penampilan Fragment dilayar
-    @Override
-    public Fragment getItem(int position) {
-        Fragment fragment = null;
-        switch (position){
-            case 0:
-                fragment = new PengaturanAkunFragment();
-                break;
-            case 1:
-                break;
-
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                fragment = null;
-                break;
-        }
-
-        return fragment;
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return title[position];
+    public void setData(List<Fraggment> fraggments){
+        this.fragments = fraggments;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return title.length;
+        return fragments.size();
     }
+
+    @Override
+    public Fragment getItem(int position) {
+        return fragments.get(position).getFraggment();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return fragments.get(position).getTitle();
+    }
+
+
 }
