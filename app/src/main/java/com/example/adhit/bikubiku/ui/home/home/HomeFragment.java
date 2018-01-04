@@ -1,8 +1,8 @@
 package com.example.adhit.bikubiku.ui.home.home;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,8 +47,8 @@ public class HomeFragment extends Fragment implements HomeView {
     }
 
     public void initView(){
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
-        adapter = new HomeAdapter(getContext());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
+        adapter = new HomeAdapter(getActivity());
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(gridLayoutManager);
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment implements HomeView {
         gambar.add(R.drawable.a2);
         gambar.add(R.drawable.a2);
         for(int i=0; i<gambar.size(); i++){
-            TextSliderView textSliderView = new TextSliderView(getContext());
+            TextSliderView textSliderView = new TextSliderView(getActivity());
             // initialize a SliderLayout
             textSliderView
                     .image(gambar.get(i))

@@ -7,6 +7,7 @@ import com.example.adhit.bikubiku.util.Constant;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -41,29 +42,29 @@ public class RetrofitClient {
     }
 
     public Retrofit getRetrofit(){
-        return new Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
+        OkHttpClient okHttpClient;
+        if(SaveUserToken.getInstance().getUserToken() == null){
+             okHttpClient= new OkHttpClient.Builder()
+                     .readTimeout(20, TimeUnit.SECONDS)
+                    .connectTimeout(20, TimeUnit.SECONDS)
+                    .build();
+        }else{
+            okHttpClient = new OkHttpClient();
+            okHttpClient.newBuilder().addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    Request newRequest;
+                    newRequest = request.newBuilder()
+                            .addHeader("Authorization", SaveUserToken.getInstance().getUserToken())
+                            .build();
 
-    public Api getApiWithHeader(){
-        return getRetrofitWithHeader().create(Api.class);
-    }
-
-    public Retrofit getRetrofitWithHeader(){
-        OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                Request newRequest;
-                newRequest = request.newBuilder()
-                        .addHeader("Authorization", SaveUserToken.getInstance().getUserToken())
-                        .build();
-
-                return chain.proceed(newRequest);
-            }
-        }).build();
+                    return chain.proceed(newRequest);
+                }
+            }).connectTimeout(20, TimeUnit.SECONDS)
+                    .readTimeout(20, TimeUnit.SECONDS)
+                    .build();
+        }
 
         return new Retrofit.Builder()
                 .baseUrl(Constant.BASE_URL)
@@ -71,4 +72,5 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
+
 }

@@ -52,13 +52,7 @@ public class AkunAdapter extends RecyclerView.Adapter<AkunAdapter.HomeViewHolder
             @Override
             public void onClick(View view) {
                 onCardViewClickListener.onMenuClicked(home.getNamaMenu());
-                if(home.getNamaMenu().equals("Log Out")){
-                    Session.getInstance().setLogin(false);
-                    SaveUserData.getInstance().removeUser();
-                    SaveUserToken.getInstance().removeUserToken();
-                    context.startActivity(new Intent(context, LoginActivity.class));
-                    ((Activity) context).finish();
-                }
+
             }
         });
     }

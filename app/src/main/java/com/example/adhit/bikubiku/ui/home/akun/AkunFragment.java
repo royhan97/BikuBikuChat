@@ -1,9 +1,10 @@
 package com.example.adhit.bikubiku.ui.home.akun;
 
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.os.Bundle;;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
+import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
+import com.example.adhit.bikubiku.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
 
@@ -50,8 +53,8 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
     }
 
     public void initView(){
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        adapter = new AkunAdapter(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        adapter = new AkunAdapter(getActivity());
         adapter.setOnClickDetailListener(this);
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
@@ -75,6 +78,13 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
 
     @Override
     public void onMenuClicked(String string) {
+        if(string.equals("Profil")){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    replace(R.id.frame_container,
+                            new ProfilFragment(),
+                            ProfilFragment.class.getSimpleName()).commit();
+        }
         if(string.equals("Log Out")){
             presenter.userLogOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
