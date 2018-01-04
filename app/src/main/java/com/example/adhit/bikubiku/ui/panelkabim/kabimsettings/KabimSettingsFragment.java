@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.profil;
+package com.example.adhit.bikubiku.ui.panelkabim.kabimsettings;
 
 
 import android.app.Fragment;
@@ -12,10 +12,10 @@ import com.example.adhit.bikubiku.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PengaturanAkunFragment extends Fragment {
+public class KabimSettingsFragment extends Fragment {
 
 
-    public PengaturanAkunFragment() {
+    public KabimSettingsFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class PengaturanAkunFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pengaturan_akun, container, false);
+        return inflater.inflate(R.layout.fragment_kabim_settings, container, false);
     }
 
 }

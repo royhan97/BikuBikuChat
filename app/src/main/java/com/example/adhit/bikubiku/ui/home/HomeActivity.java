@@ -22,6 +22,7 @@ import com.example.adhit.bikubiku.util.ShowAlert;
 public class HomeActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
      private Toolbar toolbar;
+     private BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("");
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         getFragmentManager().beginTransaction().
@@ -75,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        navigation.setVisibility(View.VISIBLE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getFragmentManager().popBackStack();
     }

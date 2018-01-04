@@ -18,8 +18,13 @@ import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
+import com.example.adhit.bikubiku.presenter.PanelKabimPresenter;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
+import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryFragment;
+import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryView;
+import com.example.adhit.bikubiku.ui.panelkabim.PanelKabimFragment;
+import com.example.adhit.bikubiku.ui.personalia.PersonaliaFragment;
 import com.example.adhit.bikubiku.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
@@ -87,6 +92,30 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
                             new ProfilFragment(),
                             ProfilFragment.class.getSimpleName())
                     .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
+        }
+        if(string.equals("Personalia")){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    replace(R.id.frame_container,
+                            new PersonaliaFragment(),
+                            PersonaliaFragment.class.getSimpleName())
+                    .addToBackStack(PersonaliaFragment.class.getSimpleName()).commit();
+        }
+        if(string.equals("My Library")){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    replace(R.id.frame_container,
+                            new MyLibraryFragment(),
+                            MyLibraryFragment.class.getSimpleName())
+                    .addToBackStack(MyLibraryFragment.class.getSimpleName()).commit();
+        }
+        if(string.equals("Panel Kabim")){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    replace(R.id.frame_container,
+                            new PanelKabimFragment(),
+                            PanelKabimFragment.class.getSimpleName())
+                    .addToBackStack(PanelKabimFragment.class.getSimpleName()).commit();
         }
         if(string.equals("Log Out")){
             presenter.userLogOut();

@@ -7,7 +7,6 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 import com.example.adhit.bikubiku.data.model.Fraggment;
-import com.example.adhit.bikubiku.ui.profil.PengaturanAkunFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +26,11 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
         super(fragmentManager);
 
 
+    }
+
+    public TabFragmentPagerAdapter(FragmentManager fragmentManager, ArrayList<Fraggment> fraggmentArrayList) {
+        super(fragmentManager);
+        this.fragments = fraggmentArrayList;
     }
 
     public void setData(List<Fraggment> fraggments){

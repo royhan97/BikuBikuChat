@@ -34,7 +34,6 @@ public class AkunPresenter {
         akunArrayList.add(new Home(R.drawable.logo, "My Library"));
         akunArrayList.add(new Home(R.drawable.logo, "Pencapaian"));
         akunArrayList.add(new Home(R.drawable.logo, "Panel Kabim"));
-        akunArrayList.add(new Home(R.drawable.logo, "Saku Biku"));
         akunArrayList.add(new Home(R.drawable.logo, "Log Out"));
         akunView.showData(akunArrayList);
 

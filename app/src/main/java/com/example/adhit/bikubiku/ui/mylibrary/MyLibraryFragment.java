@@ -1,11 +1,10 @@
-package com.example.adhit.bikubiku.ui.profil;
+package com.example.adhit.bikubiku.ui.mylibrary;
 
 
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,26 +14,22 @@ import android.view.ViewGroup;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.TabFragmentPagerAdapter;
 import com.example.adhit.bikubiku.data.model.Fraggment;
+import com.example.adhit.bikubiku.presenter.MyLibraryPresenter;
 import com.example.adhit.bikubiku.presenter.ProfilPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
-import com.example.adhit.bikubiku.ui.profil.accountsettings.AccountSettingsFragment;
-import com.example.adhit.bikubiku.ui.profil.address.AddressFragment;
-import com.example.adhit.bikubiku.ui.profil.passwordchange.PasswordChangeFragment;
-import com.example.adhit.bikubiku.ui.profil.socialmedia.SocialMediaFragment;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfilFragment extends Fragment implements ProfilView {
+public class MyLibraryFragment extends Fragment implements MyLibraryView {
 
     private ViewPager pager;
     private TabLayout tabs;
     private TabFragmentPagerAdapter adapter;
-    private ProfilPresenter profilPresenter;
-
-    public ProfilFragment() {
+    private MyLibraryPresenter myLibraryPresenter;
+    public MyLibraryFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +42,7 @@ public class ProfilFragment extends Fragment implements ProfilView {
         ((HomeActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
         ((HomeActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.GONE);
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_library, container, false);
         pager = (ViewPager)view.findViewById(R.id.pager);
         tabs = (TabLayout)view.findViewById(R.id.tabs);
         initView();
@@ -55,19 +50,15 @@ public class ProfilFragment extends Fragment implements ProfilView {
     }
 
     public void initView(){
-
-
         adapter = new TabFragmentPagerAdapter(getFragmentManager());
         pager.setAdapter(adapter);
         tabs.setTabTextColors(getResources().getColor(R.color.color_black),
                 getResources().getColor(android.R.color.background_dark));
         tabs.setupWithViewPager(pager);
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        }
-        profilPresenter = new ProfilPresenter(this);
-        profilPresenter.showFragmentList();
+        tabs.setTabMode(TabLayout.MODE_FIXED);
+        myLibraryPresenter = new MyLibraryPresenter(this);
+        myLibraryPresenter.showFragmentList();
     }
 
     @Override
