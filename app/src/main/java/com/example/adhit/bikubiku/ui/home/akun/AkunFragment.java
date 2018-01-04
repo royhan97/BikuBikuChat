@@ -68,9 +68,6 @@ public class AkunFragment extends Fragment implements AkunView {
     @Override
     public void showUserData(User user) {
         tvName.setText(user.getNama());
-//        Picasso.with(getContext())
-//                .load(user.getFoto())
-//                .error(R.drawable.avatar1)
-//                .into(cimgPhotoProfile);
+
     }
 }

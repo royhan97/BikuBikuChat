@@ -6,6 +6,7 @@ import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SQLLite;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
@@ -13,6 +14,8 @@ import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 
 import org.json.JSONObject;
@@ -41,7 +44,7 @@ public class LoginPresenter {
     }
 
 
-    public void Login(final Context context, String username, String password){
+    public void Login(final Context context, final String username, String password){
         ShowAlert.showProgresDialog(context);
         RetrofitClient.getInstance()
                 .getApi()
@@ -57,6 +60,7 @@ public class LoginPresenter {
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
+                                SaveUserToken.getInstance().saveUserToken(user.getId(), user.getToken());
                                 SaveUserData.getInstance().saveUser(user);
                                 Session.getInstance().setLogin(true);
                                 loginView.gotoHome();

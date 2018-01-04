@@ -8,6 +8,7 @@ public class Constant {
     public static String BASE_URL = "http://barangimpian.com/bikubiku/v2/";
     public static final String IS_LOGIN = "IS_LOGIN";
     public static final String KEY_USER = "user";
+    public static final String USER_TOKEN = "token";
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "android_api";
