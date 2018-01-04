@@ -58,7 +58,7 @@ public class LoginPresenter {
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
                                 SaveUserData.getInstance().saveUser(user);
-                               // Session.getInstance().setLogin(true);
+                                Session.getInstance().setLogin(true);
                                 loginView.gotoHome();
                                 loginView.showMessage("Selamat Datang " + user.getUsername());
                             }else{
