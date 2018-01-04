@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.home.akun;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.ui.home.home.HomeAdapter;
 import com.example.adhit.bikubiku.ui.home.home.HomePresenter;
+import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AkunFragment extends Fragment implements AkunView {
+public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCardViewClickListener {
 
     private RecyclerView rvMenu;
     private AkunAdapter adapter;
@@ -52,12 +54,14 @@ public class AkunFragment extends Fragment implements AkunView {
     public void initView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new AkunAdapter(getContext());
+        adapter.setOnClickDetailListener(this);
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(linearLayoutManager);
         presenter = new AkunPresenter(this);
         presenter.showListAkunMenu();
         presenter.showDataUser();
+
     }
 
     @Override
@@ -69,5 +73,14 @@ public class AkunFragment extends Fragment implements AkunView {
     public void showUserData(User user) {
         tvName.setText(user.getNama());
 
+    }
+
+    @Override
+    public void onMenuClicked(String string) {
+        if(string.equals("Log Out")){
+            presenter.userLogOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 }

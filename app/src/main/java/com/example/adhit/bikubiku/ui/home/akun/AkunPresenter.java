@@ -1,11 +1,17 @@
 package com.example.adhit.bikubiku.ui.home.akun;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.ui.home.home.HomeView;
+import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,6 +44,11 @@ public class AkunPresenter {
         akunView.showUserData(user);
     }
 
+    public void userLogOut(){
+        Session.getInstance().setLogin(false);
+        SaveUserToken.getInstance().removeUserToken();
+        SaveUserData.getInstance().removeUser();
+    }
 
 
 }

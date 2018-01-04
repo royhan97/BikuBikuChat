@@ -41,12 +41,22 @@ public class RetrofitClient {
     }
 
     public Retrofit getRetrofit(){
+        return new Retrofit.Builder()
+                .baseUrl(Constant.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    public Api getApiWithHeader(){
+        return getRetrofitWithHeader().create(Api.class);
+    }
+
+    public Retrofit getRetrofitWithHeader(){
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
                 Request request = chain.request();
                 Request newRequest;
-
                 newRequest = request.newBuilder()
                         .addHeader("Authorization", SaveUserToken.getInstance().getUserToken())
                         .build();

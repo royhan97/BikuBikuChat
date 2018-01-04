@@ -33,4 +33,8 @@ public class SaveUserToken {
         authorization = "Basic " + new String(encodedBytes);
         SharedPrefUtil.saveString(Constant.USER_TOKEN, authorization);
     }
+
+    public void removeUserToken(){
+        SharedPrefUtil.remove(Constant.USER_TOKEN);
+    }
 }

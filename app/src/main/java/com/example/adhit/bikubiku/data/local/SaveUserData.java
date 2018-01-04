@@ -26,4 +26,8 @@ public class SaveUserData {
     public void saveUser(User user) {
         SharedPrefUtil.saveObject(Constant.KEY_USER, user);
     }
+
+    public void removeUser(){
+        SharedPrefUtil.remove(Constant.KEY_USER);
+    }
 }
