@@ -60,7 +60,7 @@ public class LoginPresenter {
                                 SaveUserData.getInstance().saveUser(user);
                                 Session.getInstance().setLogin(true);
                                 loginView.gotoHome();
-                                loginView.showMessage("Selamat Datang " + user.getUsername());
+                                loginView.showMessage("Selamat Datang " + user.getNama());
                             }else{
                                 String message = body.get("message").getAsString();
                                 loginView.showMessageSnackbar(message);

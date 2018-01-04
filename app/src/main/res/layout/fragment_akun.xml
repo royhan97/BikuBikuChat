@@ -16,7 +16,7 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cimg_foto_profil"
+            android:id="@+id/cimg_profile_photo"
             android:layout_centerHorizontal="true"
             android:src="@drawable/avatar1"
             android:layout_width="80dp"
@@ -48,7 +48,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_akun_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     </android.support.v7.widget.RecyclerView>
 </LinearLayout>
