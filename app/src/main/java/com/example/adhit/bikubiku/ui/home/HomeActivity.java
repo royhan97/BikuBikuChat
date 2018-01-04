@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                        appBarLayout.setVisibility(View.VISIBLE);
+
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.frame_container,
                                         new HomeFragment(),
@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 case R.id.navigation_account:
 
-                        appBarLayout.setVisibility(View.GONE);
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.frame_container,
                                         new AkunFragment(),
