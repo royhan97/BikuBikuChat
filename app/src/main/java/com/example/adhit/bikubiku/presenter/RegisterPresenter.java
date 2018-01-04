@@ -1,10 +1,11 @@
-package com.example.adhit.bikubiku.ui.register;
+package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
 import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
+import com.example.adhit.bikubiku.ui.register.RegisterView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.JsonObject;
 

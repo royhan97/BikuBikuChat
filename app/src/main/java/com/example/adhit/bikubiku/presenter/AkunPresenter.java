@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.home.akun;
+package com.example.adhit.bikubiku.presenter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
+import com.example.adhit.bikubiku.ui.home.akun.AkunView;
 import com.example.adhit.bikubiku.ui.home.home.HomeView;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.squareup.picasso.Picasso;

@@ -1,7 +1,8 @@
-package com.example.adhit.bikubiku.ui.home.home;
+package com.example.adhit.bikubiku.presenter;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.model.Home;
+import com.example.adhit.bikubiku.ui.home.home.HomeView;
 
 import java.util.ArrayList;
 

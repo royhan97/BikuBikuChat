@@ -4,7 +4,6 @@ package com.example.adhit.bikubiku.ui.home.akun;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,12 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
-import com.example.adhit.bikubiku.ui.home.home.HomeAdapter;
-import com.example.adhit.bikubiku.ui.home.home.HomePresenter;
+import com.example.adhit.bikubiku.presenter.AkunPresenter;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

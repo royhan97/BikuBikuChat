@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.home.akun;
+package com.example.adhit.bikubiku.adapter;
 
 import android.app.Activity;
 import android.content.Context;

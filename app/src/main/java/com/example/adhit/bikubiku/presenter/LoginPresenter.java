@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.login;
+package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
@@ -10,6 +10,7 @@ import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
+import com.example.adhit.bikubiku.ui.login.LoginView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.home.home;
+package com.example.adhit.bikubiku.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

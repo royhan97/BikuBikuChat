@@ -13,7 +13,9 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.adapter.HomeAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
+import com.example.adhit.bikubiku.presenter.HomePresenter;
 
 import java.util.ArrayList;
 
