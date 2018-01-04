@@ -3,23 +3,20 @@ package com.example.adhit.bikubiku.ui.register;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Build;
-import android.os.PersistableBundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.presenter.RegisterPresenter;
 import com.example.adhit.bikubiku.util.ShowAlert;
 
 public class RegisterActivity extends AppCompatActivity  implements View.OnClickListener, RegisterView {

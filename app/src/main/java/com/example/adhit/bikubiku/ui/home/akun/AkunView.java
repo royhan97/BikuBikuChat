@@ -13,4 +13,5 @@ public interface AkunView {
     void showData(ArrayList<Home> akunArrayList);
 
     void showUserData(User user);
+
 }

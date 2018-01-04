@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.home.akun;
+package com.example.adhit.bikubiku.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,14 +14,14 @@ import com.example.adhit.bikubiku.data.model.Home;
 import java.util.List;
 
 /**
- * Created by adhit on 04/01/2018.
+ * Created by adhit on 03/01/2018.
  */
 
-public class AkunAdapter extends RecyclerView.Adapter<AkunAdapter.HomeViewHolder> {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
     private Context context;
     private List<Home> homeList;
 
-    public AkunAdapter(Context context){
+    public HomeAdapter(Context context){
         this.context = context;
     }
 
@@ -31,13 +31,13 @@ public class AkunAdapter extends RecyclerView.Adapter<AkunAdapter.HomeViewHolder
     }
 
     @Override
-    public AkunAdapter.HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_akun_menu, parent, false);
-        return new AkunAdapter.HomeViewHolder(view);
+    public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_menu, parent, false);
+        return new HomeViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AkunAdapter.HomeViewHolder holder, int position) {
+    public void onBindViewHolder(HomeViewHolder holder, int position) {
         final Home home = homeList.get(position);
         holder.tvNameMenu.setText(home.getNamaMenu());
         holder.imgMenu.setImageResource(home.getGambarMenu());

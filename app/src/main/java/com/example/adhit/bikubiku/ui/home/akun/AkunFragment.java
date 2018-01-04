@@ -1,9 +1,9 @@
 package com.example.adhit.bikubiku.ui.home.akun;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,18 +13,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
-import com.example.adhit.bikubiku.ui.home.home.HomeAdapter;
-import com.example.adhit.bikubiku.ui.home.home.HomePresenter;
-import com.squareup.picasso.Picasso;
+import com.example.adhit.bikubiku.presenter.AkunPresenter;
+import com.example.adhit.bikubiku.ui.login.LoginActivity;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AkunFragment extends Fragment implements AkunView {
+public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCardViewClickListener {
 
     private RecyclerView rvMenu;
     private AkunAdapter adapter;
@@ -52,12 +52,14 @@ public class AkunFragment extends Fragment implements AkunView {
     public void initView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new AkunAdapter(getContext());
+        adapter.setOnClickDetailListener(this);
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(linearLayoutManager);
         presenter = new AkunPresenter(this);
         presenter.showListAkunMenu();
         presenter.showDataUser();
+
     }
 
     @Override
@@ -68,9 +70,15 @@ public class AkunFragment extends Fragment implements AkunView {
     @Override
     public void showUserData(User user) {
         tvName.setText(user.getNama());
-//        Picasso.with(getContext())
-//                .load(user.getFoto())
-//                .error(R.drawable.avatar1)
-//                .into(cimgPhotoProfile);
+
+    }
+
+    @Override
+    public void onMenuClicked(String string) {
+        if(string.equals("Log Out")){
+            presenter.userLogOut();
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 }
