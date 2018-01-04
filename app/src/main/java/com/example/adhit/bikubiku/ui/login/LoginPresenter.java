@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SQLLite;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
@@ -12,6 +13,7 @@ import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
 
 import org.json.JSONObject;
 
@@ -55,10 +57,10 @@ public class LoginPresenter {
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
                                 //listGalleryView.showData(carList);
-                                SQLLite.addUser(user);
+                                SaveUserData.getInstance().saveUser(user);
                                 Session.getInstance().setLogin(true);
                                 loginView.gotoHome();
-                                loginView.showMessage("Selamat Datang " + user.getNama());
+                                loginView.showMessage("Selamat Datang " + user.getUsername());
                             }else{
                                 String message = body.get("message").getAsString();
                                 loginView.showMessageSnackbar(message);

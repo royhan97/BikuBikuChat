@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.adhit.bikubiku.BikuBiku;
+import com.example.adhit.bikubiku.data.model.User;
+import com.google.gson.Gson;
 
 /**
  * Created by adhit on 03/01/2018.
@@ -62,5 +64,17 @@ public class SharedPrefUtil {
 
     public static SharedPreferences.Editor getEditor() {
         return getPref().edit();
+    }
+
+    public static void saveObject(String key, Object object){
+        Gson gson = new Gson();
+        String json = gson.toJson(object);
+        getPref().edit().putString(key, json).apply();
+    }
+
+    public static Object getObject(String key, Object object){
+        Gson gson = new Gson();
+        String json = getPref().getString(key, "");
+        return gson.fromJson(json, (Class<Object>) object);
     }
 }
