@@ -27,12 +27,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCardViewClickListener {
+public class AkunFragment extends Fragment implements View.OnClickListener, AkunView, AkunAdapter.OnCardViewClickListener {
 
     private RecyclerView rvMenu;
     private AkunAdapter adapter;
     private AkunPresenter presenter;
-    private TextView tvName;
+    private TextView tvName, tvEditProfil;
     private ImageView cimgPhotoProfile;
 
     public AkunFragment() {
@@ -47,6 +47,7 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
         View view= inflater.inflate(R.layout.fragment_akun, container, false);
         rvMenu = view.findViewById(R.id.rv_akun_menu);
         tvName = view.findViewById(R.id.tv_name);
+        tvEditProfil = view.findViewById(R.id.tv_edit_profil);
         cimgPhotoProfile = view.findViewById(R.id.cimg_profile_photo);
         initView();
         return  view;
@@ -54,6 +55,7 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
 
     public void initView(){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        tvEditProfil.setOnClickListener(this);
         adapter = new AkunAdapter(getActivity());
         adapter.setOnClickDetailListener(this);
         rvMenu.setAdapter(adapter);
@@ -90,6 +92,18 @@ public class AkunFragment extends Fragment implements AkunView, AkunAdapter.OnCa
             presenter.userLogOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId()== R.id.tv_edit_profil){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    replace(R.id.frame_container,
+                            new ProfilFragment(),
+                            ProfilFragment.class.getSimpleName())
+                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
         }
     }
 }
