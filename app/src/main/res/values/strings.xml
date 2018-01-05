@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">BikuBiku</string>
+    <string name="text_address">Alamat</string>
+    <string name="text_address_empty">Alamat Tidak Boleh Kosong</string>
+    <string name="text_changed_failed">Perubahan Gagal</string>
+    <string name="text_save">Simpan</string>
     <string name="text_login_line">Login Via Line</string>
     <string name="text_daftar_line">Daftar Via Line</string>
     <string name="text_login">Login</string>

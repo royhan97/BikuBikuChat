@@ -41,6 +41,70 @@ public class User {
         this.idHistoryUser = idHistoryUser;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setKodeSaku(String kodeSaku) {
+        this.kodeSaku = kodeSaku;
+    }
+
+    public void setStatusAkun(String statusAkun) {
+        this.statusAkun = statusAkun;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public void setWa(String wa) {
+        this.wa = wa;
+    }
+
+    public void setIdLine(String idLine) {
+        this.idLine = idLine;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public void setJnsKel(String jnsKel) {
+        this.jnsKel = jnsKel;
+    }
+
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public void setStatusKabim(String statusKabim) {
+        this.statusKabim = statusKabim;
+    }
+
+    public void setApprovalKabim(String approvalKabim) {
+        this.approvalKabim = approvalKabim;
+    }
+
+    public void setIdHistoryUser(String idHistoryUser) {
+        this.idHistoryUser = idHistoryUser;
+    }
+
     public String getId() {
         return id;
     }

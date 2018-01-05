@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.detailakun;
 
 import android.os.Build;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +22,14 @@ public class DetailAkunActivity extends AppCompatActivity implements DetailAkunV
     private TabLayout tabs;
     private TabFragmentPagerAdapter adapter;
     private DetailAkunPresenter detailAkunPresenter;
+    private CoordinatorLayout coordinatorLayout;
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_akun);
+        coordinatorLayout = findViewById(R.id.coordinator);
         pager = (ViewPager)findViewById(R.id.pager);
         tabs = (TabLayout)findViewById(R.id.tabs);
         toolbar = findViewById(R.id.toolbar);

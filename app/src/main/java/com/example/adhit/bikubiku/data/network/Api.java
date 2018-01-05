@@ -26,4 +26,10 @@ public interface Api {
     @FormUrlEncoded
     Call<JsonObject> login(@Field("username") String username,
                            @Field("password") String password);
+
+    @POST("biquers/alamat")
+    @FormUrlEncoded
+    Call<JsonObject> changeAddress(@Field("alamat") String alamat);
+
+
 }
