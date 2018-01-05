@@ -52,12 +52,16 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
             rgGender.getCheckedRadioButtonId();
             if(username.isEmpty()) {
                 etUsername.setError(getResources().getString(R.string.text_email_empty));
+                etUsername.requestFocus();
             }else if(password.isEmpty()){
                 etPassword.setError(getResources().getString(R.string.text_password_empty));
+                etPassword.requestFocus();
             }else if(email.isEmpty()) {
                 etEmail.setError(getResources().getString(R.string.text_user_name_empty));
+                etEmail.requestFocus();
             }else if(name.isEmpty()){
                 etName.setError(getResources().getString(R.string.text_name_empty));
+                etName.requestFocus();
             }else if(rgGender.getCheckedRadioButtonId()== -1){
                 ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_gender_empty));
             }else {

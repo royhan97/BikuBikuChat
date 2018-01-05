@@ -62,10 +62,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = etPassword.getText().toString().trim();
             if(email.isEmpty()) {
                 etEmail.setError(getResources().getString(R.string.text_email_empty));
+                etEmail.requestFocus();
             }else if(username.isEmpty()){
                 etUsername.setError(getResources().getString(R.string.text_user_name_empty));
+                etUsername.requestFocus();
             }else if(password.isEmpty()){
                 etPassword.setError(getResources().getString(R.string.text_password_empty));
+                etPassword.requestFocus();
             } else {
 
                 loginPresenter.Login(this, username, password);

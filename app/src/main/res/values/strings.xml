@@ -42,6 +42,7 @@
     <string name="text_login_success">Login Berhasil</string>
     <string name="text_login_failed">Login Gagal</string>
     <string name="text_edit_profile">Edit Profil</string>
+    <string name="text_profil">Profil</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

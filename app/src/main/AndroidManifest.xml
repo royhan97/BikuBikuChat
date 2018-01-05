@@ -23,7 +23,7 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:label="@string/title_activity_home" />
-        <activity android:name=".ui.profil.ProfilActivity"></activity>
+        <activity android:name=".ui.detailakun.DetailAkunActivity"></activity>
     </application>
 
 </manifest>

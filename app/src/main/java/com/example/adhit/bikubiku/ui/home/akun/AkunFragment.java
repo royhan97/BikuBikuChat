@@ -3,7 +3,6 @@ package com.example.adhit.bikubiku.ui.home.akun;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,15 +18,8 @@ import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
-import com.example.adhit.bikubiku.presenter.PanelKabimPresenter;
-import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
+import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
-import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryFragment;
-import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryView;
-import com.example.adhit.bikubiku.ui.panelkabim.PanelKabimFragment;
-import com.example.adhit.bikubiku.ui.personalia.PersonaliaFragment;
-import com.example.adhit.bikubiku.ui.profil.ProfilActivity;
-import com.example.adhit.bikubiku.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
 
@@ -71,7 +63,6 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
         presenter = new AkunPresenter(this);
         presenter.showListAkunMenu();
         presenter.showDataUser();
-
     }
 
     @Override
@@ -88,56 +79,23 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     @SuppressLint("WrongConstant")
     @Override
     public void onMenuClicked(String string) {
-        if(string.equals("Profil")){
-//            getFragmentManager().beginTransaction().
-//                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-//                    add(R.id.frame_container,
-//                            new ProfilFragment(),
-//                            ProfilFragment.class.getSimpleName())
-//                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
-            startActivity(new Intent(getActivity(), ProfilActivity.class));
-
-        }
-        if(string.equals("Personalia")){
-            getFragmentManager().beginTransaction().
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    replace(R.id.frame_container,
-                            new PersonaliaFragment(),
-                            PersonaliaFragment.class.getSimpleName())
-                    .addToBackStack(PersonaliaFragment.class.getSimpleName()).commit();
-        }
-        if(string.equals("My Library")){
-            getFragmentManager().beginTransaction().
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    replace(R.id.frame_container,
-                            new MyLibraryFragment(),
-                            MyLibraryFragment.class.getSimpleName())
-                    .addToBackStack(MyLibraryFragment.class.getSimpleName()).commit();
-        }
-        if(string.equals("Panel Kabim")){
-            getFragmentManager().beginTransaction().
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    replace(R.id.frame_container,
-                            new PanelKabimFragment(),
-                            PanelKabimFragment.class.getSimpleName())
-                    .addToBackStack(PanelKabimFragment.class.getSimpleName()).commit();
-        }
         if(string.equals("Log Out")){
             presenter.userLogOut();
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
+        }else{
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            intent.putExtra("detail_akun", string);
+            startActivity(intent);
         }
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.tv_edit_profil){
-            getFragmentManager().beginTransaction().
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    replace(R.id.frame_container,
-                            new ProfilFragment(),
-                            ProfilFragment.class.getSimpleName())
-                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            intent.putExtra("detail_akun", "Profil");
+            startActivity(intent);
         }
     }
 }
