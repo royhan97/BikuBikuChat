@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.adhit.bikubiku">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".BikuBiku"
         android:allowBackup="true"
@@ -20,7 +22,8 @@
         <activity android:name=".ui.register.RegisterActivity" />
         <activity
             android:name=".ui.home.HomeActivity"
-            android:label="@string/title_activity_home"></activity>
+            android:label="@string/title_activity_home" />
+        <activity android:name=".ui.profil.ProfilActivity"></activity>
     </application>
 
 </manifest>

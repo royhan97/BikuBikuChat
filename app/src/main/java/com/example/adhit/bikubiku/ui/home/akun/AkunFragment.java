@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.home.akun;
 
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryFragment;
 import com.example.adhit.bikubiku.ui.mylibrary.MyLibraryView;
 import com.example.adhit.bikubiku.ui.panelkabim.PanelKabimFragment;
 import com.example.adhit.bikubiku.ui.personalia.PersonaliaFragment;
+import com.example.adhit.bikubiku.ui.profil.ProfilActivity;
 import com.example.adhit.bikubiku.ui.profil.ProfilFragment;
 
 import java.util.ArrayList;
@@ -83,15 +85,18 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
 
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onMenuClicked(String string) {
         if(string.equals("Profil")){
-            getFragmentManager().beginTransaction().
-                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    replace(R.id.frame_container,
-                            new ProfilFragment(),
-                            ProfilFragment.class.getSimpleName())
-                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
+//            getFragmentManager().beginTransaction().
+//                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+//                    add(R.id.frame_container,
+//                            new ProfilFragment(),
+//                            ProfilFragment.class.getSimpleName())
+//                    .addToBackStack(ProfilFragment.class.getSimpleName()).commit();
+            startActivity(new Intent(getActivity(), ProfilActivity.class));
+
         }
         if(string.equals("Personalia")){
             getFragmentManager().beginTransaction().
