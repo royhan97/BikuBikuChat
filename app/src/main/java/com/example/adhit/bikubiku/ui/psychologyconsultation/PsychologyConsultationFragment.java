@@ -71,11 +71,10 @@ public class PsychologyConsultationFragment extends Fragment implements Psycholo
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
-            getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
-            ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
-            ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getFragmentManager().popBackStack();
+
+            getActivity().onBackPressed();
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -100,7 +99,7 @@ public class PsychologyConsultationFragment extends Fragment implements Psycholo
 
          getFragmentManager().beginTransaction().
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-               add(R.id.frame_container,
+               replace(R.id.frame_container,
                         detailPsychologist).
                  addToBackStack(DetailPsychologistFragment.class.getSimpleName()).commit();
         ShowAlert.showToast(getActivity(), Integer.toString(psychologist.getId()));

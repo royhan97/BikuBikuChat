@@ -45,8 +45,7 @@ public class HomeActivity extends AppCompatActivity {
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 replace(R.id.frame_container,
                         new HomeFragment(),
-                        HomeFragment.class.getSimpleName())
-                .addToBackStack(HomeFragment.class.getSimpleName()).commit();
+                        HomeFragment.class.getSimpleName()).commit();
 
     }
 
@@ -57,23 +56,20 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction().
                             replace(R.id.frame_container,
                                     new HomeFragment(),
                                     HomeFragment.class.getSimpleName())
-                            .addToBackStack(HomeFragment.class.getSimpleName())
                             .commit();
                     return true;
 
 
                 case R.id.navigation_account:
-                    getFragmentManager().popBackStack();
-                     getFragmentManager().beginTransaction().
+                      getFragmentManager().beginTransaction().
                             replace(R.id.frame_container,
                                     new AkunFragment(),
                                     AkunFragment.class.getSimpleName())
-                             .addToBackStack(AkunFragment.class.getSimpleName())
+
                             .commit();
                     return true;
             }
@@ -84,9 +80,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        navigation.setVisibility(View.VISIBLE);
-        imgLogo.setVisibility(View.VISIBLE);
-        getSupportActionBar().setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        ShowAlert.showToast(getApplicationContext(), Integer.toString(getFragmentManager().getBackStackEntryCount()));
+        if(getFragmentManager().getBackStackEntryCount()==0){
+            navigation.setVisibility(View.VISIBLE);
+            imgLogo.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
     }
 }

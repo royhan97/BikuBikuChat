@@ -27,6 +27,7 @@ public class DetailPsychologistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true);
         View view =  inflater.inflate(R.layout.fragment_detail_psychologist, container, false);
         ShowAlert.showToast(getActivity(),Integer.toString(getFragmentManager().getBackStackEntryCount()) );
         return view;
@@ -36,6 +37,7 @@ public class DetailPsychologistFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
             getFragmentManager().popBackStack();
+            getFragmentManager().beginTransaction().remove(this).commit();
         }
         return super.onOptionsItemSelected(item);
     }
