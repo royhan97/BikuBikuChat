@@ -10,67 +10,68 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.model.Home;
+import com.example.adhit.bikubiku.data.model.Psychologist;
 
 import java.util.List;
 
 /**
- * Created by adhit on 03/01/2018.
+ * Created by adhit on 07/01/2018.
  */
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder> {
+public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapter.HomeViewHolder> {
+
     private Context context;
-    private List<Home> homeList;
+    private List<Psychologist> psychologistList;
     private OnDetailListener onDetailListener;
 
-    public HomeAdapter(Context context){
+    public PsychologistAdapter(Context context){
         this.context = context;
     }
 
-    public void setData(List<Home> homeList){
-        this.homeList = homeList;
+    public void setData(List<Psychologist> psychologistList){
+        this.psychologistList = psychologistList;
         notifyDataSetChanged();
     }
 
     @Override
     public HomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_menu, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_psychologist, parent, false);
         return new HomeViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(HomeViewHolder holder, final int position) {
-        final Home home = homeList.get(position);
-        holder.tvNameMenu.setText(home.getNamaMenu());
-        holder.imgMenu.setImageResource(home.getGambarMenu());
+        Psychologist psychologist = psychologistList.get(position);
+        holder.tvNamePsychologist.setText(psychologist.getNama());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDetailListener.onItemDetailClicked(home.getNamaMenu());
+                onDetailListener.onItemDetailClicked(psychologistList.get(position).getId());
             }
         });
     }
-    
+
     public void setOnClickDetailListener(OnDetailListener onDetailListener){
         this.onDetailListener = onDetailListener;
     }
-    
+
     @Override
     public int getItemCount() {
-        if(homeList == null) return 0;
-        return homeList.size();
+        if(psychologistList == null) return 0;
+        return psychologistList.size();
     }
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNameMenu;
-        ImageView imgMenu;
+        TextView tvNamePsychologist;
 
         public HomeViewHolder(View itemView) {
             super(itemView);
-            imgMenu = itemView.findViewById(R.id.img_menu);
-            tvNameMenu = itemView.findViewById(R.id.tv_name_menu);
+            tvNamePsychologist = itemView.findViewById(R.id.tv_psychologist_name);
+
         }
     }
     public interface OnDetailListener{
-        void onItemDetailClicked(String menu);
+        void onItemDetailClicked(int id);
     }
 }

@@ -29,7 +29,21 @@ public interface Api {
 
     @POST("biquers/alamat")
     @FormUrlEncoded
-    Call<JsonObject> changeAddress(@Field("alamat") String alamat);
+    Call<JsonObject> changeAddress(@Field("alamat") String address);
+
+    @POST("biquers/profil")
+    @FormUrlEncoded
+    Call<JsonObject> changeAccount(@Field("nama") String name,
+                                   @Field("username") String username,
+                                   @Field("password") String password,
+                                   @Field("email") String email,
+                                   @Field("tujuan") String aim);
+
+    @POST("biquers/ubahpassword")
+    @FormUrlEncoded
+    Call<JsonObject> changePassword(@Field("password_lama") String oldPassword,
+                                   @Field("password_baru") String newPassword,
+                                   @Field("password_baru_kedua") String newPasswordConfirm);
 
 
 }

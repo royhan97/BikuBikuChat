@@ -2,6 +2,7 @@ package com.example.adhit.bikubiku.ui.home.home;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,13 +17,14 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.HomeAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.presenter.HomePresenter;
+import com.example.adhit.bikubiku.ui.psychologyconsultation.PsychologyConsultationFragment;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements HomeView {
+public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDetailListener {
 
     private SliderLayout sliderLayout;
     private RecyclerView rvMenu;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment implements HomeView {
     public void initView(){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
         adapter = new HomeAdapter(getActivity());
+        adapter.setOnClickDetailListener(this);
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(gridLayoutManager);
@@ -77,5 +80,16 @@ public class HomeFragment extends Fragment implements HomeView {
     @Override
     public void showData(ArrayList<Home> homeArrayList) {
         adapter.setData(homeArrayList);
+    }
+
+    @Override
+    public void onItemDetailClicked(String menu) {
+        if(menu.equals("Konsultasi Psikologi")){
+            getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                    add(R.id.frame_container,
+                            new PsychologyConsultationFragment(),
+                            PsychologyConsultationFragment.class.getSimpleName()).commit();
+        }
     }
 }

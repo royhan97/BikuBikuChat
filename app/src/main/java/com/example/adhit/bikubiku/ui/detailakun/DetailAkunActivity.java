@@ -50,9 +50,7 @@ public class DetailAkunActivity extends AppCompatActivity implements DetailAkunV
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
 
         if(getIntent().getStringExtra("detail_akun").equals("Profil")){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-            }
+
             detailAkunPresenter.showFragmentListProfil();
         }
         if(getIntent().getStringExtra("detail_akun").equals("Personalia")){

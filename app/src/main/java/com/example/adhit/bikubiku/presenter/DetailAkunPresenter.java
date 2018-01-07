@@ -10,8 +10,7 @@ import com.example.adhit.bikubiku.ui.detailakun.personalia.persnolatity.Personal
 import com.example.adhit.bikubiku.ui.detailakun.personalia.suggestion.SuggestionFragment;
 import com.example.adhit.bikubiku.ui.detailakun.profil.accountsettings.AccountSettingsFragment;
 import com.example.adhit.bikubiku.ui.detailakun.profil.address.AddressFragment;
-import com.example.adhit.bikubiku.ui.detailakun.profil.passwordchange.PasswordChangeFragment;
-import com.example.adhit.bikubiku.ui.detailakun.profil.socialmedia.SocialMediaFragment;
+import com.example.adhit.bikubiku.ui.detailakun.profil.changepassword.ChangePasswordFragment;
 
 import java.util.ArrayList;
 
@@ -51,8 +50,7 @@ public class DetailAkunPresenter {
         ArrayList<Fraggment> fraggmentArrayList = new ArrayList<>();
         fraggmentArrayList.add(new Fraggment(new AccountSettingsFragment(), "Profil"));
         fraggmentArrayList.add(new Fraggment(new AddressFragment(), "Alamat"));
-        fraggmentArrayList.add(new Fraggment(new SocialMediaFragment(), "Social/ Messenger"));
-        fraggmentArrayList.add(new Fraggment(new PasswordChangeFragment(), "Ubah Password"));
+        fraggmentArrayList.add(new Fraggment(new ChangePasswordFragment(), "Password"));
         detailAkunView.showData(fraggmentArrayList);
     }
 

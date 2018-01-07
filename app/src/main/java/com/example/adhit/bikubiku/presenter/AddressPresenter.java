@@ -42,20 +42,18 @@ public class AddressPresenter {
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                              if(response.isSuccessful()){
                                  JsonObject body = response.body();
-                                 System.out.println(body.toString());
-//                                 boolean status = body
-//                                         .get("status").getAsBoolean();
-//                                 if(status){
-//                                     String message = body.get("message").getAsString();
-//                                     addressView.showMessage(message);
-//                                     User user = SaveUserData.getInstance().getUser();
-//                                     user.setAlamat(alamat);
-//                                     SaveUserData.getInstance().saveUser(user);
-//                                 }else{
-//                                     String message = body.get("message").getAsString();
-//                                     addressView.showMessage(message);
-//                                 }
-                                 addressView.showMessage("be");
+                                 boolean status = body
+                                         .get("status").getAsBoolean();
+                                 if(status){
+                                     String message = body.get("message").getAsString();
+                                     addressView.showMessage(message);
+                                     User user = SaveUserData.getInstance().getUser();
+                                     user.setAlamat(alamat);
+                                     SaveUserData.getInstance().saveUser(user);
+                                 }else{
+                                     String message = body.get("message").getAsString();
+                                     addressView.showMessage(message);
+                                 }
                              }else {
                                  addressView.showMessage(context.getResources().getString(R.string.text_changed_failed));
                              }
