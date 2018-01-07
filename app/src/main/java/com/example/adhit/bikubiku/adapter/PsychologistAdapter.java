@@ -5,11 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.Psychologist;
 
 import java.util.List;
@@ -42,14 +41,17 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
 
     @Override
     public void onBindViewHolder(HomeViewHolder holder, final int position) {
-        Psychologist psychologist = psychologistList.get(position);
+        final Psychologist psychologist = psychologistList.get(position);
         holder.tvNamePsychologist.setText(psychologist.getNama());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.tvConsultationPrice.setText(psychologist.getPrice());
+        holder.btnStartChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onDetailListener.onItemDetailClicked(psychologistList.get(position).getId());
+
+                onDetailListener.onItemDetailClicked(psychologist);
             }
         });
+
     }
 
     public void setOnClickDetailListener(OnDetailListener onDetailListener){
@@ -64,14 +66,18 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
         TextView tvNamePsychologist;
+        TextView tvConsultationPrice;
+        Button  btnStartChat;
 
         public HomeViewHolder(View itemView) {
             super(itemView);
             tvNamePsychologist = itemView.findViewById(R.id.tv_psychologist_name);
+            tvConsultationPrice = itemView.findViewById(R.id.tv_price_consultation);
+            btnStartChat = itemView.findViewById(R.id.btn_start_chat);
 
         }
     }
     public interface OnDetailListener{
-        void onItemDetailClicked(int id);
+        void onItemDetailClicked(Psychologist psychologist);
     }
 }

@@ -17,7 +17,7 @@ public class PsychologyConsultationPresenter {
 
     public void psychologyList(){
         ArrayList<Psychologist> psychologistArrayList = new ArrayList<>();
-        psychologistArrayList.add(new Psychologist(23, "Cahyo Adhi"));
+        psychologistArrayList.add(new Psychologist(23, "Cahyo Adhi", "20.000"));
         psychologyConsultationView.showData(psychologistArrayList);
     }
 

@@ -9,6 +9,7 @@ public class Constant {
     public static final String IS_LOGIN = "IS_LOGIN";
     public static final String KEY_USER = "user";
     public static final String USER_TOKEN = "token";
+    public static final String PSYCHOLOGIST = "psychologist";
 
 
 

@@ -89,7 +89,9 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                     setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                     add(R.id.frame_container,
                             new PsychologyConsultationFragment(),
-                            PsychologyConsultationFragment.class.getSimpleName()).commit();
+                            PsychologyConsultationFragment.class.getSimpleName())
+                    .addToBackStack(PsychologyConsultationFragment.class.getSimpleName())
+                    .commit();
         }
     }
 }

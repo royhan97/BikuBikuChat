@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
      private Toolbar toolbar;
      private BottomNavigationView navigation;
+     private ImageView imgLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     public  void initView(){
         appBarLayout = findViewById(R.id.appbarlayout);
         toolbar = findViewById(R.id.toolbar);
+        imgLogo = findViewById(R.id.img_logo);
         setSupportActionBar(toolbar);
         setTitle("");
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -42,7 +45,8 @@ public class HomeActivity extends AppCompatActivity {
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 replace(R.id.frame_container,
                         new HomeFragment(),
-                        HomeFragment.class.getSimpleName()).commit();
+                        HomeFragment.class.getSimpleName())
+                .addToBackStack(HomeFragment.class.getSimpleName()).commit();
 
     }
 
@@ -53,19 +57,24 @@ public class HomeActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
+                    getFragmentManager().popBackStack();
                     getFragmentManager().beginTransaction().
                             replace(R.id.frame_container,
                                     new HomeFragment(),
-                                    HomeFragment.class.getSimpleName()).commit();
+                                    HomeFragment.class.getSimpleName())
+                            .addToBackStack(HomeFragment.class.getSimpleName())
+                            .commit();
                     return true;
 
 
                 case R.id.navigation_account:
-                    getFragmentManager().beginTransaction().
+                    getFragmentManager().popBackStack();
+                     getFragmentManager().beginTransaction().
                             replace(R.id.frame_container,
                                     new AkunFragment(),
-                                    AkunFragment.class.getSimpleName()).commit();
+                                    AkunFragment.class.getSimpleName())
+                             .addToBackStack(AkunFragment.class.getSimpleName())
+                            .commit();
                     return true;
             }
             return false;
@@ -76,7 +85,8 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         navigation.setVisibility(View.VISIBLE);
+        imgLogo.setVisibility(View.VISIBLE);
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getFragmentManager().popBackStack();
     }
 }
