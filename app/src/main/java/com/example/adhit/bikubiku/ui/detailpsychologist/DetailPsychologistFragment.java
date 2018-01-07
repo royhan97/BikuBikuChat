@@ -27,9 +27,9 @@ public class DetailPsychologistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Detail Psikologi");
         setHasOptionsMenu(true);
         View view =  inflater.inflate(R.layout.fragment_detail_psychologist, container, false);
-        ShowAlert.showToast(getActivity(),Integer.toString(getFragmentManager().getBackStackEntryCount()) );
         return view;
     }
 

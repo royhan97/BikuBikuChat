@@ -81,8 +81,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        ShowAlert.showToast(getApplicationContext(), Integer.toString(getFragmentManager().getBackStackEntryCount()));
-        if(getFragmentManager().getBackStackEntryCount()==0){
+       if(getFragmentManager().getBackStackEntryCount()==0){
             navigation.setVisibility(View.VISIBLE);
             imgLogo.setVisibility(View.VISIBLE);
             getSupportActionBar().setTitle("");

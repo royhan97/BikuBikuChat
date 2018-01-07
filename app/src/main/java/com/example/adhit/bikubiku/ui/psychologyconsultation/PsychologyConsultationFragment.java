@@ -48,7 +48,6 @@ public class PsychologyConsultationFragment extends Fragment implements Psycholo
         setHasOptionsMenu(true);
         View view =inflater.inflate(R.layout.fragment_phychology_consultation, container, false);
         rvPhycologist = view.findViewById(R.id.rv_pschologist);
-        ShowAlert.showToast(getActivity(),Integer.toString(getFragmentManager().getBackStackEntryCount()) );
         initView();
         return  view;
     }
@@ -102,6 +101,6 @@ public class PsychologyConsultationFragment extends Fragment implements Psycholo
                replace(R.id.frame_container,
                         detailPsychologist).
                  addToBackStack(DetailPsychologistFragment.class.getSimpleName()).commit();
-        ShowAlert.showToast(getActivity(), Integer.toString(psychologist.getId()));
+
     }
 }

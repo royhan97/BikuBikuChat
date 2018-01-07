@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         if(menu.equals("Konsultasi Psikologi")){
             getFragmentManager().beginTransaction().
                     setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                    add(R.id.frame_container,
+                    replace(R.id.frame_container,
                             new PsychologyConsultationFragment(),
                             PsychologyConsultationFragment.class.getSimpleName())
                     .addToBackStack(PsychologyConsultationFragment.class.getSimpleName())
