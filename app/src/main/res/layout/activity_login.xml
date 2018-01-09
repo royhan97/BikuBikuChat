@@ -54,34 +54,7 @@
                         android:textStyle="bold"
                         android:layout_marginLeft="50dp" />
                 </RelativeLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:paddingEnd="30dp"
-                    android:paddingStart="50dp"
-                    android:paddingLeft="50dp"
-                    android:paddingRight="30dp">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColorHint="#c5c5c5">
-
-                        <EditText
-                            android:id="@+id/et_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/selector_bg_edit"
-                            android:hint="@string/text_email"
-                            android:inputType="textEmailAddress"
-                            android:paddingBottom="2dp"
-                            android:textColor="#2fa881"
-                            android:textCursorDrawable="@drawable/bg_input_cursor"
-                            android:textSize="13sp" />
-                    </android.support.design.widget.TextInputLayout>
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

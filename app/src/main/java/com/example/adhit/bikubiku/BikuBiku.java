@@ -22,8 +22,8 @@ public class BikuBiku extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        initQiscus();
         EventBus.builder().build();
+        initQiscus();
         sContext = this;
     }
 

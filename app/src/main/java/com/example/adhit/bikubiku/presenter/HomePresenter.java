@@ -24,6 +24,7 @@ public class HomePresenter {
         homeArrayList.add(new Home(R.drawable.logo, "Tes Minat"));
         homeArrayList.add(new Home(R.drawable.logo, "Artikel"));
         homeArrayList.add(new Home(R.drawable.logo, "Konsultasi Psikologi"));
+        homeArrayList.add(new Home(R.drawable.logo, "History Konsultasi"));
         homeView.showData(homeArrayList);
 
     }

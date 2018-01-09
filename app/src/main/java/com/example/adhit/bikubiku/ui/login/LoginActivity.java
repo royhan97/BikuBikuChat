@@ -19,7 +19,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static int REQUEST_CODE_REGISTER = 2000;
     private Button btnDaftarLine, btnLogin;
     private CoordinatorLayout coordinatorLayout;
-    private EditText etEmail, etUsername, etPassword;
+    private EditText etUsername, etPassword;
     private LoginPresenter loginPresenter;
 
     @Override
@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fabRegister = findViewById(R.id.fab_register);
         btnDaftarLine = (Button) findViewById(R.id.btn_login_line);
         btnLogin = (Button) findViewById(R.id.btn_login);
-        etEmail = findViewById(R.id.et_email);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         fabRegister.setOnClickListener(this);
@@ -57,13 +56,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
         }
         if(view.getId() == R.id.btn_login){
-            String email = etEmail.getText().toString().trim();
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
-            if(email.isEmpty()) {
-                etEmail.setError(getResources().getString(R.string.text_email_empty));
-                etEmail.requestFocus();
-            }else if(username.isEmpty()){
+            if(username.isEmpty()){
                 etUsername.setError(getResources().getString(R.string.text_user_name_empty));
                 etUsername.requestFocus();
             }else if(password.isEmpty()){

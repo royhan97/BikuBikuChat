@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.Session;
+import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Psychologist;
 
 import java.util.List;
@@ -44,13 +46,20 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
         final Psychologist psychologist = psychologistList.get(position);
         holder.tvNamePsychologist.setText(psychologist.getNama());
         holder.tvConsultationPrice.setText(psychologist.getPrice());
-        holder.btnStartChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+            holder.btnStartChat.setClickable(false);
+            holder.btnStartChat.setBackgroundResource(R.color.colorGrey500);
+        }else {
+            holder.btnStartChat.setClickable(true);
+            holder.btnStartChat.setBackgroundResource(R.color.colorGreen400);
+            holder.btnStartChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                onDetailListener.onItemDetailClicked(psychologist);
-            }
-        });
+                    onDetailListener.onItemDetailClicked(psychologist);
+                }
+            });
+        }
 
     }
 

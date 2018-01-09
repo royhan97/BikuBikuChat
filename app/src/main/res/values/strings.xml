@@ -4,11 +4,19 @@
     <string name="text_address_empty">Alamat Tidak Boleh Kosong</string>
     <string name="text_cannot_empty">Tidak Boleh Kosong</string>
     <string name="text_changed_failed">Perubahan Gagal</string>
+    <string name="text_chat_exist">Anda sedang melakukan konsultasi, silahkan buka ruang chat disini</string>
+    <string name="text_closed_chat">Sesi Chat telah Berakhir</string>
+    <string name="text_finish">Selesai</string>
+    <string name="text_first_chat">Ini adalah awal session konsultasimu. Silahkan konsultasi dengan ahli kami</string>
+    <string name="text_next">Lanjutkan</string>
     <string name="text_password_old">Password Lama</string>
     <string name="text_password_new">Password Baru</string>
     <string name="text_password_confirm">Konfirmasi Password Baru</string>
+    <string name="text_online">Online</string>
     <string name="text_price_consultation">Harga Konsultasi</string>
     <string name="text_start_chat">Mulai Chat</string>
+    <string name="text_total_price_consultation">Total Harga Konsultasi</string>
+    <string name="text_typing">Typing....</string>
 
     <string name="text_save">Simpan</string>
     <string name="text_login_line">Login Via Line</string>
@@ -40,7 +48,6 @@
     <string name="text_time_stamp">Waktu Chat</string>
     <string name="text_logout">Keluar</string>
     <string name="text_type_message">Ketik Pesan</string>
-    <string name="text_typing">Typing....</string>
     <string name="text_rate_kabim">Rate Kabim</string>
     <string name="text_loading">Silahkan tunggu beberapa saat.....</string>
     <string name="text_account">Akun</string>

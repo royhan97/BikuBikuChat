@@ -78,4 +78,31 @@ public class RetrofitClient {
                 .build();
     }
 
+    public Api getApiQiscus(){
+        return getRetrofitQiscus().create(Api.class);
+    }
+    public Retrofit getRetrofitQiscus(){
+        OkHttpClient okHttpClient = null;
+
+        okHttpClient = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Request newRequest;
+                newRequest = request.newBuilder()
+                        .addHeader("QISCUS_SDK_SECRET", "0d1c0ebe52446a26e816f16521ca8599")
+                        .build();
+                return chain.proceed(newRequest);
+            }
+        }).connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+        return new Retrofit.Builder()
+                .baseUrl(Constant.BASE_URL_QISCUS)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
 }
