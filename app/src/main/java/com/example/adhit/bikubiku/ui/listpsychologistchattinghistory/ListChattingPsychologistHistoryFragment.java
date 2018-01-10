@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.psychologychattinghistory;
+package com.example.adhit.bikubiku.ui.listpsychologistchattinghistory;
 
 
 import android.app.Fragment;
@@ -11,11 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatRoomPsychologyHistoryAdapter;
 import com.example.adhit.bikubiku.data.model.ChatRoomPsychologyHistory;
-import com.example.adhit.bikubiku.presenter.ChattingHistoryPsychologyPresenter;
+import com.example.adhit.bikubiku.presenter.ListChattingPsychologistHistoryPresenter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
@@ -29,14 +28,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChattingPsychologyHistoryFragment extends Fragment implements ChattingPsychologyHistoryView, ChatRoomPsychologyHistoryAdapter.OnDetailListener, ChattingPsychologyView {
+public class ListChattingPsychologistHistoryFragment extends Fragment implements ListChattingPsychologistHistoryView, ChatRoomPsychologyHistoryAdapter.OnDetailListener, ChattingPsychologyView {
 
     private RecyclerView rvChatPsychologyHistory;
-    private ChattingHistoryPsychologyPresenter chattingHistoryPsychologyPresenter;
+    private ListChattingPsychologistHistoryPresenter chattingHistoryPsychologyPresenter;
     private ChatRoomPsychologyHistoryAdapter chatRoomPsychologyHistoryAdapter;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
 
-    public ChattingPsychologyHistoryFragment() {
+    public ListChattingPsychologistHistoryFragment() {
         // Required empty public constructor
     }
 
@@ -66,7 +65,7 @@ public class ChattingPsychologyHistoryFragment extends Fragment implements Chatt
         return super.onOptionsItemSelected(item);
     }
     public void initView(){
-        chattingHistoryPsychologyPresenter = new ChattingHistoryPsychologyPresenter(this);
+        chattingHistoryPsychologyPresenter = new ListChattingPsychologistHistoryPresenter(this);
         chattingHistoryPsychologyPresenter.getChattingHistoryList();
         chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
         chatRoomPsychologyHistoryAdapter = new ChatRoomPsychologyHistoryAdapter(getActivity());

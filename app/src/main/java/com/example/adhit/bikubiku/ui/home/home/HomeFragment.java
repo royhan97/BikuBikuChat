@@ -2,7 +2,6 @@ package com.example.adhit.bikubiku.ui.home.home;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,8 +17,8 @@ import com.example.adhit.bikubiku.adapter.HomeAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.presenter.HomePresenter;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
-import com.example.adhit.bikubiku.ui.psychologychattinghistory.ChattingPsychologyHistoryFragment;
-import com.example.adhit.bikubiku.ui.psychologyconsultation.PsychologyConsultationFragment;
+import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryFragment;
+import com.example.adhit.bikubiku.ui.listpsychologistconsultation.ListPsychologistConsultationFragment;
 
 import java.util.ArrayList;
 
@@ -89,17 +88,17 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         if(menu.equals("Konsultasi Psikologi")){
             getFragmentManager().beginTransaction().
                     replace(R.id.frame_container,
-                            new PsychologyConsultationFragment(),
-                            PsychologyConsultationFragment.class.getSimpleName())
-                    .addToBackStack(PsychologyConsultationFragment.class.getSimpleName())
+                            new ListPsychologistConsultationFragment(),
+                            ListPsychologistConsultationFragment.class.getSimpleName())
+                    .addToBackStack(ListPsychologistConsultationFragment.class.getSimpleName())
                     .commit();
         }
         if(menu.equals("History Konsultasi")){
             getFragmentManager().beginTransaction().
                     replace(R.id.frame_container,
-                            new ChattingPsychologyHistoryFragment(),
+                            new ListChattingPsychologistHistoryFragment(),
                             ChattingPsychologyFragment.class.getSimpleName())
-                    .addToBackStack(ChattingPsychologyHistoryFragment.class.getSimpleName())
+                    .addToBackStack(ListChattingPsychologistHistoryFragment.class.getSimpleName())
                     .commit();
         }
     }

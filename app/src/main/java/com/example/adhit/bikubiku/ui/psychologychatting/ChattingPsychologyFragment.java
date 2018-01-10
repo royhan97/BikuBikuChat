@@ -26,6 +26,8 @@ import com.qiscus.sdk.ui.view.QiscusMentionSuggestionView;
 import com.qiscus.sdk.ui.view.QiscusRecyclerView;
 import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
 
+import java.util.List;
+
 
 public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPschologyAdapter> implements ChattingPsychologyView, View.OnClickListener {
 
@@ -34,6 +36,8 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
     private View mInputPanel;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
     private static boolean isHistory1;
+
+
 
     public static ChattingPsychologyFragment newInstance(QiscusChatRoom qiscusChatRoom, boolean isHistory) {
         ChattingPsychologyFragment fragment = new ChattingPsychologyFragment();

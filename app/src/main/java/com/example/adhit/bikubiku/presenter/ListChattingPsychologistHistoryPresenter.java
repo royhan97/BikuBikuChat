@@ -1,19 +1,13 @@
 package com.example.adhit.bikubiku.presenter;
 
-import android.util.Log;
-
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.ChatRoomPsychologyHistory;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
-import com.example.adhit.bikubiku.ui.psychologychattinghistory.ChattingPsychologyHistoryView;
+import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryView;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -22,16 +16,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by adhit on 09/01/2018.
  */
 
-public class ChattingHistoryPsychologyPresenter {
-    private ChattingPsychologyHistoryView chattingPsychologyHistoryView;
+public class ListChattingPsychologistHistoryPresenter {
+    private ListChattingPsychologistHistoryView chattingPsychologyHistoryView;
 
-    public ChattingHistoryPsychologyPresenter(ChattingPsychologyHistoryView chattingPsychologyHistoryView){
+    public ListChattingPsychologistHistoryPresenter(ListChattingPsychologistHistoryView chattingPsychologyHistoryView){
         this.chattingPsychologyHistoryView =chattingPsychologyHistoryView;
     }
 

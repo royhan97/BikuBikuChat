@@ -1,19 +1,11 @@
 package com.example.adhit.bikubiku.presenter;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
 
-import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Psychologist;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
-import com.example.adhit.bikubiku.ui.psychologyconsultation.PsychologyConsultationView;
+import com.example.adhit.bikubiku.ui.listpsychologistconsultation.ListPsychologistConsultationView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.remote.QiscusApi;
@@ -25,9 +17,9 @@ import java.util.ArrayList;
  * Created by adhit on 07/01/2018.
  */
 
-public class PsychologyConsultationPresenter {
-    private PsychologyConsultationView psychologyConsultationView;
-    public PsychologyConsultationPresenter(PsychologyConsultationView psychologyConsultationView){
+public class ListPsychologistConsultationPresenter {
+    private ListPsychologistConsultationView psychologyConsultationView;
+    public ListPsychologistConsultationPresenter(ListPsychologistConsultationView psychologyConsultationView){
         this.psychologyConsultationView = psychologyConsultationView;
     }
 
