@@ -28,6 +28,9 @@ import com.qiscus.sdk.ui.view.QiscusMentionSuggestionView;
 import com.qiscus.sdk.ui.view.QiscusRecyclerView;
 import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 
@@ -363,11 +366,35 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
     }
 
     @Override
+    public void showComments(List<QiscusComment> qiscusComments) {
+        super.showComments(qiscusComments);
+        for(int i=0; i<qiscusComments.size();i++){
+            JSONObject payload = null;
+            try {
+                payload = new JSONObject(qiscusComments.get(i).getExtraPayload());
+                if (payload.optString("type").equals("closed_chat")) {
+                    mInputPanel.setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void onNewComment(QiscusComment qiscusComment) {
         super.onNewComment(qiscusComment);
-        if(qiscusComment.getMessage().equals("Sesi Chat Ditutup")){
-            mInputPanel.setVisibility(View.GONE);
-            getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+        JSONObject payload = null;
+        try {
+            payload = new JSONObject(qiscusComment.getExtraPayload());
+
+            if (payload.optString("type").equals("closed_chat")) {
+                mInputPanel.setVisibility(View.GONE);
+                getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

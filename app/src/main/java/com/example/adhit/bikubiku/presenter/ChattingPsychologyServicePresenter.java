@@ -44,7 +44,7 @@ public class ChattingPsychologyServicePresenter {
         RetrofitClient.getInstance().getApiQiscus()
                 .sendMessage(SaveUserData.getInstance().getUser().getId(),
                         Integer.toString(qiscusChatRoom.getId()),
-                        "Sesi Chat Ditutup", payload, "custom")
+                        "Sesi Chat Ditutup *Developed Confirmed By Qiscus and BikuBiku", payload, "custom")
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

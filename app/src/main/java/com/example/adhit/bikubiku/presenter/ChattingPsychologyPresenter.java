@@ -123,7 +123,7 @@ public class ChattingPsychologyPresenter {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        QiscusComment comment = QiscusComment.generateCustomMessage("Sesi Chat Ditutup", "closed_chat", payload,
+        QiscusComment comment = QiscusComment.generateCustomMessage("Sesi Chat Ditutup *Developed Confirmed By Qiscus and BikuBiku", "closed_chat", payload,
                 qiscusChatRoom.getId(), qiscusChatRoom.getLastTopicId());
         chattingPsychologyView.sendClosedMessage(comment);
 
