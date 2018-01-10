@@ -1,13 +1,12 @@
 package com.example.adhit.bikubiku.ui.psychologychatting;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -17,9 +16,6 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatPschologyAdapter;
-import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SaveUserToken;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
@@ -30,23 +26,20 @@ import com.qiscus.sdk.ui.view.QiscusMentionSuggestionView;
 import com.qiscus.sdk.ui.view.QiscusRecyclerView;
 import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPschologyAdapter> implements ChattingPsychologyView, View.OnClickListener {
 
     private ImageView mAttachButton;
     private LinearLayout mAddPanel;
     private View mInputPanel;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private static boolean isHistory1;
 
-    public static ChattingPsychologyFragment newInstance(QiscusChatRoom qiscusChatRoom) {
+    public static ChattingPsychologyFragment newInstance(QiscusChatRoom qiscusChatRoom, boolean isHistory) {
         ChattingPsychologyFragment fragment = new ChattingPsychologyFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(CHAT_ROOM_DATA, qiscusChatRoom);
+        isHistory1 = isHistory;
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -75,7 +68,10 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
                 clickConsumer.setVisibility(View.GONE);
             }
         });
-
+        if(isHistory1){
+            getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+            mInputPanel.setVisibility(View.GONE);
+        }
         clickConsumer.setOnClickListener(v -> {
             if (mAddPanel.getVisibility() == View.VISIBLE) {
                 mAddPanel.setVisibility(View.GONE);
@@ -90,7 +86,7 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
     protected void onCreateChatComponents(Bundle savedInstanceState) {
         super.onCreateChatComponents(savedInstanceState);
         chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
-        if(!chattingPsychologyPresenter.checkChattingPsychology()){
+        if(!chattingPsychologyPresenter.checkChattingPsychology() && !isHistory1){
             chattingPsychologyPresenter.sendFirstMessage(qiscusChatRoom);
 
         }
@@ -344,8 +340,15 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     public void sendClosedMessage(QiscusComment comment) {
+        //getActivity().stopService(getContext(), ChattingPsychologyService.class);
         mInputPanel.setVisibility(View.GONE);
         sendQiscusComment(comment);
+        getActivity().finish();
+    }
+
+    @Override
+    public void showMessageClosedChatFromService(String success) {
+
     }
 
     @Override
@@ -355,4 +358,6 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
         }
     }
+
+
 }

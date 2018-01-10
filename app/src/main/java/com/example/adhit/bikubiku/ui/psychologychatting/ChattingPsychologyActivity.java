@@ -2,6 +2,8 @@ package com.example.adhit.bikubiku.ui.psychologychatting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.ChangePasswordPresenter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
+import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
+import com.example.adhit.bikubiku.service.CheckRoomIsBuildService;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.ui.QiscusBaseChatActivity;
@@ -24,10 +28,13 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
     private TextView mTitle, mSubtitle, tvFinish;
     private QiscusCircularImageView qiscusCircularImageView;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private static boolean isHistory1;
 
-    public static Intent generateIntent(Context context, QiscusChatRoom qiscusChatRoom) {
+
+    public static Intent generateIntent(Context context, QiscusChatRoom qiscusChatRoom, boolean isHistory) {
         Intent intent = new Intent(context, ChattingPsychologyActivity.class);
         intent.putExtra(CHAT_ROOM_DATA, qiscusChatRoom);
+        isHistory1 = isHistory;
         return intent;
     }
 
@@ -47,11 +54,13 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
         qiscusCircularImageView = findViewById(R.id.profile_picture);
         findViewById(com.qiscus.sdk.R.id.back).setOnClickListener(v -> onBackPressed());
         tvFinish.setOnClickListener(this);
+
+
     }
 
     @Override
     protected QiscusBaseChatFragment onCreateChatFragment() {
-        return ChattingPsychologyFragment.newInstance(qiscusChatRoom);
+        return ChattingPsychologyFragment.newInstance(qiscusChatRoom, isHistory1);
     }
 
     @Override
@@ -77,6 +86,8 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
         }
     }
 
+
+
     @Override
     public void sendFirstMessage(QiscusComment comment) {
 
@@ -94,6 +105,11 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
 
     @Override
     public void sendClosedMessage(QiscusComment comment) {
+
+    }
+
+    @Override
+    public void showMessageClosedChatFromService(String success) {
 
     }
 

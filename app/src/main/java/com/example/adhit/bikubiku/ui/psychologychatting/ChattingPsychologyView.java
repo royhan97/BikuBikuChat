@@ -15,4 +15,6 @@ public interface ChattingPsychologyView {
     void openRoomChat(QiscusChatRoom qiscusChatRoom);
 
     void sendClosedMessage(QiscusComment comment);
+
+    void showMessageClosedChatFromService(String success);
 }

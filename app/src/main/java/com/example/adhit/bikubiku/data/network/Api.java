@@ -2,6 +2,8 @@ package com.example.adhit.bikubiku.data.network;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -30,6 +32,14 @@ public interface Api {
     @GET("/api/v2/rest/get_user_rooms")
     Call<JsonObject> getChatRoomHistory(@Query("user_email") String userEmail,
                                         @Query("show_participants") boolean showParticipants);
+
+    @POST("/api/v2/rest/post_comment")
+    @FormUrlEncoded
+    Call<JsonObject> sendMessage(@Field("sender_email") String senderEmail,
+                                 @Field("room_id") String roomId,
+                                 @Field("message") String message,
+                                 @Field("payload") JSONObject payload,
+                                 @Field("type") String type);
 
 
     //bikubiku

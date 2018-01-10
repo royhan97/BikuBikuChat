@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by adhit on 08/01/2018.
  */
 
-public class ChattingPsychologyService extends FirebaseMessagingService {
+public class ChattingPsychologyNotificationService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (QiscusFirebaseService.handleMessageReceived(remoteMessage)) { // For qiscus
 
@@ -83,7 +83,7 @@ public class ChattingPsychologyService extends FirebaseMessagingService {
                 new QiscusRxExecutor.Listener<QiscusChatRoom>() {
                     @Override
                     public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                        Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom);
+                        Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
                         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

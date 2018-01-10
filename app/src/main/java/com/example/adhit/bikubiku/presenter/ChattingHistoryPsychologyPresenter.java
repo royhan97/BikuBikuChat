@@ -36,7 +36,6 @@ public class ChattingHistoryPsychologyPresenter {
     }
 
     public void getChattingHistoryList(){
-        System.out.println("proses");
         RetrofitClient.getInstance().getApiQiscus()
                 .getChatRoomHistory(SaveUserData.getInstance().getUser().getId(), true)
                 .enqueue(new Callback<JsonObject>() {
@@ -54,7 +53,6 @@ public class ChattingHistoryPsychologyPresenter {
                                 }
                             }
                             chattingPsychologyHistoryView.showData(carList);
-                            System.out.println("berhasil");
                         }else{
                             chattingPsychologyHistoryView.onFailure(response.toString());
                             System.out.println(response.toString());

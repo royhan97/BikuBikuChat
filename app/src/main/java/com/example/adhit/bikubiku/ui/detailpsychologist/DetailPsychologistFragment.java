@@ -16,6 +16,7 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.model.Psychologist;
 import com.example.adhit.bikubiku.presenter.ChangePasswordPresenter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
+import com.example.adhit.bikubiku.service.ChattingPsychologyService;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
@@ -99,12 +100,23 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
 
     @Override
     public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-        Intent intent= ChattingPsychologyActivity.generateIntent(getActivity(), qiscusChatRoom);
+        Intent mStartIntentService = new Intent(getActivity(), ChattingPsychologyService.class);
+        mStartIntentService.putExtra(ChattingPsychologyService.EXTRA_DURATION, 20000);
+        mStartIntentService.putExtra(ChattingPsychologyService.QISCUS_CHAT_ROOM, qiscusChatRoom);
+        getActivity().startService(mStartIntentService);
+
+        Intent intent= ChattingPsychologyActivity.generateIntent(getActivity(), qiscusChatRoom, false);
         startActivity(intent);
+
     }
 
     @Override
     public void sendClosedMessage(QiscusComment comment) {
+
+    }
+
+    @Override
+    public void showMessageClosedChatFromService(String success) {
 
     }
 }

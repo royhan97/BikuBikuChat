@@ -23,6 +23,7 @@ public class ChatRoomPsychologyHistoryAdapter extends RecyclerView.Adapter<ChatR
 
     private Context context;
     private List<ChatRoomPsychologyHistory> chatRoomPsychologyHistoryList;
+    private OnDetailListener onDetailListener;
 
     public ChatRoomPsychologyHistoryAdapter(Context context) {
         this.context = context;
@@ -51,13 +52,17 @@ public class ChatRoomPsychologyHistoryAdapter extends RecyclerView.Adapter<ChatR
                 holder.tvRoomChatName.setText(chatRoomPsychologyHistoryList.get(position).getParticipants().get(i).getUsername());
             }
         }
-        holder.tvLastMessage.setText(chatRoomPsychologyHistoryList.get(position).getLastCommentMessage());
+        holder.tvLastMessage.setText("CLOSED");
         Picasso.with(context)
                 .load(chatRoomPsychologyHistoryList.get(position).getRoomAvatarUrl())
                 .into(holder.imgAvatarRoomChat);
+        holder.itemView.setOnClickListener(view ->    onDetailListener.onItemDetailClicked(chatRoomPsychologyHistoryList.get(position).getRoomId()));
 
     }
 
+    public void setOnClickDetailListener(OnDetailListener onDetailListener){
+        this.onDetailListener = onDetailListener;
+    }
 
     @Override
     public boolean onFailedToRecycleView(RoomChatViewHolder holder) {
@@ -82,5 +87,9 @@ public class ChatRoomPsychologyHistoryAdapter extends RecyclerView.Adapter<ChatR
             imgAvatarRoomChat = itemView.findViewById(R.id.img_avatar_room_chat);
 
         }
+    }
+
+    public interface OnDetailListener{
+        void onItemDetailClicked(int idRoom);
     }
 }

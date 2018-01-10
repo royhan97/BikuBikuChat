@@ -16,6 +16,7 @@ import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
+import com.example.adhit.bikubiku.service.ChattingPsychologyService;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
 import com.example.adhit.bikubiku.util.ShowAlert;
@@ -72,7 +73,8 @@ public class ChattingPsychologyPresenter {
                             if(status == 200){
                                 JsonObject userObject = body.get("results").getAsJsonObject();
                                 int idRoom = userObject.get("room_id").getAsInt();
-                                openRoomChatById(idRoom);
+                                SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(idRoom);
+                               openRoomChatById(idRoom);
                             }else{
                                // String message = body.get("message").getAsString();
                     //            loginView.showMessageSnackbar(message);
@@ -88,21 +90,6 @@ public class ChattingPsychologyPresenter {
 
                     }
                 });
-//        Qiscus.buildChatRoomWith(String.valueOf(id))
-//                .build()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map(qiscusChatRoom -> ChattingPsychologyActivity.generateIntent(context, qiscusChatRoom))
-//                .subscribe(intent -> {
-//                    chattingPsychologyView.canCreateRoom(true);
-//                    context.startActivity(intent);
-//                    ShowAlert.closeProgresDialog();
-//                }, throwable -> {
-//                    QiscusErrorLogger.print(throwable);
-//                    chattingPsychologyView.canCreateRoom(false);
-//                    ShowAlert.showToast(context,QiscusErrorLogger.getMessage(throwable));
-//                    ShowAlert.closeProgresDialog();
-//                });
     }
 
     public void sendFirstMessage(QiscusChatRoom qiscusChatRoom){
@@ -114,7 +101,7 @@ public class ChattingPsychologyPresenter {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        QiscusComment comment = QiscusComment.generateCustomMessage("", "user_test", payload,
+        QiscusComment comment = QiscusComment.generateCustomMessage(SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", "user_test", payload,
                 qiscusChatRoom.getId(), qiscusChatRoom.getLastTopicId());
         SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(qiscusChatRoom.getId());
         SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
@@ -141,7 +128,44 @@ public class ChattingPsychologyPresenter {
         chattingPsychologyView.sendClosedMessage(comment);
 
         SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
-        ((Activity)context).finish();
+
+    }
+
+    public void finishChatFromService(QiscusChatRoom qiscusChatRoom){
+
+        JSONObject payload = new JSONObject();
+        JSONObject payloadContent = new JSONObject();
+
+        try {
+            payloadContent.put("locked", "halo")
+                    .put("description", "Sesi Chat ditutup");
+
+            payload.put("type", "closed_chat")
+                    .put("content", payloadContent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+        RetrofitClient.getInstance().getApiQiscus()
+                .sendMessage(SaveUserData.getInstance().getUser().getId(),
+                        Integer.toString(qiscusChatRoom.getId()),
+                        "Sesi Chat Ditutup", payload, "custom")
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(response.isSuccessful()){
+                            chattingPsychologyView.showMessageClosedChatFromService("success");
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        chattingPsychologyView.showMessageClosedChatFromService("failed");
+                    }
+                });
+
     }
 
     public void openRoomChatById(int id){
@@ -159,4 +183,22 @@ public class ChattingPsychologyPresenter {
                     }
                 });
     }
+
+    public void openRoomChatPsychologyHistoryById(int id){
+        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
+                new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                    @Override
+                    public void onSuccess(QiscusChatRoom qiscusChatRoom) {
+                        chattingPsychologyView.openRoomChat(qiscusChatRoom);
+                    }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                });
+
+    }
+
+
+
 }

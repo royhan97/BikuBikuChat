@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.adhit.bikubiku">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".BikuBiku"
@@ -24,27 +24,43 @@
             android:name=".ui.home.HomeActivity"
             android:label="@string/title_activity_home" />
         <activity android:name=".ui.detailakun.DetailAkunActivity" />
-        <activity android:name=".ui.psychologychatting.ChattingPsychologyActivity"></activity>
+        <activity android:name=".ui.psychologychatting.ChattingPsychologyActivity" />
 
-        <service    android:name=".ui.notification.ChattingPsychologyService">
+        <service android:name=".ui.notification.ChattingPsychologyNotificationService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".ui.notification.ChattingPschologyIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
+        <service
+            android:name=".service.ChattingPsychologyService"
+            android:exported="false" />
+        <service
+            android:name=".service.CheckRoomIsBuildService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.CheckRoomIsBuildReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
