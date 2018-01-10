@@ -131,42 +131,7 @@ public class ChattingPsychologyPresenter {
 
     }
 
-    public void finishChatFromService(QiscusChatRoom qiscusChatRoom){
 
-        JSONObject payload = new JSONObject();
-        JSONObject payloadContent = new JSONObject();
-
-        try {
-            payloadContent.put("locked", "halo")
-                    .put("description", "Sesi Chat ditutup");
-
-            payload.put("type", "closed_chat")
-                    .put("content", payloadContent);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
-        RetrofitClient.getInstance().getApiQiscus()
-                .sendMessage(SaveUserData.getInstance().getUser().getId(),
-                        Integer.toString(qiscusChatRoom.getId()),
-                        "Sesi Chat Ditutup", payload, "custom")
-                .enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        if(response.isSuccessful()){
-                            chattingPsychologyView.showMessageClosedChatFromService("success");
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        chattingPsychologyView.showMessageClosedChatFromService("failed");
-                    }
-                });
-
-    }
 
     public void openRoomChatById(int id){
         QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
@@ -184,23 +149,7 @@ public class ChattingPsychologyPresenter {
                 });
     }
 
-    public void openRoomChatPsychologyHistoryById(Context context,int id){
-        ShowAlert.showProgresDialog(context);
-        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
-                new QiscusRxExecutor.Listener<QiscusChatRoom>() {
-                    @Override
-                    public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                        chattingPsychologyView.openRoomChat(qiscusChatRoom);
-                        ShowAlert.closeProgresDialog();
-                    }
-                    @Override
-                    public void onError(Throwable throwable) {
-                        throwable.printStackTrace();
-                        ShowAlert.showToast(context,"gagal");
-                    }
-                });
 
-    }
 
 
 

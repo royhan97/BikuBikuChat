@@ -1,13 +1,19 @@
 package com.example.adhit.bikubiku.presenter;
 
+import android.content.Context;
+
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.ChatRoomPsychologyHistory;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryView;
+import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.qiscus.sdk.data.model.QiscusChatRoom;
+import com.qiscus.sdk.data.remote.QiscusApi;
+import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -57,6 +63,24 @@ public class ListChattingPsychologistHistoryPresenter {
                         System.out.println(t.getMessage());
                     }
                 });
+    }
+
+    public void openRoomChatPsychologyHistoryById(Context context, int id){
+        ShowAlert.showProgresDialog(context);
+        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
+                new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                    @Override
+                    public void onSuccess(QiscusChatRoom qiscusChatRoom) {
+                        chattingPsychologyHistoryView.openRoomChat(qiscusChatRoom);
+                        ShowAlert.closeProgresDialog();
+                    }
+                    @Override
+                    public void onError(Throwable throwable) {
+                        throwable.printStackTrace();
+                        ShowAlert.showToast(context,"gagal");
+                    }
+                });
+
     }
 
 }

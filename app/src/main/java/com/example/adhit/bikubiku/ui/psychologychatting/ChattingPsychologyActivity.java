@@ -23,11 +23,10 @@ import com.qiscus.sdk.ui.view.QiscusCircularImageView;
 
 import java.util.Date;
 
-public class ChattingPsychologyActivity extends QiscusBaseChatActivity implements ChattingPsychologyView, View.OnClickListener {
+public class ChattingPsychologyActivity extends QiscusBaseChatActivity {
 
     private TextView mTitle, mSubtitle, tvFinish;
     private QiscusCircularImageView qiscusCircularImageView;
-    private ChattingPsychologyPresenter chattingPsychologyPresenter;
     private static boolean isHistory1;
 
 
@@ -47,15 +46,11 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
     protected void onLoadView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
         mTitle = (TextView) findViewById(R.id.tv_title);
         mSubtitle = findViewById(R.id.tv_subtitle);
         tvFinish = findViewById(R.id.tv_finish);
         qiscusCircularImageView = findViewById(R.id.profile_picture);
         findViewById(com.qiscus.sdk.R.id.back).setOnClickListener(v -> onBackPressed());
-        tvFinish.setOnClickListener(this);
-
-
     }
 
     @Override
@@ -86,34 +81,4 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
         }
     }
 
-
-
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void canCreateRoom(boolean b) {
-
-    }
-
-    @Override
-    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-
-    }
-
-    @Override
-    public void sendClosedMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void showMessageClosedChatFromService(String success) {
-
-    }
-
-    @Override
-    public void onClick(View view) {
-    }
 }

@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatPschologyAdapter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
+import com.example.adhit.bikubiku.service.ChattingPsychologyService;
+import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
@@ -344,16 +346,13 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     public void sendClosedMessage(QiscusComment comment) {
-        //getActivity().stopService(getContext(), ChattingPsychologyService.class);
+        getActivity().stopService(new Intent(getContext(), ChattingPsychologyService.class));
         mInputPanel.setVisibility(View.GONE);
         sendQiscusComment(comment);
         getActivity().finish();
     }
 
-    @Override
-    public void showMessageClosedChatFromService(String success) {
 
-    }
 
     @Override
     public void onClick(View view) {
@@ -363,5 +362,12 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
         }
     }
 
-
+    @Override
+    public void onNewComment(QiscusComment qiscusComment) {
+        super.onNewComment(qiscusComment);
+        if(qiscusComment.getMessage().equals("Sesi Chat Ditutup")){
+            mInputPanel.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+        }
+    }
 }

@@ -31,12 +31,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListChattingPsychologistHistoryFragment extends Fragment implements ListChattingPsychologistHistoryView, ChatRoomPsychologyHistoryAdapter.OnDetailListener, ChattingPsychologyView {
+public class ListChattingPsychologistHistoryFragment extends Fragment implements ListChattingPsychologistHistoryView, ChatRoomPsychologyHistoryAdapter.OnDetailListener {
 
     private RecyclerView rvChatPsychologyHistory;
     private ListChattingPsychologistHistoryPresenter chattingHistoryPsychologyPresenter;
     private ChatRoomPsychologyHistoryAdapter chatRoomPsychologyHistoryAdapter;
-    private ChattingPsychologyPresenter chattingPsychologyPresenter;
     private ProgressBar pbLoading;
     private TextView tvError;
     private SwipeRefreshLayout srlChatRoomHistory;
@@ -62,6 +61,9 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
         tvError = view.findViewById(R.id.tv_error);
         srlChatRoomHistory = view.findViewById(R.id.srl_chat_room_psychology_history);
         srlChatRoomHistory.setOnRefreshListener(() -> {
+            tvError.setText("");
+            pbLoading.setVisibility(View.VISIBLE);
+            rvChatPsychologyHistory.setVisibility(View.GONE);
             chattingHistoryPsychologyPresenter.getChattingHistoryList();
             srlChatRoomHistory.setRefreshing(false);  });
         initView();
@@ -79,7 +81,6 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
     public void initView(){
         chattingHistoryPsychologyPresenter = new ListChattingPsychologistHistoryPresenter(this);
         chattingHistoryPsychologyPresenter.getChattingHistoryList();
-        chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
         chatRoomPsychologyHistoryAdapter = new ChatRoomPsychologyHistoryAdapter(getActivity());
         chatRoomPsychologyHistoryAdapter.setOnClickDetailListener(this);
         rvChatPsychologyHistory.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -95,6 +96,7 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
     @Override
     public void showData(List<ChatRoomPsychologyHistory> carList) {
         pbLoading.setVisibility(View.GONE);
+        rvChatPsychologyHistory.setVisibility(View.VISIBLE);
         chatRoomPsychologyHistoryAdapter.setData(carList);
     }
 
@@ -107,17 +109,7 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
 
     @Override
     public void onItemDetailClicked(int idRoom) {
-        chattingPsychologyPresenter.openRoomChatPsychologyHistoryById(getActivity(), idRoom);
-    }
-
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void canCreateRoom(boolean b) {
-
+        chattingHistoryPsychologyPresenter.openRoomChatPsychologyHistoryById(getActivity(), idRoom);
     }
 
     @Override
@@ -126,13 +118,4 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
         startActivity(intent);
     }
 
-    @Override
-    public void sendClosedMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void showMessageClosedChatFromService(String success) {
-
-    }
 }

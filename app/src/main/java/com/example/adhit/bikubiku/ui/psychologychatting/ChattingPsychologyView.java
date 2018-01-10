@@ -16,5 +16,4 @@ public interface ChattingPsychologyView {
 
     void sendClosedMessage(QiscusComment comment);
 
-    void showMessageClosedChatFromService(String success);
 }

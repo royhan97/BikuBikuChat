@@ -1,4 +1,4 @@
-package com.example.adhit.bikubiku.ui.listpsychologistconsultation;
+package com.example.adhit.bikubiku.ui.listpsychologist;
 
 
 import android.app.Fragment;
@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.PsychologistAdapter;
 import com.example.adhit.bikubiku.data.model.Psychologist;
-import com.example.adhit.bikubiku.presenter.ListPsychologistConsultationPresenter;
+import com.example.adhit.bikubiku.presenter.ListPsychologistPresenter;
 import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
 import com.example.adhit.bikubiku.service.CheckRoomIsBuildService;
 import com.example.adhit.bikubiku.ui.detailpsychologist.DetailPsychologistFragment;
@@ -32,17 +32,17 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListPsychologistConsultationFragment extends Fragment implements View.OnClickListener, ListPsychologistConsultationView, PsychologistAdapter.OnDetailListener, CheckRoomIsBuildReceiver.PeriodicCheckCarsReceiverListener {
+public class ListPsychologistFragment extends Fragment implements View.OnClickListener, ListPsychologistView, PsychologistAdapter.OnDetailListener, CheckRoomIsBuildReceiver.PeriodicCheckCarsReceiverListener {
 
     private RecyclerView rvPhycologist;
-    private ListPsychologistConsultationPresenter psychologyConsultationPresenter;
+    private ListPsychologistPresenter psychologyConsultationPresenter;
     private PsychologistAdapter psychologistAdapter;
     private RelativeLayout rlBlock;
     private TextView tvGoToChat;
     private CheckRoomIsBuildReceiver mBroadcast;
     private Intent mService;
 
-    public ListPsychologistConsultationFragment() {
+    public ListPsychologistFragment() {
         // Required empty public constructor
     }
 
@@ -73,7 +73,7 @@ public class ListPsychologistConsultationFragment extends Fragment implements Vi
         rvPhycologist.setAdapter(psychologistAdapter);
        // rlBlock.setVisibility(View.GONE);
         tvGoToChat.setOnClickListener(this);
-        psychologyConsultationPresenter = new ListPsychologistConsultationPresenter(this);
+        psychologyConsultationPresenter = new ListPsychologistPresenter(this);
         psychologyConsultationPresenter.psychologyList();
         psychologyConsultationPresenter.isRoomChatBuild();
     }

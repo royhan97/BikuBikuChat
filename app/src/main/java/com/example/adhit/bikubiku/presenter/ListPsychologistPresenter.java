@@ -5,7 +5,7 @@ import android.content.Context;
 import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Psychologist;
-import com.example.adhit.bikubiku.ui.listpsychologistconsultation.ListPsychologistConsultationView;
+import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.remote.QiscusApi;
@@ -17,9 +17,9 @@ import java.util.ArrayList;
  * Created by adhit on 07/01/2018.
  */
 
-public class ListPsychologistConsultationPresenter {
-    private ListPsychologistConsultationView psychologyConsultationView;
-    public ListPsychologistConsultationPresenter(ListPsychologistConsultationView psychologyConsultationView){
+public class ListPsychologistPresenter {
+    private ListPsychologistView psychologyConsultationView;
+    public ListPsychologistPresenter(ListPsychologistView psychologyConsultationView){
         this.psychologyConsultationView = psychologyConsultationView;
     }
 

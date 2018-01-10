@@ -13,6 +13,7 @@ import android.util.Log;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatPschologyAdapter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
+import com.example.adhit.bikubiku.presenter.ChattingPsychologyServicePresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
@@ -30,11 +31,11 @@ import com.qiscus.sdk.ui.adapter.QiscusBaseChatAdapter;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class ChattingPsychologyService extends IntentService implements ChattingPsychologyView {
+public class ChattingPsychologyService extends IntentService implements ChattingPsychologyServiceView {
     public static String EXTRA_DURATION = "extra_duration";
     public static String QISCUS_CHAT_ROOM = "qiscus_chat_room";
     public static final String TAG = "DicodingIntentService";
-    private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private ChattingPsychologyServicePresenter chattingPsychologyServicePresenter;
     private QiscusChatRoom qiscusChatRoom;
 
     public ChattingPsychologyService() {
@@ -44,7 +45,7 @@ public class ChattingPsychologyService extends IntentService implements Chatting
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "onHandleIntent()");
         if (intent != null) {
-            chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
+            chattingPsychologyServicePresenter = new ChattingPsychologyServicePresenter(this);
             int duration = intent.getIntExtra(EXTRA_DURATION, 0);
             qiscusChatRoom  = intent.getParcelableExtra(QISCUS_CHAT_ROOM);
 
@@ -54,33 +55,13 @@ public class ChattingPsychologyService extends IntentService implements Chatting
                 e.printStackTrace();
                 Thread.currentThread().interrupt();
             }
-            chattingPsychologyPresenter.finishChatFromService(qiscusChatRoom );
+            chattingPsychologyServicePresenter.finishChatFromService(qiscusChatRoom );
         }
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy()");
-    }
-
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void canCreateRoom(boolean b) {
-
-    }
-
-    @Override
-    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-
-    }
-
-    @Override
-    public void sendClosedMessage(QiscusComment comment) {
-
     }
 
     @Override

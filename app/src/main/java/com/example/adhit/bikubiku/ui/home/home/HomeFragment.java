@@ -18,7 +18,7 @@ import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.presenter.HomePresenter;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryFragment;
-import com.example.adhit.bikubiku.ui.listpsychologistconsultation.ListPsychologistConsultationFragment;
+import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistFragment;
 
 import java.util.ArrayList;
 
@@ -88,9 +88,9 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         if(menu.equals("Konsultasi Psikologi")){
             getFragmentManager().beginTransaction().
                     replace(R.id.frame_container,
-                            new ListPsychologistConsultationFragment(),
-                            ListPsychologistConsultationFragment.class.getSimpleName())
-                    .addToBackStack(ListPsychologistConsultationFragment.class.getSimpleName())
+                            new ListPsychologistFragment(),
+                            ListPsychologistFragment.class.getSimpleName())
+                    .addToBackStack(ListPsychologistFragment.class.getSimpleName())
                     .commit();
         }
         if(menu.equals("History Konsultasi")){

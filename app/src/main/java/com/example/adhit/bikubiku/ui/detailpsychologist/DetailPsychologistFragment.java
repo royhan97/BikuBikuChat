@@ -115,8 +115,4 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
 
     }
 
-    @Override
-    public void showMessageClosedChatFromService(String success) {
-
-    }
 }
