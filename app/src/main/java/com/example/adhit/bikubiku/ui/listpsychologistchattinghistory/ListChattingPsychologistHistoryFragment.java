@@ -4,12 +4,15 @@ package com.example.adhit.bikubiku.ui.listpsychologistchattinghistory;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatRoomPsychologyHistoryAdapter;
@@ -34,6 +37,9 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
     private ListChattingPsychologistHistoryPresenter chattingHistoryPsychologyPresenter;
     private ChatRoomPsychologyHistoryAdapter chatRoomPsychologyHistoryAdapter;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private ProgressBar pbLoading;
+    private TextView tvError;
+    private SwipeRefreshLayout srlChatRoomHistory;
 
     public ListChattingPsychologistHistoryFragment() {
         // Required empty public constructor
@@ -52,6 +58,12 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_chatting_psychology_history, container, false);
         rvChatPsychologyHistory = view.findViewById(R.id.rv_chat_room_psychology_history);
+        pbLoading = view.findViewById(R.id.pb_loading);
+        tvError = view.findViewById(R.id.tv_error);
+        srlChatRoomHistory = view.findViewById(R.id.srl_chat_room_psychology_history);
+        srlChatRoomHistory.setOnRefreshListener(() -> {
+            chattingHistoryPsychologyPresenter.getChattingHistoryList();
+            srlChatRoomHistory.setRefreshing(false);  });
         initView();
         return view;
 
@@ -82,17 +94,20 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
 
     @Override
     public void showData(List<ChatRoomPsychologyHistory> carList) {
+        pbLoading.setVisibility(View.GONE);
         chatRoomPsychologyHistoryAdapter.setData(carList);
     }
 
     @Override
     public void onFailure(String s) {
+        pbLoading.setVisibility(View.GONE);
+        tvError.setText(s);
         ShowAlert.showToast(getActivity(), s);
     }
 
     @Override
     public void onItemDetailClicked(int idRoom) {
-        chattingPsychologyPresenter.openRoomChatPsychologyHistoryById(idRoom);
+        chattingPsychologyPresenter.openRoomChatPsychologyHistoryById(getActivity(), idRoom);
     }
 
     @Override

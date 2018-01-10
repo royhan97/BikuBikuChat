@@ -184,16 +184,19 @@ public class ChattingPsychologyPresenter {
                 });
     }
 
-    public void openRoomChatPsychologyHistoryById(int id){
+    public void openRoomChatPsychologyHistoryById(Context context,int id){
+        ShowAlert.showProgresDialog(context);
         QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
                 new QiscusRxExecutor.Listener<QiscusChatRoom>() {
                     @Override
                     public void onSuccess(QiscusChatRoom qiscusChatRoom) {
                         chattingPsychologyView.openRoomChat(qiscusChatRoom);
+                        ShowAlert.closeProgresDialog();
                     }
                     @Override
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
+                        ShowAlert.showToast(context,"gagal");
                     }
                 });
 

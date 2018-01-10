@@ -46,13 +46,14 @@ public class ListChattingPsychologistHistoryPresenter {
                             }
                             chattingPsychologyHistoryView.showData(carList);
                         }else{
-                            chattingPsychologyHistoryView.onFailure(response.toString());
+                            chattingPsychologyHistoryView.onFailure("Data Not Found");
                             System.out.println(response.toString());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
+                        chattingPsychologyHistoryView.onFailure("Server Error");
                         System.out.println(t.getMessage());
                     }
                 });
