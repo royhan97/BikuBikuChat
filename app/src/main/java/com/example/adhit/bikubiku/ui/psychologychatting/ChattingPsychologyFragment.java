@@ -355,19 +355,21 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     public void onUserTyping(String user, boolean typing) {
-        System.out.println("typing " + typing);
         if(typing){
+            ChattingPsychologyActivity.mSubtitle.setVisibility(View.VISIBLE);
             ChattingPsychologyActivity.mSubtitle.setText("Typing....");
         }else{
+            ChattingPsychologyActivity.mSubtitle.setVisibility(View.GONE);
             ChattingPsychologyActivity.mSubtitle.setText("");
         }
     }
 
     public static void onUserChanged(boolean online){
-        System.out.println("online " + online);
         if(online){
+            ChattingPsychologyActivity.mSubtitle.setVisibility(View.VISIBLE);
             ChattingPsychologyActivity.mSubtitle.setText("Online");
         }else{
+            ChattingPsychologyActivity.mSubtitle.setVisibility(View.GONE);
             ChattingPsychologyActivity.mSubtitle.setText("");
         }
     }
