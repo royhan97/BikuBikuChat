@@ -54,7 +54,6 @@ public class ChattingPsychologyActivity extends QiscusBaseChatActivity implement
         setSupportActionBar(toolbar);
         mTitle = (TextView) findViewById(R.id.tv_title);
         mSubtitle = findViewById(R.id.tv_subtitle);
-        mSubtitle.setVisibility(View.VISIBLE);
         tvFinish = findViewById(R.id.tv_finish);
         qiscusCircularImageView = findViewById(R.id.profile_picture);
         findViewById(com.qiscus.sdk.R.id.back).setOnClickListener(v -> onBackPressed());
