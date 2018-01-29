@@ -16,6 +16,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -60,6 +61,7 @@ public class RetrofitClient {
                     newRequest = request.newBuilder()
                             .addHeader("Authorization", SaveUserToken.getInstance().getUserToken())
                             .build();
+
                     return chain.proceed(newRequest);
                 }
             }).connectTimeout(20, TimeUnit.SECONDS)
@@ -90,7 +92,7 @@ public class RetrofitClient {
                 Request request = chain.request();
                 Request newRequest;
                 newRequest = request.newBuilder()
-                        .addHeader("QISCUS_SDK_SECRET", "0d1c0ebe52446a26e816f16521ca8599")
+                        .addHeader("QISCUS_SDK_SECRET", "3234080bd7dccc7c90a7478d413201d2")
                         .build();
                 return chain.proceed(newRequest);
             }

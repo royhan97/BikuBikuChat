@@ -5,21 +5,17 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
+import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildChatRoomReceiver;
 import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class CheckRoomIsBuildService extends Service {
-    private static final String TAG = CheckRoomIsBuildService.class.getSimpleName();
+public class CheckRoomIsBuildChatRoomService extends Service {
+    private static final String TAG = CheckRoomIsBuildChatRoomService.class.getSimpleName();
     private Timer mTimer;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return  START_STICKY;
-    }
 
     @Override
     public void onCreate() {
@@ -36,13 +32,13 @@ public class CheckRoomIsBuildService extends Service {
             public void run() {
                 sendToReceiver(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild());
             }
-        }, 1000, 1000);
+        }, 1, 500);
     }
 
     private void sendToReceiver(boolean isRoomBuild) {
         Intent intent = new Intent();
-        intent.setAction(CheckRoomIsBuildReceiver.TAG);
-        intent.putExtra("is_room_build", isRoomBuild);
+        intent.setAction(CheckRoomIsBuildChatRoomReceiver.TAG);
+        intent.putExtra("is_room_buildd", isRoomBuild);
         sendBroadcast(intent);
     }
 
@@ -50,7 +46,7 @@ public class CheckRoomIsBuildService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mTimer.cancel();
-        Log.d(TAG, "onDestroy Service cc");
+        Log.d(TAG, "onDestroy Service");
     }
 
     @Override

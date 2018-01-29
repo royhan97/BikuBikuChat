@@ -26,4 +26,6 @@ public class SessionChatPsychology {
         SharedPrefUtil.saveBoolean(Constant.IS_ROOM_CHAT_CONSULTATION_BUILD, isbuild);
     }
 
+
+
 }

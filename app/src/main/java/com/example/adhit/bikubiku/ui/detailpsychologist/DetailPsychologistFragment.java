@@ -13,29 +13,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.model.Psychologist;
-import com.example.adhit.bikubiku.presenter.ChangePasswordPresenter;
-import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
-import com.example.adhit.bikubiku.service.ChattingPsychologyService;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.model.PsychologistApprove;
+import com.example.adhit.bikubiku.presenter.TransactionPresenter;
+import com.example.adhit.bikubiku.service.CreateTransactionService;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
+import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.ShowAlert;
-import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailPsychologistFragment extends Fragment implements View.OnClickListener, ChattingPsychologyView {
+public class DetailPsychologistFragment extends Fragment implements View.OnClickListener, TransactionView {
 
 
     private TextView tvPsychologistName, tvPsychologistPriceConsultation;
     private Button btnNext;
+    private Intent mService;
     private ImageView imgPsychologist;
     private Bundle bundle;
-    private Psychologist psychologist;
+    private PsychologistApprove psychologistApprove;
+    private TransactionPresenter transactionPresenter;
     public DetailPsychologistFragment() {
         // Required empty public constructor
     }
@@ -59,10 +58,11 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
 
     public void initView(){
         bundle = getArguments();
-        psychologist = bundle.getParcelable(Constant.PSYCHOLOGIST);
-        tvPsychologistName.setText(psychologist.getNama());
-        tvPsychologistPriceConsultation.setText(psychologist.getPrice());
+        psychologistApprove = bundle.getParcelable(Constant.PSYCHOLOGIST);
+        tvPsychologistName.setText(psychologistApprove.getNama());
+        tvPsychologistPriceConsultation.setText(psychologistApprove.getTarif());
         btnNext.setOnClickListener(this);
+        transactionPresenter = new TransactionPresenter(this);
     }
 
     @Override
@@ -77,42 +77,34 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.btn_next){
-            ChattingPsychologyPresenter chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
-            chattingPsychologyPresenter.createRoomChat(getActivity(), psychologist.getId(), psychologist.getNama());
+            SaveUserData.getInstance().savePsychologist(psychologistApprove.getNama());
+           transactionPresenter.createTransaction(getActivity(), "psikologi", "1", "konsultasi", psychologistApprove.getId());
         }
     }
 
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
 
+    @Override
+    public void onFailure(String failed) {
+        ShowAlert.showToast(getActivity(), failed);
     }
 
     @Override
-    public void canCreateRoom(boolean b) {
-        if(b){
-            getFragmentManager().popBackStack();
-            getFragmentManager().beginTransaction().remove(this).commit();
-        }else{
-            ShowAlert.showToast(getActivity(), "Gagal");
-        }
+    public void onSuccessMakeTransaction(String berhasil) {
 
-    }
 
-    @Override
-    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-        Intent mStartIntentService = new Intent(getActivity(), ChattingPsychologyService.class);
-        mStartIntentService.putExtra(ChattingPsychologyService.EXTRA_DURATION, 20000);
-        mStartIntentService.putExtra(ChattingPsychologyService.QISCUS_CHAT_ROOM, qiscusChatRoom);
-        getActivity().startService(mStartIntentService);
-
-        Intent intent= ChattingPsychologyActivity.generateIntent(getActivity(), qiscusChatRoom, false);
+        Intent intent = new Intent(getActivity(), LoadingTransactionActivity.class);
+        intent.putExtra("pychologist_name", psychologistApprove.getNama());
         startActivity(intent);
+        getFragmentManager().popBackStack();
+        getFragmentManager().beginTransaction().remove(this).commit();
 
     }
 
     @Override
-    public void sendClosedMessage(QiscusComment comment) {
+    public void onSuccessChangeTransactionStatus(String berhasil) {
 
     }
+
+
 
 }

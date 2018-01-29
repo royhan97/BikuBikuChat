@@ -1,5 +1,6 @@
 package com.example.adhit.bikubiku.presenter;
 
+import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
@@ -25,8 +26,8 @@ public class ChattingPsychologyServicePresenter {
         this.chattingPsychologyServiceView = chattingPsychologyServiceView;
     }
 
-    public void finishChatFromService(QiscusChatRoom qiscusChatRoom){
-
+    public void finishChatFromService(){
+        System.out.println("run");
         JSONObject payload = new JSONObject();
         JSONObject payloadContent = new JSONObject();
 
@@ -43,20 +44,27 @@ public class ChattingPsychologyServicePresenter {
         SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
         RetrofitClient.getInstance().getApiQiscus()
                 .sendMessage(SaveUserData.getInstance().getUser().getId(),
-                        Integer.toString(qiscusChatRoom.getId()),
+                        Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
                         "Sesi Chat Ditutup", payload, "custom")
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             chattingPsychologyServiceView.showMessageClosedChatFromService("success");
+                            SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+
+                        }else{
+                            finishChatFromService();
+                            chattingPsychologyServiceView.onFailureFinishChat();
                         }
 
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        chattingPsychologyServiceView.showMessageClosedChatFromService("failed");
+                        finishChatFromService();
+                        chattingPsychologyServiceView.onFailureFinishChat();
+                        //chattingPsychologyServiceView.showMessageClosedChatFromService("failed");
                     }
                 });
 

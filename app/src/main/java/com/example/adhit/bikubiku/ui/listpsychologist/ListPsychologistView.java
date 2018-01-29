@@ -1,18 +1,20 @@
 package com.example.adhit.bikubiku.ui.listpsychologist;
 
-import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by adhit on 07/01/2018.
  */
 
 public interface ListPsychologistView {
-    void showData(ArrayList<Psychologist> psychologistArrayList);
+    void showData(List<PsychologistApprove> psychologistArrayList);
 
     void showBlock(boolean roomChatPsychologyConsultationBuild);
 
     void openRoomChat(QiscusChatRoom qiscusChatRoom);
+
+    void onFailure(String s);
 }

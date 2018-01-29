@@ -18,13 +18,10 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatRoomPsychologyHistoryAdapter;
 import com.example.adhit.bikubiku.data.model.ChatRoomPsychologyHistory;
 import com.example.adhit.bikubiku.presenter.ListChattingPsychologistHistoryPresenter;
-import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
 
 import java.util.List;
 
@@ -55,7 +52,7 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
         ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((HomeActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
         setHasOptionsMenu(true);
-        View view = inflater.inflate(R.layout.fragment_chatting_psychology_history, container, false);
+        View view = inflater.inflate(R.layout.fragment_list_chatting_psychology_history, container, false);
         rvChatPsychologyHistory = view.findViewById(R.id.rv_chat_room_psychology_history);
         pbLoading = view.findViewById(R.id.pb_loading);
         tvError = view.findViewById(R.id.tv_error);
@@ -94,10 +91,10 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
     }
 
     @Override
-    public void showData(List<ChatRoomPsychologyHistory> carList) {
+    public void showData(List<ChatRoomPsychologyHistory> chatRoomPsychologyHistoryList) {
         pbLoading.setVisibility(View.GONE);
         rvChatPsychologyHistory.setVisibility(View.VISIBLE);
-        chatRoomPsychologyHistoryAdapter.setData(carList);
+        chatRoomPsychologyHistoryAdapter.setData(chatRoomPsychologyHistoryList);
     }
 
     @Override
@@ -109,7 +106,13 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
 
     @Override
     public void onItemDetailClicked(int idRoom) {
+        System.out.println("id "+ idRoom);
         chattingHistoryPsychologyPresenter.openRoomChatPsychologyHistoryById(getActivity(), idRoom);
+    }
+
+    @Override
+    public void showMessage() {
+        ShowAlert.showToast(getActivity(), getResources().getString(R.string.text_no_history_chat));
     }
 
     @Override

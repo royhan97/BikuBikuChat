@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     private RecyclerView rvMenu;
     private HomeAdapter adapter;
     private HomePresenter presenter;
+    private TextView tvSaldo;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         sliderLayout = view.findViewById(R.id.slider);
         rvMenu = view.findViewById(R.id.rv_menu);
+        tvSaldo = view.findViewById(R.id.tv_saldo);
         init();
         initView();
         return view;
@@ -56,9 +59,17 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(gridLayoutManager);
-        presenter = new HomePresenter(this);
-        presenter.showListHome();
+            presenter = new HomePresenter(this);
+            presenter.showListHome();
+            presenter.showSaldo();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.showSaldo();
+    }
+
     public void init(){
         ArrayList<Integer> gambar = new ArrayList<>();
         gambar.add(R.drawable.a1);
@@ -81,6 +92,11 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     @Override
     public void showData(ArrayList<Home> homeArrayList) {
         adapter.setData(homeArrayList);
+    }
+
+    @Override
+    public void showSaldo(String balance) {
+        tvSaldo.setText(balance);
     }
 
     @Override

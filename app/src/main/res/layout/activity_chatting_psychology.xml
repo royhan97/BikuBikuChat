@@ -57,6 +57,7 @@
 
                 <LinearLayout
                     android:layout_centerVertical="true"
+                    android:orientation="vertical"
                     android:layout_toRightOf="@+id/profile_picture"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -73,12 +74,10 @@
                         android:id="@+id/tv_subtitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textColor="@color/qiscus_primary_light"
-                        android:textSize="14sp"
-                        android:visibility="gone"/>
+                        android:textColor="@color/colorWhite"
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
                 <LinearLayout

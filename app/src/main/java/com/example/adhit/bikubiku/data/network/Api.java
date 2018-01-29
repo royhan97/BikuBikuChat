@@ -74,5 +74,33 @@ public interface Api {
                                    @Field("password_baru") String newPassword,
                                    @Field("password_baru_kedua") String newPasswordConfirm);
 
+    @GET("biquers/listpsikolog")
+    Call<JsonObject> getListPsychologist();
+
+    @GET("saku/saldo")
+    Call<JsonObject> getBalance();
+
+    @POST("ruangbelajar/createtrx")
+    @FormUrlEncoded
+    Call<JsonObject> createTransaction(@Field("layanan") String service,
+                                       @Field("lama") String duration,
+                                       @Field("penjelasan") String explanation,
+                                       @Field("id_kabim") String idPsychologist);
+
+    @GET("ruangbelajar/transaksibiquers?layanan=psikologi")
+    Call<JsonObject> getAllTransaction();
+
+    @POST("ruangbelajar/updatestatus")
+    @FormUrlEncoded
+    Call<JsonObject> changeTransactionStatus(@Field("layanan") String layanan,
+                                             @Field("invoice") String invoice,
+                                             @Field("id_room") int idRoom,
+                                             @Field("status") String status);
+
+    @GET("ruangbelajar/detailtrx")
+    Call<JsonObject> getDetailTrx(@Query("layanan") String service,
+                                  @Query("invoice") String invoice);
+
+
 
 }

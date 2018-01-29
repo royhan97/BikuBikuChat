@@ -12,6 +12,7 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 
 import java.util.List;
 
@@ -22,15 +23,15 @@ import java.util.List;
 public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapter.HomeViewHolder> {
 
     private Context context;
-    private List<Psychologist> psychologistList;
+    private List<PsychologistApprove> psychologistApproveList;
     private OnDetailListener onDetailListener;
 
     public PsychologistAdapter(Context context){
         this.context = context;
     }
 
-    public void setData(List<Psychologist> psychologistList){
-        this.psychologistList = psychologistList;
+    public void setData(List<PsychologistApprove> psychologistApproveList){
+        this.psychologistApproveList = psychologistApproveList;
         notifyDataSetChanged();
     }
 
@@ -43,9 +44,9 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
 
     @Override
     public void onBindViewHolder(HomeViewHolder holder, final int position) {
-        final Psychologist psychologist = psychologistList.get(position);
-        holder.tvNamePsychologist.setText(psychologist.getNama());
-        holder.tvConsultationPrice.setText(psychologist.getPrice());
+        final PsychologistApprove psychologistApprove = psychologistApproveList.get(position);
+        holder.tvNamePsychologist.setText(psychologistApprove.getNama());
+        holder.tvConsultationPrice.setText(psychologistApprove.getTarif());
         if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
             holder.btnStartChat.setClickable(false);
             holder.btnStartChat.setBackgroundResource(R.color.colorGrey500);
@@ -56,7 +57,7 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
                 @Override
                 public void onClick(View view) {
 
-                    onDetailListener.onItemDetailClicked(psychologist);
+                    onDetailListener.onItemDetailClicked(psychologistApprove );
                 }
             });
         }
@@ -69,8 +70,8 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
 
     @Override
     public int getItemCount() {
-        if(psychologistList == null) return 0;
-        return psychologistList.size();
+        if(psychologistApproveList == null) return 0;
+        return psychologistApproveList.size();
     }
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
@@ -87,6 +88,6 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
         }
     }
     public interface OnDetailListener{
-        void onItemDetailClicked(Psychologist psychologist);
+        void onItemDetailClicked(PsychologistApprove  psychologistApprove);
     }
 }

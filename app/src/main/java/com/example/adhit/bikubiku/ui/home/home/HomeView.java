@@ -10,4 +10,6 @@ import java.util.ArrayList;
 
 public interface HomeView {
     void showData(ArrayList<Home> homeArrayList);
+
+    void showSaldo(String balance);
 }

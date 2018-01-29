@@ -5,13 +5,25 @@ import android.content.Context;
 import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.model.PsychologistApprove;
+import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistView;
 import com.example.adhit.bikubiku.util.ShowAlert;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.remote.QiscusApi;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by adhit on 07/01/2018.
@@ -24,12 +36,35 @@ public class ListPsychologistPresenter {
     }
 
     public void psychologyList(){
-        ArrayList<Psychologist> psychologistArrayList = new ArrayList<>();
-        psychologistArrayList.add(new Psychologist(23, "Cahyo Adhi", "20.000"));
+        RetrofitClient.getInstance()
+                .getApi()
+                .getListPsychologist()
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if(response.isSuccessful()){
+                            JsonObject body = response.body();
+                            if(body.get("message").getAsString().equals("Success")){
+                                JsonObject results = body.get("result").getAsJsonObject();
+                                JsonArray data = results.get("approve").getAsJsonArray();
+                                Type type = new TypeToken<List<PsychologistApprove>>(){}.getType();
+                                List<PsychologistApprove> psychologistApproveList = new Gson().fromJson(data, type);
+                                psychologyConsultationView.showData(psychologistApproveList);
+                            }else{
+                                psychologyConsultationView.onFailure("Data Not Found");
+                            }
 
-        psychologistArrayList.add(new Psychologist(14, "Roy1", "15.000"));
-        psychologistArrayList.add(new Psychologist(15, "Roy", "15.000"));
-        psychologyConsultationView.showData(psychologistArrayList);
+                        }else{
+                            psychologyConsultationView.onFailure("Data Not Found");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        psychologyConsultationView.onFailure("Terjadi masalah dengan server");
+                    }
+                });
+
     }
 
     public void isRoomChatBuild(){

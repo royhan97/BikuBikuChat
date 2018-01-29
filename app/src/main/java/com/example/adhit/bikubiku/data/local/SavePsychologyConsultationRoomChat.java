@@ -28,5 +28,9 @@ public class SavePsychologyConsultationRoomChat {
         SharedPrefUtil.saveInt(Constant.PSYCHOLOGIST_ROOM_CHAT, idRoom);
     }
 
+    public void removePsychologyConsultationRoomChat(){
+        SharedPrefUtil.remove(Constant.PSYCHOLOGIST_ROOM_CHAT);
+    }
+
 
 }

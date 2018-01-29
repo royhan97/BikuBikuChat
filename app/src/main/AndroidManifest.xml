@@ -25,32 +25,8 @@
             android:label="@string/title_activity_home" />
         <activity android:name=".ui.detailakun.DetailAkunActivity" />
         <activity android:name=".ui.psychologychatting.ChattingPsychologyActivity" />
+        <activity android:name=".ui.loadingtransaction.LoadingTransactionActivity" />
 
-        <service android:name=".ui.notification.ChattingPsychologyNotificationService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".ui.notification.ChattingPschologyIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
-        <!--
-             Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more.
-        -->
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
-
-        <service
-            android:name=".service.ChattingPsychologyService"
-            android:exported="false" />
         <service
             android:name=".service.CheckRoomIsBuildService"
             android:enabled="true"
@@ -61,6 +37,41 @@
             android:enabled="true"
             android:exported="true" />
 
+        <service
+            android:name=".service.CheckRoomIsBuildChatRoomService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.CheckRoomIsBuildChatRoomReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.CreateTransactionReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+
+        <service
+            android:name=".service.ChattingService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.BootingCompleteReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:label="StartServiceAtBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action._BOOT_COMPLETED" />
+            </intent-filter>
+            >
+        </receiver>
+
+        <service
+            android:name=".service.CreateTransactionService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

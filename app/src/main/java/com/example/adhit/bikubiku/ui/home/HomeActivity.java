@@ -17,7 +17,14 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.ui.home.akun.AkunFragment;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
+import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistFragment;
 import com.example.adhit.bikubiku.util.ShowAlert;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class HomeActivity extends AppCompatActivity {
     private AppBarLayout appBarLayout;
@@ -30,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initView();
+
     }
 
     public  void initView(){
@@ -46,6 +54,15 @@ public class HomeActivity extends AppCompatActivity {
                 replace(R.id.frame_container,
                         new HomeFragment(),
                         HomeFragment.class.getSimpleName()).commit();
+
+//        if(getIntent().getStringExtra("fragment").equals("History Konsultasi")){
+//            getFragmentManager().beginTransaction().
+//                    replace(R.id.frame_container,
+//                            new ListPsychologistFragment(),
+//                            ListPsychologistFragment.class.getSimpleName())
+//                    .addToBackStack(ListPsychologistFragment.class.getSimpleName())
+//                    .commit();
+//        }
 
     }
 
@@ -89,4 +106,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
+
 }

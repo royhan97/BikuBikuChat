@@ -15,7 +15,11 @@ import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.remote.QiscusApi;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,35 +38,63 @@ public class ListChattingPsychologistHistoryPresenter {
     }
 
     public void getChattingHistoryList(){
-        RetrofitClient.getInstance().getApiQiscus()
-                .getChatRoomHistory(SaveUserData.getInstance().getUser().getId(), true)
+        RetrofitClient.getInstance()
+                .getApi()
+                .getAllTransaction()
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
-                            JsonObject results = body.get("results").getAsJsonObject();
-                            JsonArray data = results.get("rooms_info").getAsJsonArray();
-                            Type type = new TypeToken<List<ChatRoomPsychologyHistory>>(){}.getType();
-                            List<ChatRoomPsychologyHistory> carList = new Gson().fromJson(data, type);
-                            for(int i=0; i<carList.size();i++){
-                                if(!carList.get(i).getLastCommentMessage().equals("Sesi Chat Ditutup") || carList.get(i).getLastCommentMessage().equals("")){
-                                    carList.remove(i);
+                            boolean status = body.get("status").getAsBoolean();
+
+                            if(status){
+                                JsonArray transactionArray = body.get("result").getAsJsonArray();
+                                Type type = new TypeToken<List<ChatRoomPsychologyHistory>>(){}.getType();
+                                List<ChatRoomPsychologyHistory> chatRoomPsychologyHistoryList =  new Gson().fromJson(transactionArray, type);
+                                List<ChatRoomPsychologyHistory> chatRoomPsychologyHistoryList1 = new ArrayList<>();
+                                for(int i=0; i<chatRoomPsychologyHistoryList.size(); i++){
+                                    if(chatRoomPsychologyHistoryList.get(i).getStatusTrx().equals("1")){
+                                        chatRoomPsychologyHistoryList1.add(chatRoomPsychologyHistoryList.get(i));
+                                    }
                                 }
+                                chattingPsychologyHistoryView.showData(chatRoomPsychologyHistoryList1);
+                            }else{
+                                chattingPsychologyHistoryView.onFailure(body.get("message").getAsString());
                             }
-                            chattingPsychologyHistoryView.showData(carList);
-                        }else{
-                            chattingPsychologyHistoryView.onFailure("Data Not Found");
-                            System.out.println(response.toString());
+                        }else {
+                            chattingPsychologyHistoryView.onFailure("Anda belum pernah melakukan transaksi apapun");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        chattingPsychologyHistoryView.onFailure("Server Error");
-                        System.out.println(t.getMessage());
+                        chattingPsychologyHistoryView.onFailure("Server Bermasalah");
                     }
                 });
+//
+//        RetrofitClient.getInstance().getApiQiscus()
+//                .getChatRoomHistory(SaveUserData.getInstance().getUser().getId(), true)
+//                .enqueue(new Callback<JsonObject>() {
+//                    @Override
+//                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//                        if(response.isSuccessful()){
+//                            JsonObject body = response.body();
+//                            JsonObject results = body.get("results").getAsJsonObject();
+//                            JsonArray data = results.get("rooms_info").getAsJsonArray();
+//                            Type type = new TypeToken<List<ChatRoomPsychologyHistory>>(){}.getType();
+//                        }else{
+//                            chattingPsychologyHistoryView.onFailure("Data Not Found");
+//                            System.out.println(response.toString());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<JsonObject> call, Throwable t) {
+//                        chattingPsychologyHistoryView.onFailure("Server Error");
+//                        System.out.println(t.getMessage());
+//                    }
+//                });
     }
 
     public void openRoomChatPsychologyHistoryById(Context context, int id){
@@ -77,9 +109,11 @@ public class ListChattingPsychologistHistoryPresenter {
                     @Override
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
-                        ShowAlert.showToast(context,"gagal");
+                        ShowAlert.showToast(context,"Tidak bisa membuka ruang chat");
+                        ShowAlert.closeProgresDialog();
                     }
                 });
+
 
     }
 

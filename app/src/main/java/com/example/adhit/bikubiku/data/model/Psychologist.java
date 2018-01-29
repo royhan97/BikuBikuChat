@@ -1,62 +1,38 @@
 package com.example.adhit.bikubiku.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 /**
  * Created by adhit on 07/01/2018.
  */
 
-public class Psychologist implements Parcelable {
-    private int id;
-    private String nama;
-    private String price;
 
-    public Psychologist(int id, String nama, String price) {
-        this.id = id;
-        this.nama = nama;
-        this.price = price;
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+public class Psychologist{
+
+    @SerializedName("approve")
+    @Expose
+    private List<PsychologistApprove> approve = null;
+    @SerializedName("unapprove")
+    @Expose
+    private List<PsychologistUnapprove> unapprove = null;
+
+    public List<PsychologistApprove> getApprove() {
+        return approve;
     }
 
-    protected Psychologist(Parcel in) {
-        id = in.readInt();
-        nama = in.readString();
-        price = in.readString();
+    public void setApprove(List<PsychologistApprove> approve) {
+        this.approve = approve;
     }
 
-    public static final Creator<Psychologist> CREATOR = new Creator<Psychologist>() {
-        @Override
-        public Psychologist createFromParcel(Parcel in) {
-            return new Psychologist(in);
-        }
-
-        @Override
-        public Psychologist[] newArray(int size) {
-            return new Psychologist[size];
-        }
-    };
-
-    public int getId() {
-        return id;
+    public List<PsychologistUnapprove> getUnapprove() {
+        return unapprove;
     }
 
-    public String getNama() {
-        return nama;
+    public void setUnapprove(List<PsychologistUnapprove> unapprove) {
+        this.unapprove = unapprove;
     }
 
-    public String getPrice() {
-        return price;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(nama);
-        parcel.writeString(price);
-    }
 }

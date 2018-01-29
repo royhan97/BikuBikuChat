@@ -37,7 +37,7 @@
             android:layout_width="224dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/ic_qiscus_chat_empty"/>
+            android:src="@drawable/logo"/>
 
         <TextView
             android:id="@+id/empty_chat_title"

@@ -6,14 +6,18 @@
     tools:context="com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistFragment">
 
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_pschologist"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_psychologist"
+        android:layout_width="wrap_content"
         android:layout_below="@+id/rl_block"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_pschologist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-    </android.support.v7.widget.RecyclerView>
     <RelativeLayout
         android:id="@+id/rl_block"
         android:layout_width="match_parent"
@@ -33,5 +37,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
     </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_error"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

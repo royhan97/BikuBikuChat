@@ -1,14 +1,13 @@
 package com.example.adhit.bikubiku.data.model;
 
 /**
- * Created by adhit on 09/01/2018.
+ * Created by adhit on 18/01/2018.
  */
-
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ChatRoomPsychologyHistory {
+public class Transaction {
 
     @SerializedName("invoice")
     @Expose

@@ -1,12 +1,17 @@
 package com.example.adhit.bikubiku.ui.psychologychatting;
 
 
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -16,8 +21,17 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatPschologyAdapter;
+import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
-import com.example.adhit.bikubiku.service.ChattingPsychologyService;
+import com.example.adhit.bikubiku.presenter.TransactionPresenter;
+import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildChatRoomReceiver;
+import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
+import com.example.adhit.bikubiku.service.ChattingService;
+import com.example.adhit.bikubiku.service.CheckRoomIsBuildChatRoomService;
+import com.example.adhit.bikubiku.service.CheckRoomIsBuildService;
+import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
@@ -30,17 +44,25 @@ import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
+import java.util.Date;
 import java.util.List;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 
-public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPschologyAdapter> implements ChattingPsychologyView, View.OnClickListener {
+
+public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPschologyAdapter> implements ChattingPsychologyView, View.OnClickListener, CheckRoomIsBuildChatRoomReceiver.PeriodicCheckCarsReceiverListener, TransactionView {
 
     private ImageView mAttachButton;
     private LinearLayout mAddPanel;
     private View mInputPanel;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private TransactionPresenter transactionPresenter;
     private static boolean isHistory1;
+    private CheckRoomIsBuildChatRoomReceiver mBroadcast;
+    private Intent mService;
+    private TextView tvFinish;
 
 
 
@@ -63,10 +85,12 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
         super.onLoadView(view);
         swipeRefreshLayout.setProgressViewOffset(false, 0, 128);
         mInputPanel = view.findViewById(R.id.input_panel1);
-        getActivity().findViewById(R.id.tv_finish).setOnClickListener(v->chattingPsychologyPresenter.finishChat(getActivity(),qiscusChatRoom));
+       // getActivity().findViewById(R.id.tv_finish).setOnClickListener(v->chattingPsychologyPresenter.finishChat(getActivity(),qiscusChatRoom));
         View clickConsumer = view.findViewById(R.id.click_consumer);
         mAttachButton = (ImageView) view.findViewById(R.id.button_attach);
         mAddPanel = (LinearLayout) view.findViewById(R.id.add_panel);
+        tvFinish = getActivity().findViewById(R.id.tv_finish);
+        tvFinish.setOnClickListener(this);
         mAttachButton.setOnClickListener(v -> {
             if (mAddPanel.getVisibility() == View.GONE) {
                 mAddPanel.startAnimation(animation);
@@ -88,17 +112,26 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
             }
         });
 //
-
     }
 
     @Override
     protected void onCreateChatComponents(Bundle savedInstanceState) {
         super.onCreateChatComponents(savedInstanceState);
         chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
-        if(!chattingPsychologyPresenter.checkChattingPsychology() && !isHistory1){
+        transactionPresenter = new TransactionPresenter(this);
+        System.out.println("id room "+SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat());
+        if( SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat() ==0&& !isHistory1){
+
             chattingPsychologyPresenter.sendFirstMessage(qiscusChatRoom);
+            SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(qiscusChatRoom.getId());
+
 
         }
+        //check();
+        if(!isHistory1){
+            registerReceiver();
+        }
+
     }
 
     @Override
@@ -317,14 +350,28 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     protected ChatPschologyAdapter onCreateChatAdapter() {
-        //return new QiscusChatAdapter(getActivity(), qiscusChatRoom.isGroup());
         return new ChatPschologyAdapter(getActivity(), qiscusChatRoom.isGroup());
     }
 
     @Override
     public void onUserTyping(String user, boolean typing) {
-
+        System.out.println("typing " + typing);
+        if(typing){
+            ChattingPsychologyActivity.mSubtitle.setText("Typing....");
+        }else{
+            ChattingPsychologyActivity.mSubtitle.setText("");
+        }
     }
+
+    public static void onUserChanged(boolean online){
+        System.out.println("online " + online);
+        if(online){
+            ChattingPsychologyActivity.mSubtitle.setText("Online");
+        }else{
+            ChattingPsychologyActivity.mSubtitle.setText("");
+        }
+    }
+
 
     protected void recordAudio() {
         super.recordAudio();
@@ -349,17 +396,49 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     public void sendClosedMessage(QiscusComment comment) {
-        getActivity().stopService(new Intent(getContext(), ChattingPsychologyService.class));
+        getActivity().stopService(new Intent(getContext(), ChattingService.class));
+        getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
         mInputPanel.setVisibility(View.GONE);
+        if(!isHistory1){
+            unregisterReceiver();
+            getActivity().stopService(mService);
+        }
         sendQiscusComment(comment);
-        getActivity().finish();
+
     }
 
+    @Override
+    public void onFailure(String failed) {
 
+    }
+
+    @Override
+    public void onSuccessMakeTransaction(String berhasil) {
+
+    }
+
+    @Override
+    public void onSuccessChangeTransactionStatus(String berhasil) {
+
+        SaveUserData.getInstance().removeTransaction();
+    }
+
+    @Override
+    public void onFinishTransaction() {
+             SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+             SavePsychologyConsultationRoomChat.getInstance().removePsychologyConsultationRoomChat();
+//        SaveUserData.getInstance().removeEndTimeOfTransaction();
+//        SaveUserData.getInstance().removeTransaction();
+//        SaveUserData.getInstance().removeEndTimeOfTransaction();
+//        SavePsychologyConsultationRoomChat.getInstance().removePsychologyConsultationRoomChat();
+    }
 
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.tv_finish){
+            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat());
+            transactionPresenter.changeTransacationStatus("Psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), qiscusChatRoom.getId(), "finish");
             chattingPsychologyPresenter.finishChat(getActivity(), qiscusChatRoom);
 
         }
@@ -370,16 +449,22 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
         super.showComments(qiscusComments);
         for(int i=0; i<qiscusComments.size();i++){
             JSONObject payload = null;
+
             try {
-                payload = new JSONObject(qiscusComments.get(i).getExtraPayload());
-                if (payload.optString("type").equals("closed_chat")) {
-                    mInputPanel.setVisibility(View.GONE);
-                    getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+                if(!qiscusComments.get(i).getMessage().isEmpty()){
+                    if(!qiscusComments.get(i).getExtraPayload().equals("null")){
+                        payload = new JSONObject(qiscusComments.get(i).getExtraPayload());
+                    }
+                    if( payload.get("type").equals("closed_chat")){
+                        mInputPanel.setVisibility(View.GONE);
+                        getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
     }
 
     @Override
@@ -395,6 +480,62 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void registerReceiver() {
+        mBroadcast = new CheckRoomIsBuildChatRoomReceiver(this);
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction(CheckRoomIsBuildChatRoomReceiver.TAG);
+        getActivity().registerReceiver(mBroadcast, filter);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(!isHistory1){
+            mService = new Intent(getActivity(), CheckRoomIsBuildChatRoomService.class);
+            getActivity().startService(mService);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(!isHistory1){
+            getActivity().stopService(mService);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(!isHistory1){
+            unregisterReceiver();
+        }
+    }
+
+    private void unregisterReceiver() {
+        try {
+            if (mBroadcast != null) {
+                getActivity().unregisterReceiver(mBroadcast);
+            }
+        } catch (Exception e) {
+            Log.i("", "broadcastReceiver is already unregistered");
+            mBroadcast = null;
+        }
+
+    }
+
+
+    @Override
+    public void handleFromReceiver(boolean isRoomBuild) {
+        if(!isRoomBuild){
+            mInputPanel.setVisibility(View.GONE);
+            getActivity().findViewById(R.id.tv_finish).setVisibility(View.GONE);
+        }else{
+            mInputPanel.setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.tv_finish).setVisibility(View.VISIBLE);
         }
     }
 }

@@ -73,11 +73,12 @@ public class LoginPresenter {
                             }else{
                                 String message = body.get("message").getAsString();
                                 loginView.showMessageSnackbar(message);
+                                ShowAlert.closeProgresDialog();
                             }
                         }else {
                             loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
+                            ShowAlert.closeProgresDialog();
                         }
-                        ShowAlert.closeProgresDialog();
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
@@ -100,6 +101,7 @@ public class LoginPresenter {
                     Session.getInstance().setLogin(true);
                     loginView.showMessage("Selamat Datang " + user.getNama());
                     loginView.gotoHome();
+                    ShowAlert.closeProgresDialog();
                 }, throwable -> {
                     if (throwable instanceof HttpException) { //Error response from server
                         HttpException e = (HttpException) throwable;
@@ -115,7 +117,7 @@ public class LoginPresenter {
                     } else { //Unknown error
                         loginView.showMessageSnackbar("Unexpected error!");
                     }
-
+                    ShowAlert.closeProgresDialog();
                 });
         ShowAlert.closeProgresDialog();
     }

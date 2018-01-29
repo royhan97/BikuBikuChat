@@ -6,4 +6,6 @@ package com.example.adhit.bikubiku.service;
 
 public interface ChattingPsychologyServiceView {
     void showMessageClosedChatFromService(String success);
+
+    void onFailureFinishChat();
 }
