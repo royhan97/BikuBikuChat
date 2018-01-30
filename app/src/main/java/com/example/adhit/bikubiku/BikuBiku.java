@@ -52,7 +52,7 @@ public class BikuBiku extends Application{
     public static Context getContext() {
         return sContext;
     }
-    public static BikuBiku instance;
+//    public static BikuBiku instance;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -65,7 +65,7 @@ public class BikuBiku extends Application{
         super.onCreate();
         initQiscus();
         sContext = this;
-        instance =this;
+//        instance =this;
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -76,9 +76,9 @@ public class BikuBiku extends Application{
     public Context getApplicationContext() {
         return super.getApplicationContext();
     }
-    public static BikuBiku getInstance(){
-        return  instance;
-    }
+//    public static BikuBiku getInstance(){
+//        return  instance;
+//    }
 
 
     public void initQiscus(){
@@ -141,7 +141,7 @@ public class BikuBiku extends Application{
                 })
                 //.setCancelRecordIcon(R.drawable.ic_cancel_record)
                 .setEnablePushNotification(true)
-                .setEnableFcmPushNotification(true);
+                .setEnableFcmPushNotification(false);
                 //.setInlineReplyColor(R.color.colorPrimaryLight);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Qiscus.getChatConfig().
@@ -149,26 +149,6 @@ public class BikuBiku extends Application{
         }
     }
 
-
-    @Subscribe
-    public void onUserChanged(QiscusChatRoomEvent qiscusChatRoomEvent){
-        if(qiscusChatRoomEvent.isTyping()){
-            ChattingPsychologyFragment chatFragment = new ChattingPsychologyFragment();
-            chatFragment.onUserTyping(qiscusChatRoomEvent.getUser(), true);
-        }else{
-            ChattingPsychologyFragment chatFragment = new ChattingPsychologyFragment();
-            chatFragment.onUserTyping(qiscusChatRoomEvent.getUser(), false);
-        }
-    }
-
-    @Subscribe
-    public  void onUserTyping(QiscusUserStatusEvent qiscusUserStatusEvent){
-        if(qiscusUserStatusEvent.isOnline()){
-            ChattingPsychologyFragment.onUserChanged(true);
-        }else {
-            ChattingPsychologyFragment.onUserChanged(false);
-        }
-    }
 
     @Subscribe
     public void onGetNewQiscusComment(QiscusCommentReceivedEvent event) {
@@ -206,6 +186,26 @@ public class BikuBiku extends Application{
         // A user just changed his/her status from (online or offline)
         // event.getUser() changed to event.isOnline() at event.getLastActive()
         ruangBelajarFragment.onUserOnline(event.getUser(), event.isOnline(), event.getLastActive());
+    }
+
+    @Subscribe
+    public void onUserChanged(QiscusChatRoomEvent qiscusChatRoomEvent){
+        if(qiscusChatRoomEvent.isTyping()){
+            ChattingPsychologyFragment chatFragment = new ChattingPsychologyFragment();
+            chatFragment.onUserTyping(qiscusChatRoomEvent.getUser(), true);
+        }else{
+            ChattingPsychologyFragment chatFragment = new ChattingPsychologyFragment();
+            chatFragment.onUserTyping(qiscusChatRoomEvent.getUser(), false);
+        }
+    }
+
+    @Subscribe
+    public  void onUserTyping(QiscusUserStatusEvent qiscusUserStatusEvent){
+        if(qiscusUserStatusEvent.isOnline()){
+            ChattingPsychologyFragment.onUserChanged(true);
+        }else {
+            ChattingPsychologyFragment.onUserChanged(false);
+        }
     }
 
 }

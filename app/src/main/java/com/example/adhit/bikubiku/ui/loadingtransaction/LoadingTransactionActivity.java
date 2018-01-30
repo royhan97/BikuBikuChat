@@ -49,7 +49,6 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
 
     @Override
     public void onResume() {
-
         super.onResume();
         registerReceiver();
     }
