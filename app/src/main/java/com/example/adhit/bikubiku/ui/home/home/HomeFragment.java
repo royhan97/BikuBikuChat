@@ -2,6 +2,7 @@ package com.example.adhit.bikubiku.ui.home.home;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +17,31 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.HomeAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
+import com.example.adhit.bikubiku.data.model.User;
+import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.HomePresenter;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
+import com.example.adhit.bikubiku.ui.listKabim.ListKabimFragment;
+import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryFragment;
+import com.example.adhit.bikubiku.ui.ruangBelajarChattingKabim.RuangBelajarChattingKabimFragment;
+import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryFragment;
+import com.example.adhit.bikubiku.util.ShowAlert;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistFragment;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,10 +79,14 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(gridLayoutManager);
+        presenter = new HomePresenter(this);
+        presenter.showListHome();
+        presenter.getSaldo();
             presenter = new HomePresenter(this);
             presenter.showListHome();
             presenter.showSaldo();
     }
+
 
     @Override
     public void onResume() {
@@ -100,9 +124,21 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     }
 
     @Override
+    public void setSaldo(int jmlSaldo) {
+        SharedPrefUtil.saveInt(Constant.SALDO_USER, jmlSaldo);
+        tvSaldo.setText("Rp "+SharedPrefUtil.getInt(Constant.SALDO_USER));
+    }
+
+    @Override
+    public void showError(String s) {
+        ShowAlert.showToast(getActivity(), s);
+    }
+
+    @Override
     public void onItemDetailClicked(String menu) {
         if(menu.equals("Konsultasi Psikologi")){
             getFragmentManager().beginTransaction().
+                    setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                     replace(R.id.frame_container,
                             new ListPsychologistFragment(),
                             ListPsychologistFragment.class.getSimpleName())
@@ -116,6 +152,29 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                             ChattingPsychologyFragment.class.getSimpleName())
                     .addToBackStack(ListChattingPsychologistHistoryFragment.class.getSimpleName())
                     .commit();
+        }
+
+        if(menu.equals("Ruang Belajar")){
+            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+                getFragmentManager().beginTransaction().
+                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                        replace(R.id.frame_container,
+                                new RuangBelajarChattingKabimFragment(),
+                                RuangBelajarChattingKabimFragment.class.getSimpleName())
+                        .addToBackStack(RuangBelajarChattingKabimFragment.class.getSimpleName()).commit();
+            }
+            else {
+                getFragmentManager().beginTransaction().
+                        setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+                        add(R.id.frame_container,
+                                new ListKabimFragment(),
+                                ListKabimFragment.class.getSimpleName())
+                        .addToBackStack(ListKabimFragment.class.getSimpleName()).commit();
+            }
+        }
+
+        if (menu.equals("Library")){
+
         }
     }
 }

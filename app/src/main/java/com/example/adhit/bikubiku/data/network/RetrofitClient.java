@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.util.Constant;
 
+import com.example.adhit.bikubiku.util.SecretKeyQiscus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -92,7 +93,7 @@ public class RetrofitClient {
                 Request request = chain.request();
                 Request newRequest;
                 newRequest = request.newBuilder()
-                        .addHeader("QISCUS_SDK_SECRET", "3234080bd7dccc7c90a7478d413201d2")
+                        .addHeader("QISCUS_SDK_SECRET", SecretKeyQiscus.secretKeyQiscus)
                         .build();
                 return chain.proceed(newRequest);
             }

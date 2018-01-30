@@ -1,5 +1,6 @@
 package com.example.adhit.bikubiku.data.network;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -40,6 +41,8 @@ public interface Api {
                                  @Field("message") String message,
                                  @Field("payload") JSONObject payload,
                                  @Field("type") String type);
+    @GET("api/v2/rest/user_profile")
+    Call<JsonObject> getUserProfile(@Query("user_email") String idUser);
 
 
     //bikubiku
@@ -102,5 +105,29 @@ public interface Api {
                                   @Query("invoice") String invoice);
 
 
+    @POST("ruangbelajar/createtrx")
+    @FormUrlEncoded
+    Call<JsonObject> createTrx(@Field("layanan") String layanan,
+                               @Field("mapel") int mapel,
+                               @Field("lama") int lama,
+                               @Field("jenjang") int jenjang,
+                               @Field("penjelasan") String penjelasan);
+
+    @GET("ruangbelajar/transaksikabim")
+    Call<JsonObject> transaksiKabim();
+
+    @GET("saku/saldo")
+    Call<JsonObject> cekSakuBiku();
+
+    @POST("ruangbelajar/updatestatus")
+    @FormUrlEncoded
+    Call<JsonObject> updateStatusTrx(@Field("layanan") String layanan,
+                                     @Field("invoice") String invoice,
+                                     @Field("id_room") int idRoom,
+                                     @Field("status") String status);
+
+    @GET("ruangbelajar/detailtrx")
+    Call<JsonObject>  detailTrx(@Query("layanan") String layanan,
+                                @Query("invoice") String invoice);
 
 }

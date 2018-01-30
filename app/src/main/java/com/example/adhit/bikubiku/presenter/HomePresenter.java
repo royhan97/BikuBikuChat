@@ -7,6 +7,7 @@ import com.example.adhit.bikubiku.ui.home.home.HomeView;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
@@ -57,6 +58,32 @@ public class HomePresenter {
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         homeView.showSaldo("Error");
+                    }
+                });
+    }
+
+    public void getSaldo(){
+        RetrofitClient.getInstance()
+                .getApi()
+                .cekSakuBiku()
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        if (response.isSuccessful()){
+                            JsonObject body = response.body();
+                            JsonObject result = body.get("result").getAsJsonObject();
+                            int jmlSaldo = result.get("saldo").getAsInt();
+                            homeView.setSaldo(jmlSaldo);
+                        }
+                        else {
+                            homeView.showError("no data saldo received");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                        t.printStackTrace();
+                        homeView.showError("on failure get saldo");
                     }
                 });
     }

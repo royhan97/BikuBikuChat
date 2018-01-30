@@ -3,7 +3,6 @@ package com.example.adhit.bikubiku.presenter;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserToken;
@@ -16,17 +15,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.qiscus.sdk.Qiscus;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
-
-
-import org.json.JSONObject;
+import com.qiscus.sdk.util.QiscusErrorLogger;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.List;
 
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.HttpException;
@@ -69,7 +62,8 @@ public class LoginPresenter {
                                 User user = new Gson().fromJson(userObject, type);
                                 System.out.println(user.getUsername());
                                 //listGalleryView.showData(carList);
-                                loginSDK(user);
+//                                loginSDK(user);
+                                loginOrNotQiscus(context,user, user.getId(), user.getToken(), user.getNama(), Integer.parseInt(user.getStatusKabim()));
                             }else{
                                 String message = body.get("message").getAsString();
                                 loginView.showMessageSnackbar(message);
@@ -87,6 +81,38 @@ public class LoginPresenter {
                         ShowAlert.closeProgresDialog();
                     }
                 });
+    }
+
+    public void loginOrNotQiscus(Context context, User user, String id, String key, String userName, int statusKabim){
+//        if (Qiscus.hasSetupUser()){
+//            Qiscus.clearUser();
+//            ShowAlert.showProgresDialog(context);
+//        }
+//        else {
+            Qiscus.setUser(id, key)
+                    .withUsername(userName)
+                    .save()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(qiscusAccount -> {
+                        Log.i("MainActivity", "Login with account: " + qiscusAccount);
+                        if (statusKabim == 1){
+                            Session.getInstance().setKabimLogin(true);
+                        }
+                        SaveUserToken.getInstance().saveUserToken(id, key);
+                        SaveUserData.getInstance().saveUser(user);
+                        Session.getInstance().setLogin(true);
+
+                        ShowAlert.showToast(context, "status kabim : "+statusKabim);
+
+                        loginView.gotoHome();
+                        loginView.showMessage("Selamat Datang " + user.getNama());
+                    }, throwable -> {
+                        QiscusErrorLogger.print(throwable);
+                        ShowAlert.showToast(context,QiscusErrorLogger.getMessage(throwable));
+                    });
+            ShowAlert.closeProgresDialog();
+//        }
     }
 
     public void loginSDK(User user){

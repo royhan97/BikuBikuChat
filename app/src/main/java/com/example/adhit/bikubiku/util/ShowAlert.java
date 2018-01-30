@@ -38,7 +38,7 @@ public class ShowAlert {
 
     public static void showToast(Context context, String text){
         Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER| Gravity.CENTER_HORIZONTAL, 0, 0);
+//        toast.setGravity(Gravity.CENTER| Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
     }
 }

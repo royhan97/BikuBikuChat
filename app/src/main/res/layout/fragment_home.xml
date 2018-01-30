@@ -25,7 +25,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_height="20dp"
                     android:text="@string/text_saku_biku"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"/>

@@ -6,7 +6,7 @@ package com.example.adhit.bikubiku.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ChatRoomPsychologyParticipant {
+public class ChatRoomParticipant {
 
     @SerializedName("avatar_url")
     @Expose

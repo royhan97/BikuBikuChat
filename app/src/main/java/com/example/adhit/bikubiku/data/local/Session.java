@@ -29,8 +29,19 @@ public class Session {
         return SharedPrefUtil.getBoolean(Constant.IS_LOGIN);
     }
 
+    public boolean isBuildRoomRuangBelajar(){
+        return SharedPrefUtil.getBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR);
+    }
+
     public void setLogin(boolean isLogin) {
         SharedPrefUtil.saveBoolean(Constant.IS_LOGIN, isLogin);
     }
 
+    public void setBuildRoomRuangBelajar (boolean isBuildRoomRuangBelajar){
+        SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, isBuildRoomRuangBelajar);
+    }
+
+    public void setKabimLogin(boolean isKabimLogin) {
+        SharedPrefUtil.saveBoolean(Constant.IS_LOGIN_KABIM, isKabimLogin);
+    }
 }

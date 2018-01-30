@@ -15,11 +15,15 @@
     <string name="text_password_old">Password Lama</string>
     <string name="text_password_new">Password Baru</string>
     <string name="text_password_confirm">Konfirmasi Password Baru</string>
-    <string name="text_online">Online</string>
     <string name="text_price_consultation">Harga Konsultasi</string>
     <string name="text_start_chat">Mulai Chat</string>
     <string name="text_search_psychologist">Cari Psikolog</string>
     <string name="text_total_price_consultation">Total Harga Konsultasi</string>
+    <string name="text_online">Online</string>
+    <string name="text_offline">Offline</string>
+    <string name="text_end_waiting">Waktu tunggu anda habis, kabim tidak merespon atau menolak pesanan anda</string>
+    <string name="text_waiting">Menuggu Respon Kabim</string>
+    <string name="text_request_again">Pesan Kembali</string>
     <string name="text_typing">Typing....</string>
     <string name="text_waiting_confirmation">Silahkan tunggu konfirmasi dari psikolog kami</string>
 
@@ -75,6 +79,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="accept">Terima</string>
+    <string name="reject">Tolak</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

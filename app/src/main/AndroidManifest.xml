@@ -24,8 +24,55 @@
             android:name=".ui.home.HomeActivity"
             android:label="@string/title_activity_home" />
         <activity android:name=".ui.detailakun.DetailAkunActivity" />
+        <activity android:name=".ui.ruangBelajarChatting.RuangBelajarChatting" />
         <activity android:name=".ui.psychologychatting.ChattingPsychologyActivity" />
         <activity android:name=".ui.loadingtransaction.LoadingTransactionActivity" />
+        <activity android:name=".ui.listRequestToKabim.ListRequestToKabimActivity" />
+        <activity android:name=".ui.waitingrequestresponse.WaitingRequestResponActivity"/>
+
+        <receiver android:name=".util.service.NetworkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".ui.ruangBelajarChatting.RuangBelajarChattingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".ui.ruangBelajarChatting.RuangBelajarIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".ui.notification.ChattingPsychologyNotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".ui.notification.ChattingPschologyIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!--
+        Set custom default icon. This is used when no icon is set for incoming notification messages.
+        See README(https://goo.gl/l4GJaQ) for more.
+        -->
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <!--
+             Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
         <service
             android:name=".service.CheckRoomIsBuildService"
@@ -72,6 +119,32 @@
         <service
             android:name=".service.CreateTransactionService"
             android:exported="false"></service>
+        <service
+            android:name=".service.RuangBelajarEndChattingService"
+            android:exported="true" />
+
+        <receiver
+            android:name=".receiver.EndChatStatusReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".service.IsRuangBelajarEndService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".service.RequestKabimService"
+            android:exported="true"
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            <intent-filter>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".receiver.RequestReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>

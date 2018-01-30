@@ -23,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <ImageView
-                    android:padding="8dp"
                     android:id="@+id/img_logo"
+                    android:padding="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="?android:attr/actionBarSize"
                     android:src="@drawable/logobiku2"/>

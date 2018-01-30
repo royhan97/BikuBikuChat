@@ -49,7 +49,7 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
         holder.tvConsultationPrice.setText(psychologistApprove.getTarif());
         if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
             holder.btnStartChat.setClickable(false);
-            holder.btnStartChat.setBackgroundResource(R.color.colorGrey500);
+            holder.btnStartChat.setBackgroundResource(R.color.grey_500);
         }else {
             holder.btnStartChat.setClickable(true);
             holder.btnStartChat.setBackgroundResource(R.color.colorGreen400);

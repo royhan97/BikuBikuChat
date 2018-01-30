@@ -8,7 +8,22 @@ import android.os.Build;
 import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
+import com.example.adhit.bikubiku.ui.ruangBelajarChatting.OnNewCommentReceived;
+import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
+import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
+import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.SecretKeyQiscus;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
+import com.qiscus.rtc.QiscusRTC;
 import com.qiscus.sdk.Qiscus;
+import com.qiscus.sdk.data.model.QiscusChatRoom;
+import com.qiscus.sdk.data.model.QiscusComment;
+import com.qiscus.sdk.data.remote.QiscusApi;
+import com.qiscus.sdk.data.remote.QiscusPusherApi;
+import com.qiscus.sdk.event.QiscusChatRoomEvent;
+import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
+import com.qiscus.sdk.event.QiscusUserStatusEvent;
+import com.qiscus.sdk.util.QiscusRxExecutor;
 import com.qiscus.sdk.data.model.NotificationClickListener;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
@@ -20,6 +35,9 @@ import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by adhit on 03/01/2018.
@@ -27,6 +45,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class BikuBiku extends Application{
     private static Context sContext;
+    private OnNewCommentReceived onNewCommentReceived;
+    private RuangBelajarFragment ruangBelajarFragment;
 
     public static Context getContext() {
         return sContext;
@@ -36,10 +56,13 @@ public class BikuBiku extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
-        EventBus.getDefault().register(this);
         initQiscus();
         sContext = this;
         instance =this;
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -53,6 +76,9 @@ public class BikuBiku extends Application{
 
     public void initQiscus(){
         Qiscus.init(this, "bikubiku-it3hra928qv7");
+        QiscusRTC.init(this, "bikubiku-it3hra928qv7", SecretKeyQiscus.secretKeyQiscus);
+        onNewCommentReceived = new OnNewCommentReceived();
+        ruangBelajarFragment = new RuangBelajarFragment();
 
         Qiscus.getChatConfig()
                 .setSwipeRefreshColorScheme(R.color.colorPrimary, R.color.colorAccent)
@@ -100,9 +126,20 @@ public class BikuBiku extends Application{
                 .setShowAttachmentPanelIcon(R.drawable.ic_qiscus_send_off)
                 //.setStopRecordIcon(R.drawable.ic_send_record)
                 .setEnableAddFile(true)
+                .setEnablePushNotification(true)
+                .setNotificationSmallIcon(R.drawable.logo)
+                .setEnableAvatarAsNotificationIcon(true)
+                .setNotificationClickListener((context, qiscusComment) -> {
+                    onNewCommentReceived.clickNotificationHandler(context, qiscusComment);
+                })
                 //.setCancelRecordIcon(R.drawable.ic_cancel_record)
-                .setEnablePushNotification(true);
+                .setEnablePushNotification(true)
+                .setEnableFcmPushNotification(true);
                 //.setInlineReplyColor(R.color.colorPrimaryLight);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Qiscus.getChatConfig().
+                    setEnableReplyNotification(true);
+        }
     }
 
     @Subscribe
@@ -128,6 +165,44 @@ public class BikuBiku extends Application{
         }else {
             ChattingPsychologyFragment.onUserChanged(false);
         }
+    }
+
+    @Subscribe
+    public void onGetNewQiscusComment(QiscusCommentReceivedEvent event) {
+        if (event.getQiscusComment() != null){
+            QiscusComment qiscusComment = event.getQiscusComment();
+            // Do your implementation
+            onNewCommentReceived.endChatTrigger(qiscusComment);
+        }
+    }
+
+    /**
+     * Call QiscusPusherApi.getInstance().listenRoom(qiscusChatRoom); to get room event from anywhere at your application
+     */
+    @Subscribe
+    public void onGetNewQiscusRoomEvent(QiscusChatRoomEvent event) {
+        switch (event.getEvent()) {
+            case TYPING:
+                //Someone is typing on this room event.getRoomId()
+                ruangBelajarFragment.onUserTyping(event.getUser(),event.isTyping());
+                break;
+            case DELIVERED:
+                //Someone just received your message event.getCommentId()
+                break;
+            case READ:
+                //Someone just read your message event.getCommentId()
+                break;
+        }
+    }
+
+    /**
+     * Call QiscusPusherApi.getInstance().listenUserStatus("user1@gmail.com"); to listen status of user1@gmail.com
+     */
+    @Subscribe
+    public void onUserStatusUpdated(QiscusUserStatusEvent event) {
+        // A user just changed his/her status from (online or offline)
+        // event.getUser() changed to event.isOnline() at event.getLastActive()
+        ruangBelajarFragment.onUserOnline(event.getUser(), event.isOnline(), event.getLastActive());
     }
 
 }

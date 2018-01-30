@@ -18,8 +18,14 @@ import com.example.adhit.bikubiku.adapter.AkunAdapter;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
+import com.example.adhit.bikubiku.service.RequestKabimService;
 import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.GcmTaskService;
+import com.qiscus.sdk.Qiscus;
+import com.qiscus.sdk.data.model.QiscusChatRoom;
+import com.qiscus.sdk.ui.QiscusBaseChatActivity;
 
 import java.util.ArrayList;
 
@@ -81,6 +87,8 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     public void onMenuClicked(String string) {
         if(string.equals("Log Out")){
             presenter.userLogOut();
+            Qiscus.clearUser();
+            GcmNetworkManager.getInstance(getActivity()).cancelTask(RequestKabimService.TAG_LIST_REQUEST, RequestKabimService.class);
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
         }else{

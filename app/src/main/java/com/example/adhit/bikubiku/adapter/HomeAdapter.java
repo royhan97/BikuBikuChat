@@ -38,7 +38,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     }
 
     @Override
-    public void onBindViewHolder(HomeViewHolder holder, final int position) {
+    public void onBindViewHolder(HomeViewHolder holder, int position) {
         final Home home = homeList.get(position);
         holder.tvNameMenu.setText(home.getNamaMenu());
         holder.imgMenu.setImageResource(home.getGambarMenu());
@@ -49,11 +49,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
             }
         });
     }
-    
+
     public void setOnClickDetailListener(OnDetailListener onDetailListener){
         this.onDetailListener = onDetailListener;
     }
-    
+
     @Override
     public int getItemCount() {
         if(homeList == null) return 0;
