@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.LoginPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.ui.register.RegisterActivity;
 import com.example.adhit.bikubiku.util.ShowAlert;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
@@ -50,7 +52,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab_register){
-            LoginAnimation.animationRegister(this, fabRegister);
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                LoginAnimation.animationRegister(this, fabRegister);
+            }else{
+                Intent intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+            }
+
         }
         if(view.getId() == R.id.btn_login_line){
             ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));

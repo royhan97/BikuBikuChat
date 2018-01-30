@@ -255,6 +255,7 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ya",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            stopService(mService);
                             transactionPresenter.changeTransacationStatus("psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), 0, "cancel");
 
                         }

@@ -27,7 +27,7 @@ public class RegisterAnimation {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             transition = TransitionInflater.from(appCompatActivity).inflateTransition(R.transition.fab_transition);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-               appCompatActivity.getWindow().setSharedElementEnterTransition(transition);
+                appCompatActivity.getWindow().setSharedElementEnterTransition(transition);
             }
 
             transition.addListener(new Transition.TransitionListener() {
@@ -88,5 +88,4 @@ public class RegisterAnimation {
         mAnimator.start();
         mAnimator2.start();
     }
-
 }
