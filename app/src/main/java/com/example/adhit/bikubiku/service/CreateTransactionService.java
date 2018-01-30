@@ -93,9 +93,8 @@ public class CreateTransactionService extends Service implements TransactionView
                                     JsonObject body = response.body();
                                     String message= body.get("message").getAsString();
                                     if(message.equals("Success")){
-                                        JsonObject data = body.get("result").getAsJsonObject();
-                                        JsonObject trxObject = data.get("trx").getAsJsonObject();
-                                            if(trxObject.get("status_trx").getAsString().equals("2")){
+                                        JsonObject trxObject = body.get("result").getAsJsonObject();
+                                           if(trxObject.get("status_trx").getAsString().equals("2")){
                                                 sendToReceiver(trxObject.get("id_room").getAsString());
                                                 // SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt((String) transactionList.get(i).getIdRoom()) );
                                                 stopSelf();

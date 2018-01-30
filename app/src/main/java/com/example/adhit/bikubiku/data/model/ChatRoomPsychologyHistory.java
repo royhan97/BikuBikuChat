@@ -42,22 +42,13 @@ public class ChatRoomPsychologyHistory {
     private Object kupon;
     @SerializedName("id_room")
     @Expose
-    private Object idRoom;
+    private String idRoom;
     @SerializedName("createDate")
     @Expose
     private String createDate;
     @SerializedName("status_trx")
     @Expose
     private String statusTrx;
-    @SerializedName("id")
-    @Expose
-    private String id;
-    @SerializedName("tarif")
-    @Expose
-    private String tarif;
-    @SerializedName("status_layanan")
-    @Expose
-    private String statusLayanan;
     @SerializedName("nama_mapel")
     @Expose
     private Object namaMapel;
@@ -70,6 +61,18 @@ public class ChatRoomPsychologyHistory {
     @SerializedName("nama_jenjang")
     @Expose
     private Object namaJenjang;
+    @SerializedName("nama_biquers")
+    @Expose
+    private String namaBiquers;
+    @SerializedName("foto_biquers")
+    @Expose
+    private Object fotoBiquers;
+    @SerializedName("nama_kabim")
+    @Expose
+    private String namaKabim;
+    @SerializedName("foto_kabim")
+    @Expose
+    private Object fotoKabim;
 
     public String getInvoice() {
         return invoice;
@@ -151,11 +154,11 @@ public class ChatRoomPsychologyHistory {
         this.kupon = kupon;
     }
 
-    public Object getIdRoom() {
+    public String getIdRoom() {
         return idRoom;
     }
 
-    public void setIdRoom(Object idRoom) {
+    public void setIdRoom(String idRoom) {
         this.idRoom = idRoom;
     }
 
@@ -173,30 +176,6 @@ public class ChatRoomPsychologyHistory {
 
     public void setStatusTrx(String statusTrx) {
         this.statusTrx = statusTrx;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTarif() {
-        return tarif;
-    }
-
-    public void setTarif(String tarif) {
-        this.tarif = tarif;
-    }
-
-    public String getStatusLayanan() {
-        return statusLayanan;
-    }
-
-    public void setStatusLayanan(String statusLayanan) {
-        this.statusLayanan = statusLayanan;
     }
 
     public Object getNamaMapel() {
@@ -229,6 +208,38 @@ public class ChatRoomPsychologyHistory {
 
     public void setNamaJenjang(Object namaJenjang) {
         this.namaJenjang = namaJenjang;
+    }
+
+    public String getNamaBiquers() {
+        return namaBiquers;
+    }
+
+    public void setNamaBiquers(String namaBiquers) {
+        this.namaBiquers = namaBiquers;
+    }
+
+    public Object getFotoBiquers() {
+        return fotoBiquers;
+    }
+
+    public void setFotoBiquers(Object fotoBiquers) {
+        this.fotoBiquers = fotoBiquers;
+    }
+
+    public String getNamaKabim() {
+        return namaKabim;
+    }
+
+    public void setNamaKabim(String namaKabim) {
+        this.namaKabim = namaKabim;
+    }
+
+    public Object getFotoKabim() {
+        return fotoKabim;
+    }
+
+    public void setFotoKabim(Object fotoKabim) {
+        this.fotoKabim = fotoKabim;
     }
 
 }

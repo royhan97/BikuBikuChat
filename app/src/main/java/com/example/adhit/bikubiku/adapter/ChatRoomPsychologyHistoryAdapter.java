@@ -48,7 +48,7 @@ public class ChatRoomPsychologyHistoryAdapter extends RecyclerView.Adapter<ChatR
     @Override
     public void onBindViewHolder(RoomChatViewHolder holder, final int position) {
 
-        holder.tvRoomChatName.setText(chatRoomPsychologyHistoryList.get(position).getIdKabim());
+        holder.tvRoomChatName.setText(chatRoomPsychologyHistoryList.get(position).getNamaKabim());
         holder.tvLastMessage.setText("CLOSED");
         holder.tvChatDate.setText(chatRoomPsychologyHistoryList.get(position).getCreateDate() );
         Picasso.with(context)
