@@ -176,6 +176,7 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
 
         Intent intent = RuangBelajarChatting.generateIntent(WaitingRequestResponActivity.this, qiscusChatRoom, false);
         startActivity(intent);
+        finish();
         ShowAlert.closeProgresDialog();
     }
 

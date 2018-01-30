@@ -66,12 +66,14 @@ public class RuangBelajarEndChattingService extends IntentService implements Rua
                 sendBroadcast(intentBroadcast);
             }
             else {
-                qiscusChatRoom  = intent.getParcelableExtra(QISCUS_CHAT_ROOM);
-                ruangBelajarPresenter.finishChatFromService(qiscusChatRoom );
-                Intent intentBroadcast = new Intent();
-                intentBroadcast.setAction(EndChatStatusReceiver.TAG);
-                intentBroadcast.putExtra("status_end_chat", true);
-                sendBroadcast(intentBroadcast);
+                if (!SharedPrefUtil.getBoolean(Constant.IS_END_CHATTING)){
+                    qiscusChatRoom  = intent.getParcelableExtra(QISCUS_CHAT_ROOM);
+                    ruangBelajarPresenter.finishChatFromService(qiscusChatRoom );
+                    Intent intentBroadcast = new Intent();
+                    intentBroadcast.setAction(EndChatStatusReceiver.TAG);
+                    intentBroadcast.putExtra("status_end_chat", true);
+                    sendBroadcast(intentBroadcast);
+                }
             }
         }
     }

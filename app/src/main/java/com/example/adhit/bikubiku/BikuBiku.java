@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.multidex.MultiDex;
 
 import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
@@ -52,6 +53,12 @@ public class BikuBiku extends Application{
         return sContext;
     }
     public static BikuBiku instance;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     @Override
     public void onCreate() {
@@ -142,10 +149,6 @@ public class BikuBiku extends Application{
         }
     }
 
-    @Subscribe
-    public void onReceivedComment(QiscusCommentReceivedEvent event) {
-
-    }
 
     @Subscribe
     public void onUserChanged(QiscusChatRoomEvent qiscusChatRoomEvent){

@@ -22,7 +22,7 @@
     <string name="text_online">Online</string>
     <string name="text_offline">Offline</string>
     <string name="text_end_waiting">Waktu tunggu anda habis, kabim tidak merespon atau menolak pesanan anda</string>
-    <string name="text_waiting">Menuggu Respon Kabim</string>
+    <string name="text_waiting">Menunggu Respon Kabim</string>
     <string name="text_request_again">Pesan Kembali</string>
     <string name="text_typing">Typing....</string>
     <string name="text_waiting_confirmation">Silahkan tunggu konfirmasi dari psikolog kami</string>

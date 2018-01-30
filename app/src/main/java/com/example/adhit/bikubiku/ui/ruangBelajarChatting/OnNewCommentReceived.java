@@ -31,7 +31,6 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
 
     public void endChatTrigger(QiscusComment qiscusComment){
         String strPayload = qiscusComment.getExtraPayload();
-        waitingRequestResponPresenter = new WaitingRequestResponPresenter(this);
 
         try {
             JSONObject jsonObjectPayload = new JSONObject(strPayload);
@@ -41,8 +40,7 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
             String description = jsonObjectContent.getString("description");
             String layanan = jsonObjectContent.getString("layanan");
             String invoice = jsonObjectContent.getString("invoice");
-            waitingRequestResponPresenter.getDetailTrx(layanan,invoice);
-            if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir")) && trxStatus == 1){
+            if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir"))){
                 SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, true);
             }
             else {
