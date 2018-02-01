@@ -10,7 +10,6 @@ import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.OnNewCommentReceived;
-import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SecretKeyQiscus;
@@ -20,24 +19,14 @@ import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.data.remote.QiscusPusherApi;
 import com.qiscus.sdk.event.QiscusChatRoomEvent;
 import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
 import com.qiscus.sdk.event.QiscusUserStatusEvent;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 import com.qiscus.sdk.data.model.NotificationClickListener;
-import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
-import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.event.QiscusChatRoomEvent;
-import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
-import com.qiscus.sdk.event.QiscusUserStatusEvent;
-import com.qiscus.sdk.util.QiscusRxExecutor;
+
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
@@ -84,7 +73,7 @@ public class BikuBiku extends Application{
     public void initQiscus(){
         Qiscus.init(this, "bikubiku-it3hra928qv7");
         QiscusRTC.init(this, "bikubiku-it3hra928qv7", SecretKeyQiscus.secretKeyQiscus);
-        onNewCommentReceived = new OnNewCommentReceived();
+        onNewCommentReceived = new OnNewCommentReceived(getApplicationContext());
         ruangBelajarFragment = new RuangBelajarFragment();
 
         Qiscus.getChatConfig()
@@ -96,18 +85,24 @@ public class BikuBiku extends Application{
                 .setNotificationClickListener(new NotificationClickListener() {
                     @Override
                     public void onClick(Context context, QiscusComment qiscusComment) {
-                        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(qiscusComment.getRoomId()),
-                                new QiscusRxExecutor.Listener<QiscusChatRoom>() {
-                                    @Override
-                                    public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                                        Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
-                                        startActivity(intent);
-                                    }
-                                    @Override
-                                    public void onError(Throwable throwable) {
-                                        throwable.printStackTrace();
-                                    }
-                                });
+                        if (qiscusComment.getRoomId() == SharedPrefUtil.getInt(Constant.ROOM_ID)){
+                            onNewCommentReceived.clickNotificationHandler(context, qiscusComment);
+                        }
+                        else {
+                            QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(qiscusComment.getRoomId()),
+                                    new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                                        @Override
+                                        public void onSuccess(QiscusChatRoom qiscusChatRoom) {
+                                            Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        }
+                                        @Override
+                                        public void onError(Throwable throwable) {
+                                            throwable.printStackTrace();
+                                        }
+                                    });
+                        }
                     }
                 })
                 .setNotificationBuilderInterceptor(new NotificationBuilderInterceptor())
@@ -136,11 +131,10 @@ public class BikuBiku extends Application{
                 .setEnablePushNotification(true)
                 .setNotificationSmallIcon(R.drawable.logo)
                 .setEnableAvatarAsNotificationIcon(true)
-                .setNotificationClickListener((context, qiscusComment) -> {
-                    onNewCommentReceived.clickNotificationHandler(context, qiscusComment);
-                })
+//                .setNotificationClickListener((context, qiscusComment) -> {
+//                    onNewCommentReceived.clickNotificationHandler(context, qiscusComment);
+//                })
                 //.setCancelRecordIcon(R.drawable.ic_cancel_record)
-                .setEnablePushNotification(true)
                 .setEnableFcmPushNotification(false);
                 //.setInlineReplyColor(R.color.colorPrimaryLight);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -152,6 +146,7 @@ public class BikuBiku extends Application{
 
     @Subscribe
     public void onGetNewQiscusComment(QiscusCommentReceivedEvent event) {
+//        onNewCommentReceived.refreshKabimRoomList();
         if (event.getQiscusComment() != null){
             QiscusComment qiscusComment = event.getQiscusComment();
             // Do your implementation

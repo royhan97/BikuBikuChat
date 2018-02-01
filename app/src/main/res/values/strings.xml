@@ -3,7 +3,7 @@
     <string name="text_address">Alamat</string>
     <string name="text_address_empty">Alamat Tidak Boleh Kosong</string>
     <string name="text_cancel_transaction_title">Pembatalan Transaksi</string>
-    <string name="text_cancel_transaction_message">Anda yakin untuk membatalkan transaki saat ini?</string>
+    <string name="text_cancel_transaction_message">Anda yakin akan membatalkan transaksi saat ini?</string>
     <string name="text_cannot_empty">Tidak Boleh Kosong</string>
     <string name="text_changed_failed">Perubahan Gagal</string>
     <string name="text_chat_exist">Anda sedang melakukan konsultasi, silahkan buka ruang chat disini</string>

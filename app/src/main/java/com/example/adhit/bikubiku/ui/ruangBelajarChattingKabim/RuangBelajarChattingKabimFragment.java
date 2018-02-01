@@ -1,12 +1,14 @@
 package com.example.adhit.bikubiku.ui.ruangBelajarChattingKabim;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,10 +29,14 @@ import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.listRequestToKabim.ListRequestToKabimActivity;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryFragment;
-import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.CountDrawable;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
+import com.qiscus.sdk.data.model.QiscusComment;
+import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -44,6 +50,8 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
     private RuangBelajarChattingKabimPresenter ruangBelajarChattingKabimPresenter;
     private ChatRoomRuangBelajarKabimAdapter ruangBelajarChattingKabimAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private Menu reqCountMenu;
+    private final Handler handler = new Handler();
 
     @Nullable
     @Override
@@ -65,13 +73,42 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
+
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        doTheAutoRefresh();
         initView();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Subscribe
+    public void getNewComment(QiscusCommentReceivedEvent event) {
+        if (event.getQiscusComment() != null){
+            ruangBelajarChattingKabimPresenter.getActiveChattingBiquers();
+            rvChatRuangBelajar.setAdapter(ruangBelajarChattingKabimAdapter);
+        }
+    }
+
+    private void doTheAutoRefresh() {
+        handler.postDelayed(() -> {
+//            ruangBelajarChattingKabimPresenter.getActiveChattingBiquers();
+//            rvChatRuangBelajar.setAdapter(ruangBelajarChattingKabimAdapter);
+            onRefreshMenu();
+            doTheAutoRefresh();
+        }, 1000);
     }
 
     private void initView() {
@@ -97,6 +134,12 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
         ruangBelajarChattingKabimPresenter.openChatRoomKabimWithId(getActivity(), idRoom);
     }
 
+    public void onRefreshMenu(){
+        if (reqCountMenu != null){
+            onPrepareOptionsMenu(reqCountMenu);
+        }
+    }
+
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         String count = String.valueOf(SharedPrefUtil.getInt(ListRequestToKabimPresenter.TEMP_SIZE));
@@ -106,6 +149,7 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_request_to_kabim, menu);
+        this.reqCountMenu = menu;
     }
 
     public void setCount(Context context, String count, Menu menu) {
@@ -156,4 +200,5 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

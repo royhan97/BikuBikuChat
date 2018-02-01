@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.service.IsRuangBelajarEndService;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingKabim.RuangBelajarChattingKabimFragment;
@@ -88,7 +89,11 @@ public class RuangBelajarChatting extends QiscusBaseChatActivity {
     @Override
     protected void onViewReady(Bundle savedInstanceState) {
         super.onViewReady(savedInstanceState);
-        mTitle.setText(qiscusChatRoom.getName());
+        for(int i=0; i<qiscusChatRoom.getMember().size(); i++){
+            if (!qiscusChatRoom.getMember().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
+                mTitle.setText(qiscusChatRoom.getMember().get(i).getUsername());
+            }
+        }
         qiscusCircularImageView.setImageURI(Uri.parse(qiscusChatRoom.getAvatarUrl()));
 
         imgbVoiceCall.setOnClickListener(new View.OnClickListener() {

@@ -1,23 +1,29 @@
 package com.example.adhit.bikubiku.ui.waitingrequestresponse;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
 import com.example.adhit.bikubiku.presenter.WaitingRequestResponPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.service.RuangBelajarEndChattingService;
+import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
 import com.example.adhit.bikubiku.util.Constant;
@@ -32,7 +38,7 @@ import java.util.Date;
  * Created by roy on 1/24/2018.
  */
 
-public class WaitingRequestResponActivity extends AppCompatActivity implements EndChatStatusReceiver.PeriodicCheckCarsReceiverListener, WaitingRequestResponView, RuangBelajarView {
+public class WaitingRequestResponActivity extends AppCompatActivity implements EndChatStatusReceiver.PeriodicCheckCarsReceiverListener, WaitingRequestResponView, RuangBelajarView, View.OnClickListener {
 
     TextView txtWaiting,txtEndWaiting;
     Button btnReqAgain;
@@ -43,20 +49,29 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     private WaitingRequestResponPresenter waitingRequestPresenter;
     private  RuangBelajarPresenter ruangBelajarPresenter;
     private boolean isResponseKabim = false;
+    private Toolbar toolbar;
+    private ImageView imgBack,imgCancel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_request_response);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         txtWaiting = findViewById(R.id.txt_waiting);
         txtEndWaiting = findViewById(R.id.txt_end_waiting);
         btnReqAgain = findViewById(R.id.btn_request_again);
         pbWait = findViewById(R.id.pb_waiting);
+        imgBack = findViewById(R.id.img_back);
+        imgCancel = findViewById(R.id.img_cancel);
         waitingRequestPresenter = new WaitingRequestResponPresenter(this);
         ruangBelajarPresenter = new RuangBelajarPresenter(this);
 
         layanan = getIntent().getStringExtra("layanan");
         invoice = getIntent().getStringExtra("invoice");
+
+        imgBack.setOnClickListener(this);
+        imgCancel.setOnClickListener(this);
 
         startIntentService();
     }
@@ -136,6 +151,7 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     public void getStatusAndIdRoom(int statusTrx, int idRoom) {
         if (statusTrx == 3){
             this.isResponseKabim = true;
+            handler.removeCallbacksAndMessages(null);
             ruangBelajarPresenter.updateStatusTransaksiPR(WaitingRequestResponActivity.this,layanan,invoice,-1,"cancel");
 
             pbWait.setVisibility(View.GONE);
@@ -143,10 +159,7 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
             txtEndWaiting.setVisibility(View.VISIBLE);
             btnReqAgain.setVisibility(View.VISIBLE);
 
-            btnReqAgain.setOnClickListener(v -> {
-                onBackPressed();
-                finish();
-            });
+            btnReqAgain.setOnClickListener(this);
         }
         else if(statusTrx == 2){
             this.isResponseKabim = true;
@@ -169,7 +182,7 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     public void openChatRoom(QiscusChatRoom qiscusChatRoom) {
         if (!SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
             Intent intentService = new Intent(WaitingRequestResponActivity.this, RuangBelajarEndChattingService.class);
-            intentService.putExtra(RuangBelajarEndChattingService.EXTRA_DURATION, 60000);
+            intentService.putExtra(RuangBelajarEndChattingService.EXTRA_DURATION, 180000);
             intentService.putExtra(RuangBelajarEndChattingService.QISCUS_CHAT_ROOM, qiscusChatRoom);
             startService(intentService);
         }
@@ -198,5 +211,41 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     @Override
     public void setIdRoom(int idRoom) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_request_again){
+            onBackPressed();
+            finish();
+        }
+        if(v.getId() == R.id.img_back){
+            super.onBackPressed();
+        }
+        if(v.getId() == R.id.img_cancel){
+            AlertDialog alertDialog = new AlertDialog.Builder(WaitingRequestResponActivity.this).create();
+            alertDialog.setTitle(getResources().getString(R.string.text_cancel_transaction_title));
+            alertDialog.setMessage(getResources().getString(R.string.text_cancel_transaction_message));
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ya",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            isResponseKabim = true;
+                            ruangBelajarPresenter.updateStatusTransaksiPR(WaitingRequestResponActivity.this,layanan,invoice,-1,"cancel");
+
+                            pbWait.setVisibility(View.GONE);
+                            txtWaiting.setVisibility(View.GONE);
+                            txtEndWaiting.setVisibility(View.VISIBLE);
+                            btnReqAgain.setVisibility(View.VISIBLE);
+
+                            btnReqAgain.setOnClickListener(v1 -> {
+                                onBackPressed();
+                                finish();
+                            });
+                        }
+                    });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Tidak", (dialogInterface, i) -> alertDialog.dismiss());
+            alertDialog.show();
+
+        }
     }
 }

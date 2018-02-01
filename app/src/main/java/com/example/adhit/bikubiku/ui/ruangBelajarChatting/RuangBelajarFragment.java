@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.CustomChatAdapter;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
@@ -112,10 +113,17 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
     }
 
     private void sendLockedMessage() {
+        String username = "";
+        for (int i=0;i<qiscusChatRoom.getMember().size();i++){
+            if (!qiscusChatRoom.getMember().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
+                username = qiscusChatRoom.getMember().get(i).getUsername();
+            }
+        }
         JSONObject payload = new JSONObject();
         try {
             payload.put("locked", "halo")
-                    .put("description", "Silahkan chatting dengan "+ qiscusChatRoom.getMember().get(0).getUsername()+" ceritakan masalah yang kamu hadapi")
+                    .put("description1", "Silahkan mulai chatting dengan "+ username +", waktu anda adalah 1 jam.")
+                    .put("description2", "Silahkan mulai chatting dengan "+ SaveUserData.getInstance().getUser().getUsername() +", waktu anda adalah 1 jam.")
                     .put("layanan", SaveUserTrxPR.getInstance().getTrx().getLayanan())
                     .put("invoice", SaveUserTrxPR.getInstance().getTrx().getInvoice())
                     .put("idBiquers", SaveUserTrxPR.getInstance().getTrx().getIdBiquers());
@@ -123,7 +131,7 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             e.printStackTrace();
         }
 
-        QiscusComment comment = QiscusComment.generateCustomMessage("Silahkan chatting dengan "+ qiscusChatRoom.getMember().get(0).getUsername(), "lock_message", payload,
+        QiscusComment comment = QiscusComment.generateCustomMessage(SaveUserData.getInstance().getUser().getUsername()+" ingin konsultasi pr dengan anda", "lock_message", payload,
                 qiscusChatRoom.getId(), qiscusChatRoom.getLastTopicId());
 
         sendQiscusComment(comment);
@@ -172,6 +180,8 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             mInputPanel.setVisibility(View.GONE);
         }
         else {
+            SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
+            mInputPanel.setVisibility(View.VISIBLE);
             tv_endChat.setOnClickListener(this);
         }
     }
@@ -477,6 +487,22 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             mInputPanel.setVisibility(View.GONE);
             tv_endChat.setAlpha(0.3f);
             tv_endChat.setOnClickListener(null);
+        }
+    }
+
+    @Override
+    public void onNewComment(QiscusComment qiscusComment) {
+        super.onNewComment(qiscusComment);
+        JSONObject payload = null;
+        try {
+            payload = new JSONObject(qiscusComment.getExtraPayload());
+
+            if (payload.optString("type").equals("end_chat") || payload.optString("type").equals("closed_chat")) {
+                mInputPanel.setVisibility(View.GONE);
+                SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, false);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

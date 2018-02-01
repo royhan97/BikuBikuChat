@@ -97,6 +97,7 @@ public class RuangBelajarChattingKabimPresenter {
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
                         ShowAlert.showToast(context,"gagal");
+                        ShowAlert.closeProgresDialog();
                     }
                 });
 

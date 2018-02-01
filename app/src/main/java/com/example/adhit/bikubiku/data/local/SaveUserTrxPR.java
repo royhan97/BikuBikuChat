@@ -1,6 +1,6 @@
 package com.example.adhit.bikubiku.data.local;
 
-import com.example.adhit.bikubiku.data.model.TransaksiPR;
+import com.example.adhit.bikubiku.data.model.TransactionPR;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 
@@ -19,11 +19,11 @@ public class SaveUserTrxPR {
         return ourInstance;
     }
 
-    public TransaksiPR getTrx() {
-        return (TransaksiPR) SharedPrefUtil.getObject(Constant.KEY_TRX, TransaksiPR.class);
+    public TransactionPR getTrx() {
+        return (TransactionPR) SharedPrefUtil.getObject(Constant.KEY_TRX, TransactionPR.class);
     }
 
-    public void saveTrx(TransaksiPR trx) {
+    public void saveTrx(TransactionPR trx) {
         SharedPrefUtil.saveObject(Constant.KEY_TRX, trx);
     }
 

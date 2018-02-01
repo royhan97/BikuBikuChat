@@ -166,7 +166,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
             else {
                 getFragmentManager().beginTransaction().
                         setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-                        add(R.id.frame_container,
+                        replace(R.id.frame_container,
                                 new ListKabimFragment(),
                                 ListKabimFragment.class.getSimpleName())
                         .addToBackStack(ListKabimFragment.class.getSimpleName()).commit();

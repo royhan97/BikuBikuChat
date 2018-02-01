@@ -53,6 +53,20 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/txt_unreadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/unread_count_background"
+                android:textAlignment="center"
+                android:paddingTop="2dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="0"
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/txt_dateChatBiquers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

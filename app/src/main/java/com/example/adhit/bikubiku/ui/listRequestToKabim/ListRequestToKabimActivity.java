@@ -95,7 +95,7 @@ public class ListRequestToKabimActivity extends AppCompatActivity implements Lis
             rvRequest.setAdapter(adapter);
 //            initView(); // this is where you put your refresh code
             doTheAutoRefresh();
-        }, 2000);
+        }, 2500);
     }
 
 //    public void registerReceiver() {
@@ -157,6 +157,7 @@ public class ListRequestToKabimActivity extends AppCompatActivity implements Lis
     public void openChatRoom(QiscusChatRoom qiscusChatRoom) {
         Intent intent = RuangBelajarChatting.generateIntent(ListRequestToKabimActivity.this, qiscusChatRoom, false);
         startActivity(intent);
+        finish();
         ShowAlert.closeProgresDialog();
     }
 

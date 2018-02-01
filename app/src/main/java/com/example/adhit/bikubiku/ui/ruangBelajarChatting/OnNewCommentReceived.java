@@ -3,19 +3,19 @@ package com.example.adhit.bikubiku.ui.ruangBelajarChatting;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
-import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.presenter.WaitingRequestResponPresenter;
 import com.example.adhit.bikubiku.ui.waitingrequestresponse.WaitingRequestResponView;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
-import com.google.firebase.messaging.RemoteMessage;
+import com.qiscus.sdk.data.model.NotificationClickListener;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.service.QiscusFirebaseService;
 import com.qiscus.sdk.util.QiscusRxExecutor;
+import com.qiscus.sdk.Qiscus;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,8 +26,13 @@ import org.json.JSONObject;
 
 public class OnNewCommentReceived implements WaitingRequestResponView {
 
+    public Context context;
     private WaitingRequestResponPresenter waitingRequestResponPresenter;
     private int trxStatus = -1;
+
+    public OnNewCommentReceived(Context ctx) {
+        this.context = ctx;
+    }
 
     public void endChatTrigger(QiscusComment qiscusComment){
         String strPayload = qiscusComment.getExtraPayload();
@@ -42,9 +47,55 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
             String invoice = jsonObjectContent.getString("invoice");
             if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir"))){
                 SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, true);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Qiscus.getChatConfig()
+                            .setEnableReplyNotification(false)
+                            .setNotificationClickListener(new NotificationClickListener() {
+                                @Override
+                                public void onClick(Context context, QiscusComment qiscusComment) {
+                                    QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(qiscusComment.getRoomId()),
+                                            new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                                                @Override
+                                                public void onSuccess(QiscusChatRoom qiscusChatRoom) {
+                                                    Intent intent = RuangBelajarChatting.generateIntent(context, qiscusChatRoom, true);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    context.startActivity(intent);
+                                                }
+                                                @Override
+                                                public void onError(Throwable throwable) {
+                                                    throwable.printStackTrace();
+                                                }
+                                            });
+                                }
+                            });
+                }
             }
             else {
                 SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    Qiscus.getChatConfig()
+                            .setEnableReplyNotification(true)
+                            .setNotificationClickListener(new NotificationClickListener() {
+                                @Override
+                                public void onClick(Context context, QiscusComment qiscusComment) {
+                                    QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(qiscusComment.getRoomId()),
+                                            new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                                                @Override
+                                                public void onSuccess(QiscusChatRoom qiscusChatRoom) {
+                                                    Intent intent = RuangBelajarChatting.generateIntent(context, qiscusChatRoom, false);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    context.startActivity(intent);
+                                                }
+                                                @Override
+                                                public void onError(Throwable throwable) {
+                                                    throwable.printStackTrace();
+                                                }
+                                            });
+                                }
+                            });
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -77,6 +128,7 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
             public void onSuccess(QiscusChatRoom qiscusChatRoom) {
                 Intent toRoomIntent = RuangBelajarChatting.generateIntent(context, qiscusChatRoom, finalIsHistory);
                 toRoomIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                toRoomIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(toRoomIntent);
 //                ((Activity) context).finish();
             }

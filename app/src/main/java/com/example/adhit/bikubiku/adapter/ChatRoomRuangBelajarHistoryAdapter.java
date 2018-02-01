@@ -51,8 +51,8 @@ public class ChatRoomRuangBelajarHistoryAdapter extends RecyclerView.Adapter<Cha
     public void onBindViewHolder(RoomChatViewHolder holder, final int position) {
 
         for(int i = 0; i< chatRoomRuangBelajarHistoryList.get(position).getParticipants().size(); i++){
-            if(chatRoomRuangBelajarHistoryList.get(position).getParticipants().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
-                holder.tvRoomChatName.setText(chatRoomRuangBelajarHistoryList.get(position).getRoomName());
+            if(!chatRoomRuangBelajarHistoryList.get(position).getParticipants().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
+                holder.tvRoomChatName.setText(chatRoomRuangBelajarHistoryList.get(position).getParticipants().get(i).getUsername());
             }
         }
         Picasso.with(context)

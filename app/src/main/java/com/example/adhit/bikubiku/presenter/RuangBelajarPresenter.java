@@ -3,57 +3,36 @@ package com.example.adhit.bikubiku.presenter;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.NotificationCompat;
-import android.view.View;
 import android.widget.Toast;
 
-import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.data.model.TransaksiPR;
-import com.example.adhit.bikubiku.data.model.User;
+import com.example.adhit.bikubiku.data.model.TransactionPR;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
-import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
-import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
-import com.example.adhit.bikubiku.util.Constant;
-import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.util.QiscusErrorLogger;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.time.Instant;
 import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChattingService.NOTIF_CHANNEL_ID;
 
 /**
@@ -82,8 +61,8 @@ public class RuangBelajarPresenter {
                             String message = body.get("message").getAsString();
                             if (status){
                                 JsonObject result = body.get("result").getAsJsonObject();
-                                Type type = new TypeToken<TransaksiPR>(){}.getType();
-                                TransaksiPR trxPR = new Gson().fromJson(result, type);
+                                Type type = new TypeToken<TransactionPR>(){}.getType();
+                                TransactionPR trxPR = new Gson().fromJson(result, type);
                                 SaveUserTrxPR.getInstance().saveTrx(trxPR);
                                 ShowAlert.showToast(context, "transaksi berhasil dibuat");
                                 ruangBelajarView.openWaitingActivity();
@@ -129,10 +108,12 @@ public class RuangBelajarPresenter {
                                 ShowAlert.showToast(context, "status : "+status);
                                 // String message = body.get("message").getAsString();
                                 //            loginView.showMessageSnackbar(message);
+                                ShowAlert.closeProgresDialog();
                             }
                         }else {
                             ShowAlert.showToast(context, "Can't Create Room");
                             //      loginView.showMessageSnackbar(context.getResources().getString(R.string.text_login_failed));
+                            ShowAlert.closeProgresDialog();
                         }
                     }
 
@@ -140,9 +121,9 @@ public class RuangBelajarPresenter {
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         t.printStackTrace();
                         ShowAlert.showToast(context, "Create Room Failed");
+                        ShowAlert.closeProgresDialog();
                     }
                 });
-        ShowAlert.closeProgresDialog();
     }
 
     public void updateStatusTransaksiPR(Context context, String layanan, String invoice, int id_room, String statusTrx){
@@ -162,13 +143,18 @@ public class RuangBelajarPresenter {
                                 if (statusTrx.equals("accept")){
                                     openRoomChatById(context,id_room);
                                 }
+                                else {
+                                    ShowAlert.closeProgresDialog();
+                                }
                             }
                             else {
                                 ShowAlert.showToast(context,message);
+                                ShowAlert.closeProgresDialog();
                             }
                         }
                         else {
                             ShowAlert.showToast(context,"tidak bisa melakukan update transaksi");
+                            ShowAlert.closeProgresDialog();
                         }
                     }
 
@@ -176,9 +162,9 @@ public class RuangBelajarPresenter {
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         t.printStackTrace();
                         ShowAlert.showToast(context, "gagal update transaksi");
+                        ShowAlert.closeProgresDialog();
                     }
                 });
-        ShowAlert.closeProgresDialog();
     }
 
 
@@ -239,7 +225,7 @@ public class RuangBelajarPresenter {
     }
 
     public void openRoomChatById(Context context, int id){
-        ShowAlert.showProgresDialog(context);
+//        ShowAlert.showProgresDialog(context);
         QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
                 new QiscusRxExecutor.Listener<QiscusChatRoom>() {
                     @Override
@@ -249,6 +235,7 @@ public class RuangBelajarPresenter {
                     @Override
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
+                        ShowAlert.closeProgresDialog();
                     }
                 });
     }

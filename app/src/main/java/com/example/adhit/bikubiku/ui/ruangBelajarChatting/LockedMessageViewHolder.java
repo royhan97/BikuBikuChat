@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.ui.adapter.OnItemClickListener;
 import com.qiscus.sdk.ui.adapter.OnLongItemClickListener;
@@ -91,7 +92,13 @@ public class LockedMessageViewHolder extends QiscusBaseMessageViewHolder<QiscusC
     protected void showMessage(QiscusComment qiscusComment) {
         try {
             JSONObject payload = new JSONObject(qiscusComment.getExtraPayload());
-            textView.setText(payload.optJSONObject("content").optString("description"));
+            if (!qiscusComment.getSenderEmail().equals(SaveUserData.getInstance().getUser().getId())){
+                textView.setText(payload.optJSONObject("content").optString("description2"));
+            }
+            else {
+                textView.setText(payload.optJSONObject("content").optString("description1"));
+            }
+
         } catch (Exception e) {
             textView.setText(qiscusComment.getMessage());
         }

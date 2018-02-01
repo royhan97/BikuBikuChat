@@ -64,6 +64,7 @@ public class LoginPresenter {
                                 //listGalleryView.showData(carList);
 //                                loginSDK(user);
                                 loginOrNotQiscus(context,user, user.getId(), user.getToken(), user.getNama(), Integer.parseInt(user.getStatusKabim()));
+                                ShowAlert.closeProgresDialog();
                             }else{
                                 String message = body.get("message").getAsString();
                                 loginView.showMessageSnackbar(message);

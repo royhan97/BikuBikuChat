@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by roy on 1/24/2018.
  */
 
-public class TransaksiPR {
+public class TransactionPR {
 
     @SerializedName("invoice")
     @Expose

@@ -61,8 +61,8 @@ public class ChatRoomRuangBelajarKabimAdapter extends RecyclerView.Adapter<ChatR
     public void onBindViewHolder(RoomChatViewHolder holder, final int position) {
 
         for(int i = 0; i< chatRoomRuangBelajarKabimList.get(position).getParticipants().size(); i++){
-            if(chatRoomRuangBelajarKabimList.get(position).getParticipants().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
-                holder.tvRoomChatName.setText(chatRoomRuangBelajarKabimList.get(position).getRoomName());
+            if(!chatRoomRuangBelajarKabimList.get(position).getParticipants().get(i).getEmail().equals(SaveUserData.getInstance().getUser().getId())){
+                holder.tvRoomChatName.setText(chatRoomRuangBelajarKabimList.get(position).getParticipants().get(i).getUsername());
             }
         }
         Picasso.with(context)
@@ -75,6 +75,11 @@ public class ChatRoomRuangBelajarKabimAdapter extends RecyclerView.Adapter<ChatR
         holder.itemView.setOnClickListener(v -> {
             ruangBelajarChattingKabimView.onDetailChatRoomKabim(chatRoomRuangBelajarKabimList.get(position).getRoomId());
         });
+        if (chatRoomRuangBelajarKabimList.get(position).getUnreadCount() > 0){
+            holder.tvUnreadCount.setVisibility(View.VISIBLE);
+            holder.tvTimeStamp.setVisibility(View.GONE);
+            holder.tvUnreadCount.setText(String.valueOf(chatRoomRuangBelajarKabimList.get(position).getUnreadCount()));
+        }
     }
 
 
@@ -90,7 +95,7 @@ public class ChatRoomRuangBelajarKabimAdapter extends RecyclerView.Adapter<ChatR
     }
 
     public class RoomChatViewHolder extends RecyclerView.ViewHolder{
-        TextView tvRoomChatName,tvTimeStamp, tvLastComment;
+        TextView tvRoomChatName,tvTimeStamp, tvLastComment, tvUnreadCount;
         ImageView imgAvatarRoomChat;
 
 
@@ -100,6 +105,7 @@ public class ChatRoomRuangBelajarKabimAdapter extends RecyclerView.Adapter<ChatR
             imgAvatarRoomChat = itemView.findViewById(R.id.avatarBiquers);
             tvLastComment = itemView.findViewById(R.id.lastChatBiquers);
             tvTimeStamp = itemView.findViewById(R.id.txt_dateChatBiquers);
+            tvUnreadCount = itemView.findViewById(R.id.txt_unreadCount);
         }
     }
 }
