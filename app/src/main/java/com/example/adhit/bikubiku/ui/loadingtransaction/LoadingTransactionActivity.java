@@ -141,7 +141,7 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
     public void onDestroy() {
         super.onDestroy();
 
-        stopService(mService);
+      //  stopService(mService);
     }
 
     private void unregisterReceiver() {

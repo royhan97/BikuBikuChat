@@ -27,7 +27,6 @@ public class ChattingPsychologyServicePresenter {
     }
 
     public void finishChatFromService(){
-        System.out.println("run");
         JSONObject payload = new JSONObject();
         JSONObject payloadContent = new JSONObject();
 

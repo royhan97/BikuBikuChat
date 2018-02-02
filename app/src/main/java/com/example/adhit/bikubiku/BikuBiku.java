@@ -44,7 +44,8 @@ import org.greenrobot.eventbus.Subscribe;
  * Created by adhit on 03/01/2018.
  */
 
-public class BikuBiku extends Application{
+public class
+BikuBiku extends Application{
     private static Context sContext;
     private OnNewCommentReceived onNewCommentReceived;
     private RuangBelajarFragment ruangBelajarFragment;

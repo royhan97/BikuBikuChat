@@ -9,6 +9,8 @@ import com.example.adhit.bikubiku.util.SecretKeyQiscus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.qiscus.sdk.Qiscus;
+import com.qiscus.sdk.data.model.QiscusChatRoom;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

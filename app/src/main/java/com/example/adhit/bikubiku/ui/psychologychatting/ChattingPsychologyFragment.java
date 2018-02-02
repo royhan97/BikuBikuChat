@@ -119,14 +119,13 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
         super.onCreateChatComponents(savedInstanceState);
         chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
         transactionPresenter = new TransactionPresenter(this);
-        System.out.println("id room "+SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat());
-        if( SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat() ==0&& !isHistory1){
-
-            chattingPsychologyPresenter.sendFirstMessage(qiscusChatRoom);
-            SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(qiscusChatRoom.getId());
-
-
-        }
+//        if( SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat() ==0&& !isHistory1){
+//
+//            chattingPsychologyPresenter.sendFirstMessage(qiscusChatRoom);
+//            SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(qiscusChatRoom.getId());
+//
+//
+//        }
         //check();
         if(!isHistory1){
             registerReceiver();

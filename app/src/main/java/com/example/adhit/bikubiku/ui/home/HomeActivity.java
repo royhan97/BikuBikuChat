@@ -134,18 +134,18 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        @Override
+        public void onBackPressed() {
+            super.onBackPressed();
 
-       if(getFragmentManager().getBackStackEntryCount()==0){
-            navigation.setVisibility(View.VISIBLE);
-            imgLogo.setVisibility(View.VISIBLE);
-            getSupportActionBar().setTitle("");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+           if(getFragmentManager().getBackStackEntryCount()==0){
+                navigation.setVisibility(View.VISIBLE);
+                imgLogo.setVisibility(View.VISIBLE);
+                getSupportActionBar().setTitle("");
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
+
         }
-
-    }
 
 
 }

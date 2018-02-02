@@ -14,4 +14,7 @@ public interface AkunView {
 
     void showUserData(User user);
 
+    void onSuccessLogOut();
+
+    void onFailureLogOut();
 }
