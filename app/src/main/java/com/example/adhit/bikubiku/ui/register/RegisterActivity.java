@@ -2,12 +2,15 @@ package com.example.adhit.bikubiku.ui.register;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
@@ -17,6 +20,7 @@ import android.widget.RadioGroup;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.RegisterPresenter;
+import com.example.adhit.bikubiku.ui.login.LoginAnimation;
 import com.example.adhit.bikubiku.util.ShowAlert;
 
 public class RegisterActivity extends AppCompatActivity  implements View.OnClickListener, RegisterView {
@@ -39,7 +43,12 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab_login){
-            animateRevealClose();
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+
+                animateRevealClose();
+            }else{
+                super.onBackPressed();
+            }
         }
         if(view.getId() == R.id.bt_daftar_line){
             ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
@@ -87,7 +96,14 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
 
     @Override
     public void showMessage(String string) {
-        ShowAlert.showSnackBar(coordinatorLayout, string);
+        ShowAlert.showToast(getApplicationContext(), string);
+        if(string.equals(getResources().getString(R.string.text_register_success))){
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                animateRevealClose();
+            }else{
+                super.onBackPressed();
+            }
+        }
 
     }
 
@@ -139,6 +155,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         mAnimator.start();
         mAnimator2.start();
     }
+
 
 
 

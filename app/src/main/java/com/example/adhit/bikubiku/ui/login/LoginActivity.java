@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.LoginPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.ui.register.RegisterActivity;
 import com.example.adhit.bikubiku.util.ShowAlert;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, LoginView {
@@ -21,6 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CoordinatorLayout coordinatorLayout;
     private EditText etUsername, etPassword;
     private LoginPresenter loginPresenter;
+    private TextView tvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +41,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin = (Button) findViewById(R.id.btn_login);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
+        tvForgotPassword = findViewById(R.id.tv_forgot_password);
         fabRegister.setOnClickListener(this);
         btnDaftarLine.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        tvForgotPassword.setOnClickListener(this);
     }
 
     public  void initPresenter(){
@@ -50,7 +56,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.fab_register){
-            LoginAnimation.animationRegister(this, fabRegister);
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                LoginAnimation.animationRegister(this, fabRegister);
+            }else{
+                Intent intent = new Intent(this, RegisterActivity.class);
+                startActivity(intent);
+            }
+
         }
         if(view.getId() == R.id.btn_login_line){
             ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
@@ -68,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 loginPresenter.Login(this, username, password);
             }
+        }
+        if(view.getId() == R.id.tv_forgot_password){
+            ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
         }
     }
 

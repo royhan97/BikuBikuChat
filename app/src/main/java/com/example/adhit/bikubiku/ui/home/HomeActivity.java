@@ -1,12 +1,14 @@
 package com.example.adhit.bikubiku.ui.home;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,9 +17,12 @@ import android.widget.Toast;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.example.adhit.bikubiku.service.RequestKabimService;
 import com.example.adhit.bikubiku.ui.home.akun.AkunFragment;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
+import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
+import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistFragment;
@@ -26,6 +31,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.PeriodicTask;
+import com.qiscus.sdk.data.model.QiscusChatRoom;
+import com.qiscus.sdk.data.model.QiscusComment;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,11 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements ChattingPsychologyView {
 
     private static final int GPS_REQUEST_CODE = 1000;
-
-    private AppBarLayout appBarLayout;
+    private ChattingPsychologyPresenter chattingPsychologyPresenter;
     private Toolbar toolbar;
     private BottomNavigationView navigation;
     private ImageView imgLogo;
@@ -46,10 +52,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int errorCheck = api.isGooglePlayServicesAvailable(this);
         if(errorCheck == ConnectionResult.SUCCESS) {
-            ShowAlert.showToast(this,"Google Service Available");
+
         } else if(api.isUserResolvableError(errorCheck)) {
             //GPS_REQUEST_CODE = 1000, and is used in onActivityResult
             api.showErrorDialogFragment(this, errorCheck, GPS_REQUEST_CODE);
@@ -64,11 +71,15 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         initView();
+        if(getIntent().getIntExtra("id_room",0)> 0){
+
+            chattingPsychologyPresenter.openRoomChatById(getIntent().getIntExtra("id_room",0));
+        }
+
 
     }
 
     public  void initView(){
-        appBarLayout = findViewById(R.id.appbarlayout);
         toolbar = findViewById(R.id.toolbar);
         imgLogo = findViewById(R.id.img_logo);
         setSupportActionBar(toolbar);
@@ -81,15 +92,6 @@ public class HomeActivity extends AppCompatActivity {
                 replace(R.id.frame_container,
                         new HomeFragment(),
                         HomeFragment.class.getSimpleName()).commit();
-
-//        if(getIntent().getStringExtra("fragment").equals("History Konsultasi")){
-//            getFragmentManager().beginTransaction().
-//                    replace(R.id.frame_container,
-//                            new ListPsychologistFragment(),
-//                            ListPsychologistFragment.class.getSimpleName())
-//                    .addToBackStack(ListPsychologistFragment.class.getSimpleName())
-//                    .commit();
-//        }
 
         if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
             PeriodicTask periodic = new PeriodicTask.Builder()
@@ -134,18 +136,48 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        @Override
+        public void onBackPressed() {
+            super.onBackPressed();
 
-       if(getFragmentManager().getBackStackEntryCount()==0){
-            navigation.setVisibility(View.VISIBLE);
-            imgLogo.setVisibility(View.VISIBLE);
-            getSupportActionBar().setTitle("");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+           if(getFragmentManager().getBackStackEntryCount()==0){
+                navigation.setVisibility(View.VISIBLE);
+                imgLogo.setVisibility(View.VISIBLE);
+                getSupportActionBar().setTitle("");
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
+
         }
+
+
+    @Override
+    public void sendFirstMessage(QiscusComment comment) {
 
     }
 
+    @Override
+    public void canCreateRoom(boolean b) {
 
+    }
+
+    @Override
+    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
+        Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
+        startActivity(intent);
+    }
+
+    @Override
+    public void sendClosedMessage(QiscusComment comment) {
+
+    }
+
+    @Override
+    public void onFailure(String failed) {
+
+    }
+
+    @Override
+    public void onFinishTransaction() {
+
+    }
 }

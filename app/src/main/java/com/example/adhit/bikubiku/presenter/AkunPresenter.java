@@ -50,15 +50,20 @@ public class AkunPresenter {
     }
 
     public void userLogOut(){
-        Qiscus.clearUser();
-        Session.getInstance().setLogin(false);
-        Session.getInstance().setKabimLogin(false);
-        Session.getInstance().setBuildRoomRuangBelajar(false);
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
-        SaveUserToken.getInstance().removeUserToken();
-        SaveUserData.getInstance().removeUser();
-        SaveUserTrxPR.getInstance().removeTrx();
-        SharedPrefUtil.remove(Constant.SALDO_USER);
+        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild() || Session.getInstance().isBuildRoomRuangBelajar()){
+                akunView.onFailureLogOut();
+        }else{
+            Qiscus.clearUser();
+            Session.getInstance().setLogin(false);
+            Session.getInstance().setKabimLogin(false);
+            Session.getInstance().setBuildRoomRuangBelajar(false);
+            SaveUserToken.getInstance().removeUserToken();
+            SaveUserData.getInstance().removeUser();
+            SaveUserTrxPR.getInstance().removeTrx();
+            SharedPrefUtil.remove(Constant.SALDO_USER);
+            akunView.onSuccessLogOut();
+        }
+
     }
 
 

@@ -23,6 +23,7 @@ import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
+import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.qiscus.sdk.Qiscus;
@@ -89,19 +90,28 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
 
     }
 
+    @Override
+    public void onSuccessLogOut() {
+        GcmNetworkManager.getInstance(getActivity()).cancelTask(RequestKabimService.TAG_LIST_REQUEST, RequestKabimService.class);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
+        getActivity().finish();
+    }
+
+    @Override
+    public void onFailureLogOut() {
+        ShowAlert.showToast(getActivity(), "Anda memiliki transaksi yang belum selesai");
+    }
+
     @SuppressLint("WrongConstant")
     @Override
     public void onMenuClicked(String string) {
         if(string.equals("Log Out")){
             presenter.userLogOut();
-            Qiscus.clearUser();
-            GcmNetworkManager.getInstance(getActivity()).cancelTask(RequestKabimService.TAG_LIST_REQUEST, RequestKabimService.class);
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
         }else{
-            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
-            intent.putExtra("detail_akun", string);
-            startActivity(intent);
+            ShowAlert.showToast(getActivity(), "Coming Soon");
+//            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+//            intent.putExtra("detail_akun", string);
+//            startActivity(intent);
         }
     }
 

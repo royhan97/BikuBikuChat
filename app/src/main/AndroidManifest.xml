@@ -48,12 +48,12 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".ui.notification.ChattingPsychologyNotificationService">
+        <service android:name=".notification.ChattingPsychologyNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".ui.notification.ChattingPschologyIdService">
+        <service android:name=".notification.ChattingPschologyIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

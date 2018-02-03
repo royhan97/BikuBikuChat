@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                     .addToBackStack(ListPsychologistFragment.class.getSimpleName())
                     .commit();
         }
-        if(menu.equals("History Konsultasi")){
+        else if(menu.equals("History Konsultasi")){
             getFragmentManager().beginTransaction().
                     replace(R.id.frame_container,
                             new ListChattingPsychologistHistoryFragment(),
@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                     .commit();
         }
 
-        if(menu.equals("Ruang Belajar")){
+        else if(menu.equals("Ruang Belajar")){
             if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
                 getFragmentManager().beginTransaction().
                         setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
@@ -171,10 +171,10 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                                 ListKabimFragment.class.getSimpleName())
                         .addToBackStack(ListKabimFragment.class.getSimpleName()).commit();
             }
+        }else{
+            ShowAlert.showToast(getActivity(), "Coming Soon");
         }
 
-        if (menu.equals("Library")){
 
-        }
     }
 }

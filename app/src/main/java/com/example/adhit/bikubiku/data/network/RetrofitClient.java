@@ -1,14 +1,10 @@
 package com.example.adhit.bikubiku.data.network;
 
-import android.util.Log;
-
 import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.util.Constant;
 
-import com.example.adhit.bikubiku.util.SecretKeyQiscus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -17,12 +13,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
 
 /**
  * Created by adhit on 03/01/2018.
@@ -93,7 +85,7 @@ public class RetrofitClient {
                 Request request = chain.request();
                 Request newRequest;
                 newRequest = request.newBuilder()
-                        .addHeader("QISCUS_SDK_SECRET", SecretKeyQiscus.secretKeyQiscus)
+                        .addHeader("QISCUS_SDK_SECRET", Constant.secretKeyQiscus)
                         .build();
                 return chain.proceed(newRequest);
             }

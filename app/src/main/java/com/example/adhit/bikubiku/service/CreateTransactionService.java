@@ -1,12 +1,21 @@
 package com.example.adhit.bikubiku.service;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
+import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
@@ -15,10 +24,15 @@ import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.CreateTransactionReceiver;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
+import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.util.Constant;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.sql.Time;
@@ -41,6 +55,9 @@ public class CreateTransactionService extends Service implements TransactionView
     private TransactionPresenter transactionPresenter;
     private Timer  mTimer, mTimer1;
     private Handler handler;
+    NotificationManager notificationManager;
+    public static final String ANDROID_CHANNEL_ID = "com.chikeandroid.tutsplustalerts.ANDROID";
+    public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
     public CreateTransactionService() {
 
     }
@@ -55,18 +72,12 @@ public class CreateTransactionService extends Service implements TransactionView
         super.onCreate();
         transactionPresenter = new TransactionPresenter(this);
         requestDataInterval();
-//        mTimer1 = new Timer();
-//        mTimer1.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                transactionPresenter.changeTransacationStatus("psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), "", "cancel");
-//            }
-//        }, 60000);
+
         handler=  new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
+                showNotification("Biku Biku","Transaksi anda dibatalkan",0);
                 SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                 transactionPresenter.changeTransacationStatus("psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), 0, "cancel");
 
@@ -97,13 +108,16 @@ public class CreateTransactionService extends Service implements TransactionView
                                             JsonObject trxObject = body.get("result").getAsJsonObject();
                                             if(trxObject.get("status_trx").getAsString().equals("2")){
                                                 sendToReceiver(trxObject.get("id_room").getAsString());
-                                                // SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt((String) transactionList.get(i).getIdRoom()) );
+                                                SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
+                                                sendFirstMessage();
+                                                showNotification("Biku Biku","Konsultasi anda telah dimulai", Integer.parseInt(trxObject.get("id_room").getAsString()));
                                                 stopSelf();
                                             }
                                             if(trxObject.get("status_trx").getAsString().equals("3") || trxObject.get("status_trx").getAsString().equals("1")){
                                                 sendToReceiver("0");
                                                 SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                                                 SaveUserData.getInstance().removeTransaction();
+                                                showNotification("Biku Biku","Transaksi anda dibatalkan", 0);
                                                 stopSelf();
                                             }
 
@@ -162,5 +176,83 @@ public class CreateTransactionService extends Service implements TransactionView
         SaveUserData.getInstance().removeTransaction();
         sendToReceiver("0");
         stopSelf();
+    }
+
+    public void sendFirstMessage(){
+        JSONObject payload = new JSONObject();
+        JSONObject payloadContent = new JSONObject();
+
+        try {
+            payloadContent.put("locked", "halo")
+                    .put("description", SaveUserData.getInstance().getUser().getNama() +" ENFP");
+
+            payload.put("type", "user_test")
+                    .put("content", payloadContent);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RetrofitClient.getInstance().getApiQiscus()
+                .sendMessage(SaveUserData.getInstance().getUser().getId(),
+                        Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
+                        SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", payload, "custom")
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    public void showNotification(String title, String message, int idRoom){
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        createChannels(notificationManager);
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra("id_room", idRoom);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                .setSmallIcon(R.drawable.logo)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setChannelId(ANDROID_CHANNEL_ID)
+                .setContentIntent(pendingIntent);
+
+
+        notificationManager.notify(idRoom,notificationBuilder.build());
+
+        stopSelf();
+    }
+
+    public void createChannels(NotificationManager notificationManager) {
+
+        // create android channel
+        NotificationChannel androidChannel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            androidChannel = new NotificationChannel(ANDROID_CHANNEL_ID,
+                    ANDROID_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            // Sets whether notifications posted to this channel should display notification lights
+            androidChannel.enableLights(true);
+            // Sets whether notification posted to this channel should vibrate.
+            androidChannel.enableVibration(true);
+            // Sets the notification light color for notifications posted to this channel
+            androidChannel.setLightColor(Color.GREEN);
+            // Sets whether notifications posted to this channel appear on the lockscreen or not
+            androidChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+
+            notificationManager.createNotificationChannel(androidChannel);
+
+
+        }
     }
 }

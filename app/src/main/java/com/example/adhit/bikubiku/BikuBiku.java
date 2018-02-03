@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 
-import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor;
+import com.example.adhit.bikubiku.notification.NotificationBuilderInterceptor;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.OnNewCommentReceived;
-import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
 import com.example.adhit.bikubiku.util.Constant;
-import com.example.adhit.bikubiku.util.SecretKeyQiscus;
-import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.qiscus.rtc.QiscusRTC;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
