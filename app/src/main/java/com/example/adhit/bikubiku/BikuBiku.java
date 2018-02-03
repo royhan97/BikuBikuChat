@@ -131,8 +131,7 @@ BikuBiku extends Application{
                 .setEnableFcmPushNotification(false);
                 //.setInlineReplyColor(R.color.colorPrimaryLight);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Qiscus.getChatConfig().
-                    setEnableReplyNotification(true);
+          //  Qiscus.getChatConfig().setEnableReplyNotification(true);
         }
     }
 
