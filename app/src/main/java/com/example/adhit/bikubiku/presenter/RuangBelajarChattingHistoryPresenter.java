@@ -5,9 +5,11 @@ import android.content.Intent;
 
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.ChatRoomHistory;
+import com.example.adhit.bikubiku.data.model.RequestToKabim;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryView;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -19,6 +21,7 @@ import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;

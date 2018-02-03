@@ -18,6 +18,7 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatRoomPsychologyHistoryAdapter;
 import com.example.adhit.bikubiku.adapter.ChatRoomRuangBelajarHistoryAdapter;
 import com.example.adhit.bikubiku.data.model.ChatRoomHistory;
+import com.example.adhit.bikubiku.data.model.RequestToKabim;
 import com.example.adhit.bikubiku.presenter.RuangBelajarChattingHistoryPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;

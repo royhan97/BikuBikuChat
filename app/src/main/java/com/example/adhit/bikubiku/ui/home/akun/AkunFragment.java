@@ -21,6 +21,8 @@ import com.example.adhit.bikubiku.presenter.AkunPresenter;
 import com.example.adhit.bikubiku.service.RequestKabimService;
 import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
+import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.qiscus.sdk.Qiscus;
@@ -78,7 +80,12 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
 
     @Override
     public void showUserData(User user) {
-        tvName.setText(user.getNama());
+        if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+            tvName.setText(user.getNama() + " (Kabim)");
+        }
+        else {
+            tvName.setText(user.getNama());
+        }
 
     }
 

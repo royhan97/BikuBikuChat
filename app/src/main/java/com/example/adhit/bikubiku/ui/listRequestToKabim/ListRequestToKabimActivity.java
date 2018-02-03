@@ -2,6 +2,7 @@ package com.example.adhit.bikubiku.ui.listRequestToKabim;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ListRequestToKabimAdapter;
+import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.RequestToKabim;
 import com.example.adhit.bikubiku.presenter.ListRequestToKabimPresenter;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
@@ -20,7 +22,10 @@ import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.receiver.RequestReceiver;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
+import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
+import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 
@@ -155,10 +160,15 @@ public class ListRequestToKabimActivity extends AppCompatActivity implements Lis
 
     @Override
     public void openChatRoom(QiscusChatRoom qiscusChatRoom) {
-        Intent intent = RuangBelajarChatting.generateIntent(ListRequestToKabimActivity.this, qiscusChatRoom, false);
-        startActivity(intent);
-        finish();
-        ShowAlert.closeProgresDialog();
+        if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !Qiscus.getChatConfig().isEnableReplyNotification()) {
+                Qiscus.getChatConfig().setEnableReplyNotification(true);
+            }
+            Intent intent = RuangBelajarChatting.generateIntent(ListRequestToKabimActivity.this, qiscusChatRoom, false);
+            startActivity(intent);
+            finish();
+            ShowAlert.closeProgresDialog();
+        }
     }
 
     @Override

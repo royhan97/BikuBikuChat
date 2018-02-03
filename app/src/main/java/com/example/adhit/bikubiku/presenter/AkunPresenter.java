@@ -53,6 +53,8 @@ public class AkunPresenter {
         Qiscus.clearUser();
         Session.getInstance().setLogin(false);
         Session.getInstance().setKabimLogin(false);
+        Session.getInstance().setBuildRoomRuangBelajar(false);
+        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
         SaveUserToken.getInstance().removeUserToken();
         SaveUserData.getInstance().removeUser();
         SaveUserTrxPR.getInstance().removeTrx();

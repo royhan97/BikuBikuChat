@@ -82,19 +82,20 @@ public class CreateTransactionService extends Service implements TransactionView
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                RetrofitClient
-                        .getInstance()
-                        .getApi()
-                        .getDetailTrx("psikologi", SaveUserData.getInstance().getTransaction().getInvoice())
-                        .enqueue(new Callback<JsonObject>() {
-                            @Override
-                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                if(response.isSuccessful()){
-                                    JsonObject body = response.body();
-                                    String message= body.get("message").getAsString();
-                                    if(message.equals("Success")){
-                                        JsonObject trxObject = body.get("result").getAsJsonObject();
-                                           if(trxObject.get("status_trx").getAsString().equals("2")){
+                if(SaveUserData.getInstance().getTransaction().getInvoice() !=null){
+                    RetrofitClient
+                            .getInstance()
+                            .getApi()
+                            .getDetailTrx("psikologi", SaveUserData.getInstance().getTransaction().getInvoice())
+                            .enqueue(new Callback<JsonObject>() {
+                                @Override
+                                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                    if(response.isSuccessful()){
+                                        JsonObject body = response.body();
+                                        String message= body.get("message").getAsString();
+                                        if(message.equals("Success")){
+                                            JsonObject trxObject = body.get("result").getAsJsonObject();
+                                            if(trxObject.get("status_trx").getAsString().equals("2")){
                                                 sendToReceiver(trxObject.get("id_room").getAsString());
                                                 // SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt((String) transactionList.get(i).getIdRoom()) );
                                                 stopSelf();
@@ -107,15 +108,17 @@ public class CreateTransactionService extends Service implements TransactionView
                                             }
 
 
+                                        }
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<JsonObject> call, Throwable t) {
 
-                            }
-                        });
+                                }
+                            });
+                }
+
             }
         }, 1000, 1000);
     }

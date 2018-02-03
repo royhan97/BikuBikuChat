@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory;
 
 import com.example.adhit.bikubiku.data.model.ChatRoomHistory;
+import com.example.adhit.bikubiku.data.model.RequestToKabim;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface RuangBelajarChattingHistoryView {
     void onFailure(String s);
 
     void onDetailChatRoomHistory(int idRoom);
+
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.ChatRoomHistory;
+import com.example.adhit.bikubiku.data.model.RequestToKabim;
 import com.example.adhit.bikubiku.presenter.DateFormatterPresenter;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryView;
 import com.squareup.picasso.Picasso;
@@ -36,6 +37,7 @@ public class ChatRoomRuangBelajarHistoryAdapter extends RecyclerView.Adapter<Cha
     public ChatRoomRuangBelajarHistoryAdapter() {
 
     }
+
     public void setData(List<ChatRoomHistory> items){
         chatRoomRuangBelajarHistoryList = items;
         notifyDataSetChanged();
@@ -77,6 +79,7 @@ public class ChatRoomRuangBelajarHistoryAdapter extends RecyclerView.Adapter<Cha
         if(chatRoomRuangBelajarHistoryList == null) return 0;
         return chatRoomRuangBelajarHistoryList.size();
     }
+
 
     public class RoomChatViewHolder extends RecyclerView.ViewHolder{
         TextView tvRoomChatName,tvTimeStamp;

@@ -2,6 +2,8 @@ package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
+import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.model.RequestToKabim;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.waitingrequestresponse.WaitingRequestResponView;
@@ -12,7 +14,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -67,5 +73,22 @@ public class WaitingRequestResponPresenter {
                         waitingRequestResponView.showError("gagal mengambil detail transaksi");
                     }
                 });
+    }
+
+    public void saveEndTimeTrx(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy:MM:dd:HH:mm");
+        String currentDateandTime = sdf.format(new Date(System.currentTimeMillis()));
+
+        Date date = null;
+        try {
+            date = sdf.parse(currentDateandTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, 2);
+
+        SaveUserTrxPR.getInstance().saveEndTimeTrx(calendar.getTimeInMillis());
     }
 }

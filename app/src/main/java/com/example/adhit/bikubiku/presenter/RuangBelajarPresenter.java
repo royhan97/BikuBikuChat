@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -13,7 +14,10 @@ import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.TransactionPR;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
+import com.example.adhit.bikubiku.service.ChattingServiceRuangBelajar;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
+import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -141,9 +145,12 @@ public class RuangBelajarPresenter {
                             if (status){
                                 ShowAlert.showToast(context,message);
                                 if (statusTrx.equals("accept")){
+                                    SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
+                                    SharedPrefUtil.saveInt(Constant.ROOM_ID, id_room);
                                     openRoomChatById(context,id_room);
                                 }
                                 else {
+                                    context.stopService(new Intent(context, ChattingServiceRuangBelajar.class));
                                     ShowAlert.closeProgresDialog();
                                 }
                             }
@@ -240,7 +247,7 @@ public class RuangBelajarPresenter {
                 });
     }
 
-    public void finishChatFromService(QiscusChatRoom qiscusChatRoom){
+    public void finishChatFromService(){
 
         JSONObject payload = new JSONObject();
         JSONObject payloadContent = new JSONObject();
@@ -262,7 +269,7 @@ public class RuangBelajarPresenter {
 
         RetrofitClient.getInstance().getApiQiscus()
                 .sendMessage(SaveUserData.getInstance().getUser().getId(),
-                        Integer.toString(qiscusChatRoom.getId()),
+                        Integer.toString(SharedPrefUtil.getInt(Constant.ROOM_ID)),
                         "Sesi Chat Berakhir", payload, "custom")
                 .enqueue(new Callback<JsonObject>() {
                     @Override

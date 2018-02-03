@@ -30,4 +30,16 @@ public class SaveUserTrxPR {
     public void removeTrx(){
         SharedPrefUtil.remove(Constant.KEY_TRX);
     }
+
+    public void saveEndTimeTrx(Long time){
+        SharedPrefUtil.saveLong(Constant.END_TIME_OF_TRANSACTION, time);
+    }
+
+    public long getEndTimeTrx(){
+        return SharedPrefUtil.getLong(Constant.END_TIME_OF_TRANSACTION);
+    }
+
+    public void removeEndTimeTrx(){
+        SharedPrefUtil.remove(Constant.END_TIME_OF_TRANSACTION);
+    }
 }

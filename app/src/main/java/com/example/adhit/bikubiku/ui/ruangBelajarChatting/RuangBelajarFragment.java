@@ -3,8 +3,11 @@ package com.example.adhit.bikubiku.ui.ruangBelajarChatting;
 
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,17 +24,22 @@ import android.widget.TextView;
 import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.CustomChatAdapter;
+import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
+import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.service.IsRuangBelajarEndService;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
+import com.google.gson.JsonObject;
 import com.qiscus.sdk.Qiscus;
+import com.qiscus.sdk.data.model.NotificationClickListener;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
+import com.qiscus.sdk.data.remote.QiscusApi;
 import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
 import com.qiscus.sdk.ui.adapter.QiscusChatAdapter;
 import com.qiscus.sdk.ui.fragment.QiscusBaseChatFragment;
@@ -39,11 +47,18 @@ import com.qiscus.sdk.ui.view.QiscusAudioRecorderView;
 import com.qiscus.sdk.ui.view.QiscusMentionSuggestionView;
 import com.qiscus.sdk.ui.view.QiscusRecyclerView;
 import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
+import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 /**
  * Created on : September 28, 2016
@@ -109,6 +124,7 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
         if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
             tv_endChat.setVisibility(View.GONE);
         }
+
         registerReceiver();
     }
 
@@ -142,10 +158,10 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
         super.onCreateChatComponents(savedInstanceState);
         ruangBelajarPresenter = new RuangBelajarPresenter(this);
         SharedPrefUtil.saveInt(Constant.ROOM_ID, qiscusChatRoom.getId());
-        if (!SharedPrefUtil.getBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR) && !RuangBelajarFragment.isHistory && !SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+        if (!Session.getInstance().isBuildRoomRuangBelajar() && !RuangBelajarFragment.isHistory && !SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+            Session.getInstance().setBuildRoomRuangBelajar(true);
             System.out.println("status room build " + SharedPrefUtil.getBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR));
             sendLockedMessage();
-            Session.getInstance().setBuildRoomRuangBelajar(true);
             SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, false);
         }
     }
@@ -180,10 +196,10 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             mInputPanel.setVisibility(View.GONE);
         }
         else {
-            SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
             mInputPanel.setVisibility(View.VISIBLE);
             tv_endChat.setOnClickListener(this);
         }
+
     }
 
     public void registerReceiver() {
@@ -196,7 +212,6 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
     @Override
     public void onStart() {
         super.onStart();
-
         mService = new Intent(getActivity(), IsRuangBelajarEndService.class);
         getActivity().startService(mService);
 
@@ -482,47 +497,46 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
     public void onClick(View v) {
         if (v.getId() == R.id.tv_end_chat){
 //            getActivity().onBackPressed();
+            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(SharedPrefUtil.getInt(Constant.ROOM_ID));
             ruangBelajarPresenter.finishChat(qiscusChatRoom);
-            SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, false);
+            Session.getInstance().setBuildRoomRuangBelajar(false);
+            SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, true);
             mInputPanel.setVisibility(View.GONE);
             tv_endChat.setAlpha(0.3f);
             tv_endChat.setOnClickListener(null);
-        }
-    }
-
-    @Override
-    public void onNewComment(QiscusComment qiscusComment) {
-        super.onNewComment(qiscusComment);
-        JSONObject payload = null;
-        try {
-            payload = new JSONObject(qiscusComment.getExtraPayload());
-
-            if (payload.optString("type").equals("end_chat") || payload.optString("type").equals("closed_chat")) {
-                mInputPanel.setVisibility(View.GONE);
-                SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, false);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
     public void handleFromEndChat(boolean isEndChat) {
         if (isEndChat){
-            tv_endChat.setAlpha(0.3f);
-            tv_endChat.setOnClickListener(null);
-            mInputPanel.setVisibility(View.GONE);
-            SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, false);
-            ruangBelajarPresenter.updateStatusTransaksiPR(getActivity(), SaveUserTrxPR.getInstance().getTrx().getLayanan(),
-                    SaveUserTrxPR.getInstance().getTrx().getInvoice(),SharedPrefUtil.getInt(Constant.ROOM_ID), "finish");
+            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+                mInputPanel.setVisibility(View.GONE);
+                Session.getInstance().setBuildRoomRuangBelajar(false);
+            }
+            else {
+                tv_endChat.setAlpha(0.3f);
+                tv_endChat.setOnClickListener(null);
+                mInputPanel.setVisibility(View.GONE);
+                Session.getInstance().setBuildRoomRuangBelajar(false);
+                ruangBelajarPresenter.updateStatusTransaksiPR(getActivity(), SaveUserTrxPR.getInstance().getTrx().getLayanan(),
+                        SaveUserTrxPR.getInstance().getTrx().getInvoice(),SharedPrefUtil.getInt(Constant.ROOM_ID), "finish");
+            }
         }
     }
 
     @Override
     public void handleFromIsRoomEnd(boolean isRoomEnd) {
         if (isRoomEnd){
-            mInputPanel.setVisibility(View.GONE);
-            SharedPrefUtil.saveBoolean(Constant.IS_ROOM_BUILD_RUANG_BELAJAR, false);
+            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+                mInputPanel.setVisibility(View.GONE);
+            }
+            else {
+                tv_endChat.setAlpha(0.3f);
+                tv_endChat.setOnClickListener(null);
+                mInputPanel.setVisibility(View.GONE);
+            }
         }
     }
 

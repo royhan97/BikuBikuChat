@@ -3,6 +3,7 @@ package com.example.adhit.bikubiku.ui.waitingrequestresponse;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,9 +20,12 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
+import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
 import com.example.adhit.bikubiku.presenter.WaitingRequestResponPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
+import com.example.adhit.bikubiku.service.ChattingService;
+import com.example.adhit.bikubiku.service.ChattingServiceRuangBelajar;
 import com.example.adhit.bikubiku.service.RuangBelajarEndChattingService;
 import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
@@ -29,6 +33,7 @@ import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.util.ShowAlert;
+import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 
@@ -42,15 +47,15 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
 
     TextView txtWaiting,txtEndWaiting;
     Button btnReqAgain;
-    ProgressBar pbWait;
     private String layanan,invoice;
     private EndChatStatusReceiver mBroadcast;
     private final Handler handler = new Handler();
     private WaitingRequestResponPresenter waitingRequestPresenter;
     private  RuangBelajarPresenter ruangBelajarPresenter;
     private boolean isResponseKabim = false;
+    private  int animationCounter = 1;
     private Toolbar toolbar;
-    private ImageView imgBack,imgCancel;
+    private ImageView imgBack,imgCancel, loadingImage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +66,9 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
         txtWaiting = findViewById(R.id.txt_waiting);
         txtEndWaiting = findViewById(R.id.txt_end_waiting);
         btnReqAgain = findViewById(R.id.btn_request_again);
-        pbWait = findViewById(R.id.pb_waiting);
         imgBack = findViewById(R.id.img_back);
         imgCancel = findViewById(R.id.img_cancel);
+        loadingImage = findViewById(R.id.img_loading);
         waitingRequestPresenter = new WaitingRequestResponPresenter(this);
         ruangBelajarPresenter = new RuangBelajarPresenter(this);
 
@@ -121,11 +126,12 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     @Override
     public void handleFromEndWait(boolean isEndWait) {
         if (isEndWait && !isResponseKabim){
+            handler.removeCallbacksAndMessages(null);
             ruangBelajarPresenter.updateStatusTransaksiPR(this,layanan,invoice,-1,"cancel");
-            pbWait.setVisibility(View.GONE);
             txtWaiting.setVisibility(View.GONE);
             txtEndWaiting.setVisibility(View.VISIBLE);
             btnReqAgain.setVisibility(View.VISIBLE);
+            loadingImage.setImageResource(R.drawable.logo);
 
             btnReqAgain.setOnClickListener(v -> {
                 onBackPressed();
@@ -136,6 +142,23 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
 
     private void checkStatusTrx() {
         handler.postDelayed(() -> {
+            switch (animationCounter++) {
+                case 1:
+                    loadingImage.setImageResource(R.drawable.logo);
+                    txtWaiting.setText("Menunggu Respon Kabim.");
+                    break;
+                case 2:
+                    loadingImage.setImageResource(R.drawable.logobiku2);
+                    txtWaiting.setText("Menunggu Respon Kabim..");
+                    break;
+                case 3:
+                    loadingImage.setImageResource(R.drawable.logo);
+                    txtWaiting.setText("Menunggu Respon Kabim...");
+                    break;
+
+            }
+            animationCounter %= 4;
+            if(animationCounter == 0 ) animationCounter = 1;
             waitingRequestPresenter.getDetailTrx(layanan,invoice); // this is where you put your refresh code
             Log.d("WaitingRequestRespon","lagi cek detail trx");
             checkStatusTrx();
@@ -154,16 +177,17 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
             handler.removeCallbacksAndMessages(null);
             ruangBelajarPresenter.updateStatusTransaksiPR(WaitingRequestResponActivity.this,layanan,invoice,-1,"cancel");
 
-            pbWait.setVisibility(View.GONE);
             txtWaiting.setVisibility(View.GONE);
             txtEndWaiting.setVisibility(View.VISIBLE);
             btnReqAgain.setVisibility(View.VISIBLE);
 
             btnReqAgain.setOnClickListener(this);
         }
-        else if(statusTrx == 2){
+        else if(statusTrx == 2 && !isResponseKabim){
             this.isResponseKabim = true;
             ShowAlert.showToast(this, "request anda diterima kabim");
+            SharedPrefUtil.saveInt(Constant.ROOM_ID, idRoom);
+            SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
             ruangBelajarPresenter.openRoomChatById(WaitingRequestResponActivity.this,idRoom);
         }
     }
@@ -181,16 +205,25 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
     @Override
     public void openChatRoom(QiscusChatRoom qiscusChatRoom) {
         if (!SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
-            Intent intentService = new Intent(WaitingRequestResponActivity.this, RuangBelajarEndChattingService.class);
-            intentService.putExtra(RuangBelajarEndChattingService.EXTRA_DURATION, 180000);
-            intentService.putExtra(RuangBelajarEndChattingService.QISCUS_CHAT_ROOM, qiscusChatRoom);
-            startService(intentService);
+//            Intent intentService = new Intent(WaitingRequestResponActivity.this, RuangBelajarEndChattingService.class);
+//            intentService.putExtra(RuangBelajarEndChattingService.EXTRA_DURATION, 180000);
+//            intentService.putExtra(RuangBelajarEndChattingService.QISCUS_CHAT_ROOM, qiscusChatRoom);
+//            startService(intentService);
+            Session.getInstance().setBuildRoomRuangBelajar(false);
+            waitingRequestPresenter.saveEndTimeTrx();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !Qiscus.getChatConfig().isEnableReplyNotification()) {
+                Qiscus.getChatConfig().setEnableReplyNotification(true);
+            }
+
+            Intent intent = RuangBelajarChatting.generateIntent(WaitingRequestResponActivity.this, qiscusChatRoom, false);
+            startActivity(intent);
+            finish();
+            ShowAlert.closeProgresDialog();
+
+            Intent intent1= new Intent(this, ChattingServiceRuangBelajar.class);
+            startService(intent1);
         }
 
-        Intent intent = RuangBelajarChatting.generateIntent(WaitingRequestResponActivity.this, qiscusChatRoom, false);
-        startActivity(intent);
-        finish();
-        ShowAlert.closeProgresDialog();
     }
 
     @Override
@@ -232,7 +265,6 @@ public class WaitingRequestResponActivity extends AppCompatActivity implements E
                             isResponseKabim = true;
                             ruangBelajarPresenter.updateStatusTransaksiPR(WaitingRequestResponActivity.this,layanan,invoice,-1,"cancel");
 
-                            pbWait.setVisibility(View.GONE);
                             txtWaiting.setVisibility(View.GONE);
                             txtEndWaiting.setVisibility(View.VISIBLE);
                             btnReqAgain.setVisibility(View.VISIBLE);

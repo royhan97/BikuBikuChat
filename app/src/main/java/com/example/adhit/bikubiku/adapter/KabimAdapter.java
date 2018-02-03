@@ -104,16 +104,7 @@ public class KabimAdapter extends ExpandableRecyclerViewAdapter<KabimVIewHolder,
 
     @Override
     public void openChatRoom(QiscusChatRoom qiscusChatRoom) {
-        if (!SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
-            Intent intentService = new Intent(context, RuangBelajarEndChattingService.class);
-            intentService.putExtra(RuangBelajarEndChattingService.EXTRA_DURATION, 60000);
-            intentService.putExtra(RuangBelajarEndChattingService.QISCUS_CHAT_ROOM, qiscusChatRoom);
-            context.startService(intentService);
-        }
 
-        Intent intent = RuangBelajarChatting.generateIntent(context, qiscusChatRoom, false);
-        context.startActivity(intent);
-        ShowAlert.closeProgresDialog();
     }
 
     @Override

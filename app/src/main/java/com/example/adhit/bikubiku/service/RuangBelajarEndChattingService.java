@@ -68,7 +68,7 @@ public class RuangBelajarEndChattingService extends IntentService implements Rua
             else {
                 if (!SharedPrefUtil.getBoolean(Constant.IS_END_CHATTING)){
                     qiscusChatRoom  = intent.getParcelableExtra(QISCUS_CHAT_ROOM);
-                    ruangBelajarPresenter.finishChatFromService(qiscusChatRoom );
+//                    ruangBelajarPresenter.finishChatFromService(qiscusChatRoom);
                     Intent intentBroadcast = new Intent();
                     intentBroadcast.setAction(EndChatStatusReceiver.TAG);
                     intentBroadcast.putExtra("status_end_chat", true);
@@ -122,13 +122,13 @@ public class RuangBelajarEndChattingService extends IntentService implements Rua
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.cancel(SharedPrefUtil.getInt(Constant.ROOM_ID));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager.getNotificationChannel(NOTIF_CHANNEL_ID) == null) {
                 ruangBelajarPresenter.createNotifChannel(getApplicationContext());
             }
         }
         notificationManager.notify(0,notificationBuilder.build());
+        notificationManager.cancel(SharedPrefUtil.getInt(Constant.ROOM_ID));
     }
 
     @Override

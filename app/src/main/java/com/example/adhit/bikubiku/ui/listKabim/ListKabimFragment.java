@@ -33,6 +33,9 @@ import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.remote.QiscusApi;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
 /**
@@ -105,9 +108,25 @@ public class ListKabimFragment extends Fragment implements View.OnClickListener,
     public void toRecentRoomChat(int id) {
         QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
                 new QiscusRxExecutor.Listener<QiscusChatRoom>() {
+                    String type, description;
+                    Boolean isHistory = false;
                     @Override
                     public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                        Intent intent = RuangBelajarChatting.generateIntent(getActivity(), qiscusChatRoom, false);
+                        try {
+                            String strPayload = qiscusChatRoom.getLastComment().getExtraPayload();
+                            JSONObject jsonObjectPayload = new JSONObject(strPayload);
+                            JSONObject jsonObjectContent = jsonObjectPayload.getJSONObject("content");
+                            System.out.println("extra comment : " + jsonObjectPayload);
+                            type = jsonObjectPayload.getString("type");
+                            description = jsonObjectContent.getString("description");
+                            if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir")) || SharedPrefUtil.getBoolean(Constant.IS_END_CHATTING)) {
+                                isHistory = true;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent intent = RuangBelajarChatting.generateIntent(getActivity(), qiscusChatRoom, isHistory);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         ShowAlert.closeProgresDialog();

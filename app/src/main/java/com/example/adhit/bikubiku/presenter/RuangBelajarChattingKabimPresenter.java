@@ -64,7 +64,13 @@ public class RuangBelajarChattingKabimPresenter {
                             List<ChatRoomHistory> chatRoomKabim = new ArrayList<>();
 
                             for(int i=0; i<chatRoomList.size();i++){
-                                if(!chatRoomList.get(i).getLastCommentMessage().equals("Sesi Chat Berakhir")){
+                                boolean isChatKabim = true;
+                                for (int j=0; j<chatRoomList.get(i).getParticipants().size(); j++){
+                                    if (chatRoomList.get(i).getParticipants().get(j).getEmail().matches("\\d+p")){
+                                        isChatKabim = false;
+                                    }
+                                }
+                                if(!chatRoomList.get(i).getLastCommentMessage().equals("Sesi Chat Berakhir") && isChatKabim){
                                     chatRoomKabim.add(chatRoomList.get(i));
                                 }
                             }

@@ -10,6 +10,7 @@ import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.OnNewCommentReceived;
+import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SecretKeyQiscus;
@@ -93,9 +94,9 @@ public class BikuBiku extends Application{
                                     new QiscusRxExecutor.Listener<QiscusChatRoom>() {
                                         @Override
                                         public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                                            Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent);
+                                                Intent intent = ChattingPsychologyActivity.generateIntent(getApplicationContext(), qiscusChatRoom, false);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
                                         }
                                         @Override
                                         public void onError(Throwable throwable) {
@@ -137,10 +138,10 @@ public class BikuBiku extends Application{
                 //.setCancelRecordIcon(R.drawable.ic_cancel_record)
                 .setEnableFcmPushNotification(false);
                 //.setInlineReplyColor(R.color.colorPrimaryLight);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Qiscus.getChatConfig().
-                    setEnableReplyNotification(true);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            Qiscus.getChatConfig().
+//                    setEnableReplyNotification(true);
+//        }
     }
 
 
