@@ -29,10 +29,11 @@ public class NotificationBuilderInterceptor  implements QiscusNotificationBuilde
             pendingIntent = PendingIntent.getBroadcast(BikuBiku.getContext(), qiscusComment.getRoomId(), openIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             String getRepliedTo = qiscusComment.getSender();
             RemoteInput remoteInput = new RemoteInput.Builder(KEY_NOTIFICATION_REPLY)
-                    .setLabel(QiscusTextUtil.getString(com.qiscus.sdk.R.string.qiscus_reply_to, getRepliedTo.toUpperCase()))
+                   // .setLabel(QiscusTextUtil.getString(com.qiscus.sdk.R.string.qiscus_reply_to, getRepliedTo.toUpperCase()))
+                    .setLabel("REPLY TO "+ qiscusComment.getSender().toUpperCase())
                     .build();
             NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_send,
-                    QiscusTextUtil.getString(com.qiscus.sdk.R.string.qiscus_reply_to, getRepliedTo.toUpperCase()), pendingIntent)
+                    "REPLY TO "+ qiscusComment.getSender().toUpperCase(), pendingIntent)
                     .addRemoteInput(remoteInput)
                     .build();
             notificationBuilder.addAction(replyAction);
