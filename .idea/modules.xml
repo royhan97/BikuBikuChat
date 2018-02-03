@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BikuBiku.iml" filepath="$PROJECT_DIR$/.idea/BikuBiku.iml" />
+      <module fileurl="file://E:\Project\Chat Qiscus\ChatBikuBiku\BikuBikuReborn\.idea\BikuBiku.iml" filepath="E:\Project\Chat Qiscus\ChatBikuBiku\BikuBikuReborn\.idea\BikuBiku.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BikuBikuReborn.iml" filepath="$PROJECT_DIR$/BikuBikuReborn.iml" />
       <module fileurl="file://D:\Project\Biku Biku\BikuBiku\BikuBikuReborn.iml" filepath="D:\Project\Biku Biku\BikuBiku\BikuBikuReborn.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +36,7 @@ public class RuangBelajarChatting extends QiscusBaseChatActivity {
     public static TextView mSubtitle;
     private QiscusCircularImageView qiscusCircularImageView;
     private ImageButton imgbVoiceCall;
+    private ImageView  imgVideoCall;
     private static boolean isHistory;
     private Intent mService;
 
@@ -58,6 +60,7 @@ public class RuangBelajarChatting extends QiscusBaseChatActivity {
         mSubtitle = findViewById(R.id.tv_subtitle);
         qiscusCircularImageView = findViewById(R.id.profile_picture);
         imgbVoiceCall = findViewById(R.id.imgb_voice_call);
+        imgVideoCall = findViewById(R.id.img_video_call);
         findViewById(com.qiscus.sdk.R.id.back).setOnClickListener(v -> onBackPressed());
 
 
@@ -95,13 +98,13 @@ public class RuangBelajarChatting extends QiscusBaseChatActivity {
             }
         }
         qiscusCircularImageView.setImageURI(Uri.parse(qiscusChatRoom.getAvatarUrl()));
+        imgVideoCall.setAlpha(0.3f);
+        imgbVoiceCall.setAlpha(0.3f);
 
-        imgbVoiceCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String id = generateRoomCall();
-                ShowAlert.showToast(RuangBelajarChatting.this, QiscusRTC.getUser());
-            }
+        imgbVoiceCall.setOnClickListener(view -> ShowAlert.showToast(RuangBelajarChatting.this,"Coming Soon"));
+
+        imgVideoCall.setOnClickListener(v -> {
+            ShowAlert.showToast(RuangBelajarChatting.this,"Coming Soon");
         });
     }
 
