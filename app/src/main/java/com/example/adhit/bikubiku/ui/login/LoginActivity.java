@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.LoginPresenter;
@@ -23,6 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CoordinatorLayout coordinatorLayout;
     private EditText etUsername, etPassword;
     private LoginPresenter loginPresenter;
+    private TextView tvForgotPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnLogin = (Button) findViewById(R.id.btn_login);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
+        tvForgotPassword = findViewById(R.id.tv_forgot_password);
         fabRegister.setOnClickListener(this);
         btnDaftarLine.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        tvForgotPassword.setOnClickListener(this);
     }
 
     public  void initPresenter(){
@@ -76,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 loginPresenter.Login(this, username, password);
             }
+        }
+        if(view.getId() == R.id.tv_forgot_password){
+            ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
         }
     }
 
