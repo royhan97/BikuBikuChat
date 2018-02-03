@@ -1,15 +1,7 @@
-package com.example.adhit.bikubiku.ui.notification;
+package com.example.adhit.bikubiku.notification;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 
@@ -18,9 +10,6 @@ import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.model.QiscusNotificationBuilderInterceptor;
 import com.qiscus.sdk.util.QiscusTextUtil;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import static com.qiscus.sdk.util.QiscusPushNotificationUtil.KEY_NOTIFICATION_REPLY;
 

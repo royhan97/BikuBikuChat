@@ -96,7 +96,14 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
 
     @Override
     public void showMessage(String string) {
-        ShowAlert.showSnackBar(coordinatorLayout, string);
+        ShowAlert.showToast(getApplicationContext(), string);
+        if(string.equals(getResources().getString(R.string.text_register_success))){
+            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                animateRevealClose();
+            }else{
+                super.onBackPressed();
+            }
+        }
 
     }
 

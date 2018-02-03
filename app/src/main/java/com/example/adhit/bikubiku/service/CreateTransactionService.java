@@ -25,6 +25,7 @@ import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.CreateTransactionReceiver;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.util.Constant;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -76,7 +77,7 @@ public class CreateTransactionService extends Service implements TransactionView
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                showNotification("Biku Biku","Transaksi anda dibatalkan");
+                showNotification("Biku Biku","Transaksi anda dibatalkan",0);
                 SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                 transactionPresenter.changeTransacationStatus("psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), 0, "cancel");
 
@@ -108,14 +109,14 @@ public class CreateTransactionService extends Service implements TransactionView
                                                 sendToReceiver(trxObject.get("id_room").getAsString());
                                                 SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
                                                 sendFirstMessage();
-                                                showNotification("Biku Biku","Konsultasi anda telah dimulai");
+                                                showNotification("Biku Biku","Konsultasi anda telah dimulai", Integer.parseInt(trxObject.get("id_room").getAsString()));
                                                 stopSelf();
                                             }
                                             if(trxObject.get("status_trx").getAsString().equals("3") || trxObject.get("status_trx").getAsString().equals("1")){
                                                 sendToReceiver("0");
                                                 SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                                                 SaveUserData.getInstance().removeTransaction();
-                                                showNotification("Biku Biku","Transaksi anda dibatalkan");
+                                                showNotification("Biku Biku","Transaksi anda dibatalkan", 0);
                                                 stopSelf();
                                             }
 
@@ -207,11 +208,11 @@ public class CreateTransactionService extends Service implements TransactionView
 
     }
 
-    public void showNotification(String title, String message){
-        int idRoom = SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat();
+    public void showNotification(String title, String message, int idRoom){
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         createChannels(notificationManager);
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra("id_room", idRoom);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

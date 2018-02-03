@@ -24,7 +24,6 @@ import org.json.JSONObject;
 public class ChattingPsychologyPresenter {
 
     private ChattingPsychologyView chattingPsychologyView;
-    private TransactionPresenter transactionPresenter;
     public ChattingPsychologyPresenter(ChattingPsychologyView chattingPsychologyView){
         this.chattingPsychologyView = chattingPsychologyView;
     }

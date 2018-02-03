@@ -6,38 +6,24 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.multidex.MultiDex;
 
-import com.example.adhit.bikubiku.ui.notification.NotificationBuilderInterceptor;
+import com.example.adhit.bikubiku.notification.NotificationBuilderInterceptor;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.OnNewCommentReceived;
-import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChatting;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarFragment;
 import com.example.adhit.bikubiku.util.Constant;
-import com.example.adhit.bikubiku.util.SecretKeyQiscus;
-import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.qiscus.rtc.QiscusRTC;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.data.remote.QiscusPusherApi;
 import com.qiscus.sdk.event.QiscusChatRoomEvent;
 import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
 import com.qiscus.sdk.event.QiscusUserStatusEvent;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 import com.qiscus.sdk.data.model.NotificationClickListener;
-import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
-import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.event.QiscusChatRoomEvent;
-import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
-import com.qiscus.sdk.event.QiscusUserStatusEvent;
-import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
@@ -84,7 +70,7 @@ BikuBiku extends Application{
 
     public void initQiscus(){
         Qiscus.init(this, "bikubiku-it3hra928qv7");
-        QiscusRTC.init(this, "bikubiku-it3hra928qv7", SecretKeyQiscus.secretKeyQiscus);
+        QiscusRTC.init(this, "bikubiku-it3hra928qv7", Constant.secretKeyQiscus);
         onNewCommentReceived = new OnNewCommentReceived();
         ruangBelajarFragment = new RuangBelajarFragment();
 
