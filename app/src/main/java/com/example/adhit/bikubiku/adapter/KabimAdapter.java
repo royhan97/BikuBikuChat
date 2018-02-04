@@ -80,7 +80,7 @@ public class KabimAdapter extends ExpandableRecyclerViewAdapter<KabimVIewHolder,
             holder.chat.setOnClickListener(view -> {
                 presenter = new RuangBelajarPresenter(this);
                 Toast.makeText(context, ((Kabim) group).getNameKabim(), Toast.LENGTH_SHORT).show();
-                presenter.createTrx(context,"konsultasipr",2,15,1,"Tidak ada");
+                presenter.createTrx(context,"konsultasipr",1,15,1,"Tidak ada");
 //                presenter.createRoomChat(context, ((Kabim)group).getIdKabim(), ((Kabim) group).getNameKabim());
             });
         }

@@ -35,7 +35,7 @@ public class ListKabimFragmentPresenter {
 
         listDetailKabim.add(new DetailKabim("Matematika",listReview));
 
-        listKabim.add(new Kabim(listDetailKabim, "https://www.shareicon.net/data/2016/08/05/806962_user_512x512.png", "roy@gmail.com", 10, "royhan", "royhan"));
+        listKabim.add(new Kabim(listDetailKabim, "https://www.shareicon.net/data/2016/08/05/806962_user_512x512.png", "roy@gmail.com", 16, "roihan", "roihan"));
 
         listKabimView.showData(listKabim);
     }
