@@ -47,6 +47,7 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
         final PsychologistApprove psychologistApprove = psychologistApproveList.get(position);
         holder.tvNamePsychologist.setText(psychologistApprove.getNama());
         holder.tvConsultationPrice.setText(psychologistApprove.getTarif());
+        holder.tvPsychologistSpecialist.setText("Psikolog Klinis");
         if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
             holder.btnStartChat.setClickable(false);
             holder.btnStartChat.setBackgroundResource(R.color.grey_500);
@@ -77,12 +78,14 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
     public class HomeViewHolder extends RecyclerView.ViewHolder {
         TextView tvNamePsychologist;
         TextView tvConsultationPrice;
+        TextView tvPsychologistSpecialist;
         Button  btnStartChat;
 
         public HomeViewHolder(View itemView) {
             super(itemView);
             tvNamePsychologist = itemView.findViewById(R.id.tv_psychologist_name);
             tvConsultationPrice = itemView.findViewById(R.id.tv_price_consultation);
+            tvPsychologistSpecialist = itemView.findViewById(R.id.tv_psychologist_spesialist);
             btnStartChat = itemView.findViewById(R.id.btn_start_chat);
 
         }

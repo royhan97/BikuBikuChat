@@ -35,6 +35,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/tv_psychologist_spesialist"
+                android:text="@string/text_psychologist_spesialist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <TextView
                 android:id="@+id/tv_price_consultation"
                 android:text="@string/text_price_consultation"
                 android:textSize="16sp"

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
+import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.presenter.WaitingRequestResponPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.ui.waitingrequestresponse.WaitingRequestResponView;
@@ -68,6 +70,13 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
                     e.printStackTrace();
                 }
             }
+        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Qiscus.getChatConfig()
+                        .setEnableReplyNotification(false);
+            }
+
+        }
 
 
     }

@@ -118,9 +118,10 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.tv_edit_profil){
-            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
-            intent.putExtra("detail_akun", "Profil");
-            startActivity(intent);
+//            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+//            intent.putExtra("detail_akun", "Profil");
+//            startActivity(intent);
+            ShowAlert.showToast(getActivity(), "Coming Soon");
         }
     }
 }
