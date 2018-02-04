@@ -79,10 +79,10 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(gridLayoutManager);
-        presenter = new HomePresenter(this);
+        presenter = new HomePresenter(getActivity(),this);
         presenter.showListHome();
         presenter.getSaldo();
-            presenter = new HomePresenter(this);
+            presenter = new HomePresenter(getActivity(),this);
             presenter.showListHome();
             presenter.showSaldo();
     }

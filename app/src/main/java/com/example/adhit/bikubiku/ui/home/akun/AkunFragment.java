@@ -69,7 +69,7 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
         rvMenu.setAdapter(adapter);
         rvMenu.setHasFixedSize(true);
         rvMenu.setLayoutManager(linearLayoutManager);
-        presenter = new AkunPresenter(this);
+        presenter = new AkunPresenter(getActivity(),this);
         presenter.showListAkunMenu();
         presenter.showDataUser();
     }

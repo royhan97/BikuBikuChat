@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.presenter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.example.adhit.bikubiku.BikuBiku;
@@ -28,18 +29,20 @@ import java.util.ArrayList;
 
 public class AkunPresenter {
     private AkunView akunView;
-    public AkunPresenter(AkunView akunView){
+    private Context context;
+    public AkunPresenter(Context context,AkunView akunView){
         this.akunView = akunView;
+        this.context  = context;
     }
 
     public void showListAkunMenu(){
         ArrayList<Home> akunArrayList = new ArrayList<>();
-        akunArrayList.add(new Home(R.drawable.logo, "Profil"));
-        akunArrayList.add(new Home(R.drawable.logo, "Personalia"));
-        akunArrayList.add(new Home(R.drawable.logo, "My Library"));
-        akunArrayList.add(new Home(R.drawable.logo, "Pencapaian"));
-        akunArrayList.add(new Home(R.drawable.logo, "Panel Kabim"));
-        akunArrayList.add(new Home(R.drawable.logo, "Log Out"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_user_o), "Profil"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_vCard), "Personalia"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_archieve), "My Library"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_trophy), "Pencapaian"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_group), "Panel Kabim"));
+        akunArrayList.add(new Home(context.getString(R.string.fa_sign_out), "Log Out"));
         akunView.showData(akunArrayList);
 
     }

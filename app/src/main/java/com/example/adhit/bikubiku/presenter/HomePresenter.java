@@ -1,5 +1,7 @@
 package com.example.adhit.bikubiku.presenter;
 
+import android.content.Context;
+
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
@@ -22,18 +24,20 @@ import retrofit2.Response;
 public class HomePresenter {
 
     private HomeView homeView;
-    public HomePresenter(HomeView homeView){
+    private Context context;
+    public HomePresenter(Context context, HomeView homeView){
         this.homeView = homeView;
+        this.context = context;
     }
 
     public void showListHome(){
         ArrayList<Home> homeArrayList = new ArrayList<>();
-        homeArrayList.add(new Home(R.drawable.logo, "Library"));
-        homeArrayList.add(new Home(R.drawable.logo, "Ruang Belajar"));
-        homeArrayList.add(new Home(R.drawable.logo, "Tes Minat"));
-        homeArrayList.add(new Home(R.drawable.logo, "Artikel"));
-        homeArrayList.add(new Home(R.drawable.logo, "Konsultasi Psikologi"));
-        homeArrayList.add(new Home(R.drawable.logo, "History Konsultasi"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_archieve), "Library"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_graduation), "Ruang Belajar"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_check), "Tes Minat"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_text_o), "Artikel"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_we_chat), "Konsultasi Psikologi"));
+        homeArrayList.add(new Home(context.getString(R.string.fa_history), "History Konsultasi"));
         homeView.showData(homeArrayList);
 
     }

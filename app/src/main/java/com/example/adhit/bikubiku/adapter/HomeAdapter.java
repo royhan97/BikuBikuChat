@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
     public void onBindViewHolder(HomeViewHolder holder, int position) {
         final Home home = homeList.get(position);
         holder.tvNameMenu.setText(home.getNamaMenu());
-        holder.imgMenu.setImageResource(home.getGambarMenu());
+        holder.imgMenu.setText(home.getGambarMenu());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,12 +63,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     public class HomeViewHolder extends RecyclerView.ViewHolder {
         TextView tvNameMenu;
-        ImageView imgMenu;
+        TextView imgMenu;
+
+        Typeface fontAwesomeFont = Typeface.createFromAsset(context.getAssets(), "fontawesome-webfont.ttf");
 
         public HomeViewHolder(View itemView) {
             super(itemView);
             imgMenu = itemView.findViewById(R.id.img_menu);
             tvNameMenu = itemView.findViewById(R.id.tv_name_menu);
+
+            imgMenu.setTypeface(fontAwesomeFont);
         }
     }
     public interface OnDetailListener{

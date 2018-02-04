@@ -6,15 +6,15 @@ package com.example.adhit.bikubiku.data.model;
 
 public class Home {
 
-    private int gambarMenu;
+    private String gambarMenu;
     private String namaMenu;
 
-    public Home(int gambarMenu, String namaMenu) {
+    public Home(String gambarMenu, String namaMenu) {
         this.gambarMenu = gambarMenu;
         this.namaMenu = namaMenu;
     }
 
-    public int getGambarMenu() {
+    public String getGambarMenu() {
         return gambarMenu;
     }
 
