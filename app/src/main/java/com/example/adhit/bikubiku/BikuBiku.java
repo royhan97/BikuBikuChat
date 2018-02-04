@@ -80,7 +80,6 @@ public class BikuBiku extends Application{
                 .setLeftBubbleColor(R.color.colorWhite)
                 .setNotificationBigIcon(R.drawable.logo)
                 .setNotificationSmallIcon(R.drawable.logo)
-                .setOnlyEnablePushNotificationOutsideChatRoom(false)
                 .setNotificationClickListener(new NotificationClickListener() {
                     @Override
                     public void onClick(Context context, QiscusComment qiscusComment) {
@@ -111,46 +110,39 @@ public class BikuBiku extends Application{
                 .setLeftProgressFinishedColor(R.color.colorPrimary)
                 .setRightBubbleColor(R.color.colorGreen400)
                 .setRightBubbleTextColor(R.color.color_black)
-                //.setRightProgressFinishedColor(R.color.colorPrimaryLight)
                 .setSelectedBubbleBackgroundColor(R.color.colorPrimary)
                 .setReadIconColor(R.color.colorPrimary)
                 .setAppBarColor(R.color.colorPrimary)
                 .setStatusBarColor(R.color.colorPrimaryDark)
                 .setAccentColor(R.color.colorAccent)
                 .setAccountLinkingTextColor(R.color.colorPrimary)
-               // .setAccountLinkingBackground(R.color.accountLinkingBackground)
                 .setButtonBubbleTextColor(R.color.colorPrimary)
-                //.setButtonBubbleBackBackground(R.color.accountLinkingBackground)
                 .setReplyBarColor(R.color.colorPrimary)
                 .setReplySenderColor(R.color.colorPrimary)
                 .setSendButtonIcon(R.drawable.ic_qiscus_send_on)
                 .setShowAttachmentPanelIcon(R.drawable.ic_qiscus_send_off)
-                //.setStopRecordIcon(R.drawable.ic_send_record)
                 .setEnableAddFile(true)
                 .setEnablePushNotification(true)
                 .setNotificationSmallIcon(R.drawable.logo)
                 .setEnableAvatarAsNotificationIcon(true)
-//                .setNotificationClickListener((context, qiscusComment) -> {
-//                    onNewCommentReceived.clickNotificationHandler(context, qiscusComment);
-//                })
-                //.setCancelRecordIcon(R.drawable.ic_cancel_record)
                 .setEnableFcmPushNotification(false);
-                //.setInlineReplyColor(R.color.colorPrimaryLight);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            Qiscus.getChatConfig().
-//                    setEnableReplyNotification(true);
-//        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Qiscus.getChatConfig().setEnableReplyNotification(false);
+        }
+
+
     }
 
 
     @Subscribe
     public void onGetNewQiscusComment(QiscusCommentReceivedEvent event) {
 //        onNewCommentReceived.refreshKabimRoomList();
-        if (event.getQiscusComment() != null){
-            QiscusComment qiscusComment = event.getQiscusComment();
-            // Do your implementation
-            onNewCommentReceived.endChatTrigger(qiscusComment);
-        }
+//        if (event.getQiscusComment() != null){
+//            QiscusComment qiscusComment = event.getQiscusComment();
+//            // Do your implementation
+//            onNewCommentReceived.endChatTrigger(qiscusComment);
+//        }
     }
 
     /**
