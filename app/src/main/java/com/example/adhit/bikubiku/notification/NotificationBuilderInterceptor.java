@@ -1,5 +1,6 @@
 package com.example.adhit.bikubiku.notification;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
@@ -19,6 +20,7 @@ import com.qiscus.sdk.util.QiscusTextUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.qiscus.sdk.util.QiscusPushNotificationUtil.KEY_NOTIFICATION_REPLY;
 
 /**
@@ -30,45 +32,45 @@ public class NotificationBuilderInterceptor  implements QiscusNotificationBuilde
 
     @Override
     public boolean intercept(NotificationCompat.Builder notificationBuilder, QiscusComment qiscusComment) {
-        String strPayload = qiscusComment.getExtraPayload();
-        if (strPayload != null || !strPayload.equals("null")){
-            try {
-                JSONObject jsonObjectPayload = new JSONObject(strPayload);
-                JSONObject jsonObjectContent = jsonObjectPayload.getJSONObject("content");
-                System.out.println("extra comment : " + jsonObjectPayload);
-                String type = jsonObjectPayload.getString("type");
-                String description = jsonObjectContent.getString("description");
-//                    String layanan = jsonObjectContent.getString("layanan");
-//                    String invoice = jsonObjectContent.getString("invoice");
-                if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir"))){
-                    SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, true);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Qiscus.getChatConfig()
-                                .setEnableReplyNotification(false);
-                    }
-                    Intent intent = new Intent();
-                    intent.setAction(EndChatStatusReceiver.TAG);
-                    intent.putExtra("status_end_chat",true);
-                    BikuBiku.getContext().sendBroadcast(intent);
-                }
-                else {
-                    SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, false);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !Qiscus.getChatConfig().isEnableReplyNotification()) {
-                        Qiscus.getChatConfig()
-                                .setEnableReplyNotification(true);
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Qiscus.getChatConfig()
-                        .setEnableReplyNotification(false);
-            }
-
-        }
+//        String strPayload = qiscusComment.getExtraPayload();
+//        if (strPayload != null || !strPayload.equals("null")){
+//            try {
+//                JSONObject jsonObjectPayload = new JSONObject(strPayload);
+//                JSONObject jsonObjectContent = jsonObjectPayload.getJSONObject("content");
+//                System.out.println("extra comment : " + jsonObjectPayload);
+//                String type = jsonObjectPayload.getString("type");
+//                String description = jsonObjectContent.getString("description");
+////                    String layanan = jsonObjectContent.getString("layanan");
+////                    String invoice = jsonObjectContent.getString("invoice");
+//                if ((type.equals("end_chat") && description.equals("Sesi Chat Berakhir"))){
+//                    SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, true);
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                        Qiscus.getChatConfig()
+//                                .setEnableReplyNotification(false);
+//                    }
+//                    Intent intent = new Intent();
+//                    intent.setAction(EndChatStatusReceiver.TAG);
+//                    intent.putExtra("status_end_chat",true);
+//                    BikuBiku.getContext().sendBroadcast(intent);
+//                }
+//                else {
+//                    SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING, false);
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !Qiscus.getChatConfig().isEnableReplyNotification()) {
+//                        Qiscus.getChatConfig()
+//                                .setEnableReplyNotification(true);
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                Qiscus.getChatConfig()
+//                        .setEnableReplyNotification(false);
+//            }
+//
+//        }
 
         if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
 

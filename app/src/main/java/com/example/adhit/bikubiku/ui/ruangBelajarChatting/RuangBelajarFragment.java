@@ -196,6 +196,9 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             mInputPanel.setVisibility(View.GONE);
         }
         else {
+            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+                SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
+            }
             mInputPanel.setVisibility(View.VISIBLE);
             tv_endChat.setOnClickListener(this);
         }
@@ -220,6 +223,11 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         getActivity().stopService(mService);
     }
 

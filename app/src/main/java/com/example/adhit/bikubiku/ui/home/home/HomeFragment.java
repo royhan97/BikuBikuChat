@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     private HomeAdapter adapter;
     private HomePresenter presenter;
     private TextView tvSaldo;
+    private TextView tvTopUp;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,8 +68,10 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         sliderLayout = view.findViewById(R.id.slider);
         rvMenu = view.findViewById(R.id.rv_menu);
         tvSaldo = view.findViewById(R.id.tv_saldo);
+        tvTopUp = view.findViewById(R.id.tv_topup);
         init();
         initView();
+        tvTopUp.setOnClickListener(v -> ShowAlert.showToast(getActivity(),"Coming Soon"));
         return view;
     }
 

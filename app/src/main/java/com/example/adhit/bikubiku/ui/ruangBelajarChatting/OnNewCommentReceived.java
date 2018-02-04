@@ -107,8 +107,8 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
             public void onSuccess(QiscusChatRoom qiscusChatRoom) {
                 Intent toRoomIntent = RuangBelajarChatting.generateIntent(context, qiscusChatRoom, finalIsHistory);
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1){
+                    toRoomIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     toRoomIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    toRoomIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(toRoomIntent);
                 }
                 else {

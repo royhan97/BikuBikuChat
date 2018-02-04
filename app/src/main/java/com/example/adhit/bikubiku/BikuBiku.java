@@ -138,11 +138,11 @@ public class BikuBiku extends Application{
     @Subscribe
     public void onGetNewQiscusComment(QiscusCommentReceivedEvent event) {
 //        onNewCommentReceived.refreshKabimRoomList();
-//        if (event.getQiscusComment() != null){
-//            QiscusComment qiscusComment = event.getQiscusComment();
-//            // Do your implementation
-//            onNewCommentReceived.endChatTrigger(qiscusComment);
-//        }
+        if (event.getQiscusComment() != null){
+            QiscusComment qiscusComment = event.getQiscusComment();
+            // Do your implementation
+            onNewCommentReceived.endChatTrigger(qiscusComment);
+        }
     }
 
     /**
