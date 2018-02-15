@@ -28,6 +28,7 @@ import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
 import com.example.adhit.bikubiku.service.CheckRoomIsBuildService;
 import com.example.adhit.bikubiku.ui.detailpsychologist.DetailPsychologistFragment;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.util.Constant;
@@ -171,7 +172,14 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().onBackPressed();
+            getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
+            ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
+            ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getFragmentManager().beginTransaction().
+                    replace(R.id.frame_container,new HomeFragment())
+                    .commit();
+            getFragmentManager().popBackStack();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -222,5 +230,6 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
         }else {
             rlBlock.setVisibility(View.GONE);
         }
+        psychologyConsultationPresenter.psychologyList();
     }
 }

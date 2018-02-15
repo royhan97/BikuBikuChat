@@ -196,7 +196,7 @@ public class RuangBelajarFragment extends QiscusBaseChatFragment<QiscusChatAdapt
             mInputPanel.setVisibility(View.GONE);
         }
         else {
-            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM)){
+            if (SharedPrefUtil.getBoolean(Constant.IS_LOGIN_KABIM) && !Session.getInstance().isBuildRoomRuangBelajar()){
                 SharedPrefUtil.saveBoolean(Constant.IS_END_CHATTING,false);
             }
             mInputPanel.setVisibility(View.VISIBLE);

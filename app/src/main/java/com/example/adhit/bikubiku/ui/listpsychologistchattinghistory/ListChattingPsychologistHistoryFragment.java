@@ -19,6 +19,7 @@ import com.example.adhit.bikubiku.adapter.ChatRoomPsychologyHistoryAdapter;
 import com.example.adhit.bikubiku.data.model.ChatRoomPsychologyHistory;
 import com.example.adhit.bikubiku.presenter.ListChattingPsychologistHistoryPresenter;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
@@ -71,7 +72,14 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().onBackPressed();
+            getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
+            ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
+            ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getFragmentManager().beginTransaction().
+                    replace(R.id.frame_container,new HomeFragment())
+                    .commit();
+            getFragmentManager().popBackStack();
         }
         return super.onOptionsItemSelected(item);
     }

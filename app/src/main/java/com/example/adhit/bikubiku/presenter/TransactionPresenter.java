@@ -116,7 +116,7 @@ public class TransactionPresenter {
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.HOUR_OF_DAY, 1);
+        calendar.add(Calendar.MINUTE, 2);
 
         SaveUserData.getInstance().saveEndTimeOfTransaction(calendar.getTimeInMillis());
     }

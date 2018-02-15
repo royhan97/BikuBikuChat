@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
@@ -107,11 +108,14 @@ public class CreateTransactionService extends Service implements TransactionView
                                         if(message.equals("Success")){
                                             JsonObject trxObject = body.get("result").getAsJsonObject();
                                             if(trxObject.get("status_trx").getAsString().equals("2")){
-                                                sendToReceiver(trxObject.get("id_room").getAsString());
-                                                SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
-                                                sendFirstMessage();
-                                                showNotification("Biku Biku","Konsultasi anda telah dimulai", Integer.parseInt(trxObject.get("id_room").getAsString()));
-                                                stopSelf();
+                                                Log.d("id room", trxObject.get("id_room").getAsString());
+                                                if(!trxObject.get("id_room").getAsString().equals("0")  && trxObject.get("id_room").getAsString() != null ){
+                                                    sendToReceiver(trxObject.get("id_room").getAsString());
+                                                    SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
+                                                    sendFirstMessage();
+                                                    showNotification("Biku Biku","Konsultasi anda telah dimulai", Integer.parseInt(trxObject.get("id_room").getAsString()));
+                                                    stopSelf();
+                                                }
                                             }
                                             if(trxObject.get("status_trx").getAsString().equals("3") || trxObject.get("status_trx").getAsString().equals("1")){
                                                 sendToReceiver("0");
@@ -193,7 +197,7 @@ public class CreateTransactionService extends Service implements TransactionView
             e.printStackTrace();
         }
         RetrofitClient.getInstance().getApiQiscus()
-                .sendMessage(SaveUserData.getInstance().getUser().getId(),
+                .sendMessage(SaveUserData.getInstance().getUser().getId()+"b",
                         Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
                         SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", payload, "custom")
                 .enqueue(new Callback<JsonObject>() {

@@ -60,7 +60,7 @@ public class LoginPresenter {
                                 JsonObject userObject = body.get("result").getAsJsonObject();
                                 Type type = new TypeToken<User>(){}.getType();
                                 User user = new Gson().fromJson(userObject, type);
-                                System.out.println(user.getUsername());
+
                                 //listGalleryView.showData(carList);
 //                                loginSDK(user);
                                 loginOrNotQiscus(context,user, user.getId(), user.getToken(), user.getNama(), Integer.parseInt(user.getStatusKabim()));
@@ -90,7 +90,7 @@ public class LoginPresenter {
 //            ShowAlert.showProgresDialog(context);
 //        }
 //        else {
-            Qiscus.setUser(id, key)
+            Qiscus.setUser(user.getId()+"b", key)
                     .withUsername(userName)
                     .save()
                     .subscribeOn(Schedulers.io())
@@ -104,7 +104,7 @@ public class LoginPresenter {
                         SaveUserData.getInstance().saveUser(user);
                         Session.getInstance().setLogin(true);
 
-                        ShowAlert.showToast(context, "status kabim : "+statusKabim);
+                       // ShowAlert.showToast(context, "status kabim : "+statusKabim);
 
                         loginView.gotoHome();
                         loginView.showMessage("Selamat Datang " + user.getNama());
@@ -116,36 +116,36 @@ public class LoginPresenter {
 //        }
     }
 
-    public void loginSDK(User user){
-        Qiscus.setUser(user.getId(), user.getToken())
-                .withUsername(user.getNama())
-                .save()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(qiscusAccount -> {
-                    SaveUserToken.getInstance().saveUserToken(user.getId(), user.getToken());
-                    SaveUserData.getInstance().saveUser(user);
-                    Session.getInstance().setLogin(true);
-                    loginView.showMessage("Selamat Datang " + user.getNama());
-                    loginView.gotoHome();
-                    ShowAlert.closeProgresDialog();
-                }, throwable -> {
-                    if (throwable instanceof HttpException) { //Error response from server
-                        HttpException e = (HttpException) throwable;
-                        try {
-                            String errorMessage = e.response().errorBody().string();
-                            Log.e(TAG, errorMessage);
-                            loginView.showMessageSnackbar(errorMessage);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    } else if (throwable instanceof IOException) { //Error from network
-                        loginView.showMessageSnackbar("Can not connect to qiscus server!");
-                    } else { //Unknown error
-                        loginView.showMessageSnackbar("Unexpected error!");
-                    }
-                    ShowAlert.closeProgresDialog();
-                });
-        ShowAlert.closeProgresDialog();
-    }
+//    public void loginSDK(User user){
+//        Qiscus.setUser(user.getId(), user.getToken())
+//                .withUsername(user.getNama())
+//                .save()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(qiscusAccount -> {
+//                    SaveUserToken.getInstance().saveUserToken(user.getId(), user.getToken());
+//                    SaveUserData.getInstance().saveUser(user);
+//                    Session.getInstance().setLogin(true);
+//                    loginView.showMessage("Selamat Datang " + user.getNama());
+//                    loginView.gotoHome();
+//                    ShowAlert.closeProgresDialog();
+//                }, throwable -> {
+//                    if (throwable instanceof HttpException) { //Error response from server
+//                        HttpException e = (HttpException) throwable;
+//                        try {
+//                            String errorMessage = e.response().errorBody().string();
+//                            Log.e(TAG, errorMessage);
+//                            loginView.showMessageSnackbar(errorMessage);
+//                        } catch (IOException e1) {
+//                            e1.printStackTrace();
+//                        }
+//                    } else if (throwable instanceof IOException) { //Error from network
+//                        loginView.showMessageSnackbar("Can not connect to qiscus server!");
+//                    } else { //Unknown error
+//                        loginView.showMessageSnackbar("Unexpected error!");
+//                    }
+//                    ShowAlert.closeProgresDialog();
+//                });
+//        ShowAlert.closeProgresDialog();
+//    }
 }
