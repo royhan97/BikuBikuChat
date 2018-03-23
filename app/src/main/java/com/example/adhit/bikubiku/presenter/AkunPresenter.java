@@ -30,10 +30,10 @@ public class AkunPresenter {
     public void showListAkunMenu(){
         ArrayList<Home> akunArrayList = new ArrayList<>();
         akunArrayList.add(new Home(context.getString(R.string.fa_user_o), "Profil"));
-        akunArrayList.add(new Home(context.getString(R.string.fa_vCard), "Personalia"));
-        akunArrayList.add(new Home(context.getString(R.string.fa_archieve), "My Library"));
-        akunArrayList.add(new Home(context.getString(R.string.fa_trophy), "Pencapaian"));
-        akunArrayList.add(new Home(context.getString(R.string.fa_group), "Panel Kabim"));
+//        akunArrayList.add(new Home(context.getString(R.string.fa_vCard), "Personalia"));
+//        akunArrayList.add(new Home(context.getString(R.string.fa_archieve), "My Library"));
+//        akunArrayList.add(new Home(context.getString(R.string.fa_trophy), "Pencapaian"));
+//        akunArrayList.add(new Home(context.getString(R.string.fa_group), "Panel Kabim"));
         akunArrayList.add(new Home(context.getString(R.string.fa_sign_out), "Log Out"));
         akunView.showData(akunArrayList);
 
