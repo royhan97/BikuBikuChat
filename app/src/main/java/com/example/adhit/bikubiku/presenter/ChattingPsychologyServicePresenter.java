@@ -44,12 +44,12 @@ public class ChattingPsychologyServicePresenter {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
-                            chattingPsychologyServiceView.showMessageClosedChatFromService("success");
+                            chattingPsychologyServiceView.onSuccessSendFinishMessage();
                             SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
 
                         }else{
                             finishChatFromService();
-                            chattingPsychologyServiceView.onFailureFinishChat();
+                            chattingPsychologyServiceView.onFailureSendFinishMessage();
                         }
 
                     }
@@ -57,8 +57,7 @@ public class ChattingPsychologyServicePresenter {
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         finishChatFromService();
-                        chattingPsychologyServiceView.onFailureFinishChat();
-                        //chattingPsychologyServiceView.showMessageClosedChatFromService("failed");
+                        chattingPsychologyServiceView.onFailureSendFinishMessage();
                     }
                 });
 

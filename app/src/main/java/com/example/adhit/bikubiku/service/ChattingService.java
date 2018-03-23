@@ -89,23 +89,6 @@ public class ChattingService extends Service implements ChattingPsychologyServic
     }
 
     @Override
-    public void showMessageClosedChatFromService(String success) {
-        transactionPresenter.changeTransacationStatus(
-                "Psikologi",
-                SaveUserData.getInstance().getTransaction().getInvoice(),
-                SaveUserData.getInstance().getPsychologyConsultationRoomChat(),
-                "finish");
-
-
-    }
-
-    @Override
-    public void onFailureFinishChat() {
-        showNotification();
-        chattingPsychologyServicePresenter.finishChatFromService();
-    }
-
-    @Override
     public void onFailure(String message) {
 //        transactionPresenter.changeTransacationStatus(
 //                "Psikologi",
@@ -177,5 +160,20 @@ public class ChattingService extends Service implements ChattingPsychologyServic
         super.onDestroy();
         mTimer.cancel();
         System.out.println("Chat Service destroyed");
+    }
+
+    @Override
+    public void onSuccessSendFinishMessage() {
+        transactionPresenter.changeTransacationStatus(
+                "Psikologi",
+                SaveUserData.getInstance().getTransaction().getInvoice(),
+                SaveUserData.getInstance().getPsychologyConsultationRoomChat(),
+                "finish");
+    }
+
+    @Override
+    public void onFailureSendFinishMessage() {
+        showNotification();
+        chattingPsychologyServicePresenter.finishChatFromService();
     }
 }

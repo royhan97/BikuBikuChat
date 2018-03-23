@@ -112,7 +112,6 @@ public class ListChattingPsychologistHistoryFragment extends Fragment implements
 
     @Override
     public void onItemDetailClicked(int idRoom) {
-        System.out.println("id "+ idRoom);
         chattingHistoryPsychologyPresenter.openRoomChatPsychologyHistoryById(getActivity(), idRoom);
     }
 
