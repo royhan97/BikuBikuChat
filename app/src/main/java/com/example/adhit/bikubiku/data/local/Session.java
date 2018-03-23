@@ -44,4 +44,13 @@ public class Session {
     public void setKabimLogin(boolean isKabimLogin) {
         SharedPrefUtil.saveBoolean(Constant.IS_LOGIN_KABIM, isKabimLogin);
     }
+
+
+    public boolean isRoomChatPsychologyConsultationBuild() {
+        return SharedPrefUtil.getBoolean(Constant.IS_ROOM_CHAT_CONSULTATION_BUILD);
+    }
+
+    public void setRoomChatPsychologyConsultationIsBuild(boolean isbuild) {
+        SharedPrefUtil.saveBoolean(Constant.IS_ROOM_CHAT_CONSULTATION_BUILD, isbuild);
+    }
 }

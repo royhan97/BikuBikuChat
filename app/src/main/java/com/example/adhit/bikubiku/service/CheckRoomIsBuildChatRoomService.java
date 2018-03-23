@@ -5,9 +5,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildChatRoomReceiver;
-import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,7 +29,7 @@ public class CheckRoomIsBuildChatRoomService extends Service {
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                sendToReceiver(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild());
+                sendToReceiver(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild());
             }
         }, 1, 500);
     }

@@ -2,18 +2,14 @@ package com.example.adhit.bikubiku.ui.ruangBelajarChatting;
 
 
 
-import android.app.Activity;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -21,42 +17,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.CustomChatAdapter;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.service.IsRuangBelajarEndService;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
-import com.google.gson.JsonObject;
 import com.qiscus.sdk.Qiscus;
-import com.qiscus.sdk.data.model.NotificationClickListener;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
-import com.qiscus.sdk.data.remote.QiscusApi;
-import com.qiscus.sdk.event.QiscusCommentReceivedEvent;
 import com.qiscus.sdk.ui.adapter.QiscusChatAdapter;
 import com.qiscus.sdk.ui.fragment.QiscusBaseChatFragment;
 import com.qiscus.sdk.ui.view.QiscusAudioRecorderView;
 import com.qiscus.sdk.ui.view.QiscusMentionSuggestionView;
 import com.qiscus.sdk.ui.view.QiscusRecyclerView;
 import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
-import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 

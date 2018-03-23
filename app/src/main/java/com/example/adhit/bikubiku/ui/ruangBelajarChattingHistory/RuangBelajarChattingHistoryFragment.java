@@ -42,7 +42,6 @@ public class RuangBelajarChattingHistoryFragment extends Fragment implements Rua
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().findViewById(R.id.navigation).setVisibility(View.GONE);
         getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
         getActivity().findViewById(R.id.item_history).setVisibility(View.GONE);
         ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Riwayat Belajar");

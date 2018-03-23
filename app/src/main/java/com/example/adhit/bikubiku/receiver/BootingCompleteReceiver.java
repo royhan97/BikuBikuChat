@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.service.ChattingService;
 import com.example.adhit.bikubiku.service.ChattingServiceRuangBelajar;
 
@@ -17,7 +16,7 @@ public class BootingCompleteReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
-        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction()) && SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()) {
+        if ("android.intent.action.BOOT_COMPLETED".equals(intent.getAction()) && SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()) {
             Intent serviceLauncher = new Intent(context, ChattingService.class);
             context.startService(serviceLauncher);
             Log.v("TEST", "Service loaded at start");

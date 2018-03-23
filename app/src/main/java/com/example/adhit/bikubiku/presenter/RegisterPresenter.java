@@ -11,6 +11,8 @@ import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+
 import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,35 +29,46 @@ public class RegisterPresenter {
     }
 
     public void register(final Context context, String name, String username, String password, String email, String aim){
-        ShowAlert.showProgresDialog(context);
         RetrofitClient.getInstance()
                 .getApi()
-                .register(name, username, password, email, aim)
+                .register(name, username, stringtoSHA1(password), email, aim)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
-                            boolean status = body
-                                    .get("status").getAsBoolean();
+                            boolean status = body.get("status").getAsBoolean();
                             if(status){
-                                registerView.showMessage(context.getResources().getString(R.string.text_register_success));
+                                registerView.onSuccessRegister(context.getResources().getString(R.string.text_register_success));
                             }else{
                                 String message = body.get("message").getAsString();
-                                registerView.showMessage(message);
+                                registerView.onFailedRegister(message);
                             }
                         }else {
-                            registerView.showMessage(context.getResources().getString(R.string.text_register_failed));
+                            registerView.onFailedRegister(context.getResources().getString(R.string.text_register_failed));
                         }
-                        ShowAlert.closeProgresDialog();
                     }
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        registerView.showMessage(context.getResources().getString(R.string.text_register_failed));
-                        System.out.println(t.getMessage());
-                        ShowAlert.closeProgresDialog();
+                        registerView.onFailedRegister(context.getResources().getString(R.string.text_register_failed));
                     }
                 });
+    }
+
+    public static String stringtoSHA1(String clearString) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            messageDigest.update(clearString.getBytes("UTF-8"));
+            byte[] bytes = messageDigest.digest();
+            StringBuilder buffer = new StringBuilder();
+            for (byte b : bytes) {
+                buffer.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            }
+            return buffer.toString();
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+            return null;
+        }
     }
 
 }

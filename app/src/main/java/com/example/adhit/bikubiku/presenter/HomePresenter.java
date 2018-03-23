@@ -3,9 +3,11 @@ package com.example.adhit.bikubiku.presenter;
 import android.content.Context;
 
 import com.example.adhit.bikubiku.R;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.home.home.HomeView;
+import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -32,7 +34,7 @@ public class HomePresenter {
 
     public void showListHome(){
         ArrayList<Home> homeArrayList = new ArrayList<>();
-        homeArrayList.add(new Home(context.getString(R.string.fa_archieve), "Library"));
+        //homeArrayList.add(new Home(context.getString(R.string.fa_archieve), "Library"));
         homeArrayList.add(new Home(context.getString(R.string.fa_graduation), "Ruang Belajar"));
         homeArrayList.add(new Home(context.getString(R.string.fa_check), "Tes Minat"));
         homeArrayList.add(new Home(context.getString(R.string.fa_text_o), "Artikel"));
@@ -53,42 +55,22 @@ public class HomePresenter {
                             JsonObject body = response.body();
                             JsonObject result = body.get("result").getAsJsonObject();
                             String balance = result.get("saldo").getAsString();
-                            homeView.showSaldo("Rp "+balance);
+                            homeView.onSuccessShowSaldo("Rp "+balance);
                         }else{
-                            homeView.showSaldo("Error");
+                            homeView.onFailedShowSaldo("Error");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        homeView.showSaldo("Error");
+                        homeView.onFailedShowSaldo("Error");
                     }
                 });
     }
 
-    public void getSaldo(){
-        RetrofitClient.getInstance()
-                .getApi()
-                .cekSakuBiku()
-                .enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        if (response.isSuccessful()){
-                            JsonObject body = response.body();
-                            JsonObject result = body.get("result").getAsJsonObject();
-                            int jmlSaldo = result.get("saldo").getAsInt();
-                            homeView.setSaldo(jmlSaldo);
-                        }
-                        else {
-                            homeView.showError("no data saldo received");
-                        }
-                    }
+    public void showName() {
+        String name[] = SaveUserData.getInstance().getUser().getNama().split(" ");
+        homeView.onSuccessShowName(name[0]);
 
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-                        t.printStackTrace();
-                        homeView.showError("on failure get saldo");
-                    }
-                });
     }
 }

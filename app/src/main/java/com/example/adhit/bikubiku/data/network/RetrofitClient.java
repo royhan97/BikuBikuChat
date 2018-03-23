@@ -1,6 +1,6 @@
 package com.example.adhit.bikubiku.data.network;
 
-import com.example.adhit.bikubiku.data.local.SaveUserToken;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.util.Constant;
 
 import com.google.gson.Gson;
@@ -40,7 +40,7 @@ public class RetrofitClient {
 
     public Retrofit getRetrofit(){
         OkHttpClient okHttpClient = null;
-        if(SaveUserToken.getInstance().getUserToken() == null){
+        if(SaveUserData.getInstance().getUserToken() == null){
              okHttpClient= new OkHttpClient.Builder()
                      .readTimeout(20, TimeUnit.SECONDS)
                     .connectTimeout(20, TimeUnit.SECONDS)
@@ -52,7 +52,7 @@ public class RetrofitClient {
                     Request request = chain.request();
                     Request newRequest;
                     newRequest = request.newBuilder()
-                            .addHeader("Authorization", SaveUserToken.getInstance().getUserToken())
+                            .addHeader("Authorization", SaveUserData.getInstance().getUserToken())
                             .build();
 
                     return chain.proceed(newRequest);

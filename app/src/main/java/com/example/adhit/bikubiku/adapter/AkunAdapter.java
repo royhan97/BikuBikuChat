@@ -1,22 +1,15 @@
 package com.example.adhit.bikubiku.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SaveUserToken;
-import com.example.adhit.bikubiku.data.local.Session;
 import com.example.adhit.bikubiku.data.model.Home;
-import com.example.adhit.bikubiku.ui.login.LoginActivity;
 
 import java.util.List;
 

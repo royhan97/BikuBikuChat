@@ -8,7 +8,6 @@ import com.qiscus.sdk.data.model.QiscusComment;
  */
 
 public interface ChattingPsychologyView {
-    void sendFirstMessage(QiscusComment comment);
 
     void canCreateRoom(boolean b);
 

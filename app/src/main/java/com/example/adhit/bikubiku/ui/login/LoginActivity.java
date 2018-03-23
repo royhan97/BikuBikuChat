@@ -1,9 +1,11 @@
 package com.example.adhit.bikubiku.ui.login;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -62,7 +64,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
             }
-
         }
         if(view.getId() == R.id.btn_login_line){
             ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_feature_not_available_now));
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 etPassword.setError(getResources().getString(R.string.text_password_empty));
                 etPassword.requestFocus();
             } else {
-
+                ShowAlert.showProgresDialog(this);
                 loginPresenter.Login(this, username, password);
             }
         }
@@ -86,20 +87,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
-    @Override
-    public void showMessage(String string) {
-       ShowAlert.showToast(this, string);
-    }
-
-
-    @Override
-    public void showMessageSnackbar(String message) {
-        ShowAlert.showSnackBar(coordinatorLayout, message);
-    }
-
     @Override
     public void gotoHome() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onFailedLogin(String message) {
+        ShowAlert.closeProgresDialog();
+        if(message.equals("0")){
+            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            alertDialog.setCancelable(false);
+            alertDialog.setMessage(getResources().getString(R.string.text_activate_account_login));
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }else{
+            ShowAlert.showSnackBar(coordinatorLayout, message);
+        }
+
+    }
+
+    @Override
+    public void onSuccessLogin(String s) {
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showToast(this, s);
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();

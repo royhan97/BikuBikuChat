@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BikuBiku</string>
+    <string name="text_activate_account_login">Akun anda belum diaktifkan. Silahkan cek kotak masuk atau spam email anda untuk melakukan aktivasi akun</string>
+    <string name="text_activate_account_register">Pendaftaran berhasil. Silahkan cek kotak masuk atau spam email anda untuk melakukan aktivasi akun</string>
     <string name="text_address">Alamat</string>
     <string name="text_address_empty">Alamat Tidak Boleh Kosong</string>
     <string name="text_cancel_transaction_title">Pembatalan Transaksi</string>
@@ -35,7 +37,7 @@
     <string name="text_username">Username</string>
     <string name="text_password">Password</string>
     <string name="text_forgot_password">Forgot Password</string>
-    <string name="text_register">Register</string>
+    <string name="text_register">Daftar</string>
     <string name="text_email">Email</string>
     <string name="text_male">Laki-Laki</string>
     <string name="text_female">Perempuan</string>

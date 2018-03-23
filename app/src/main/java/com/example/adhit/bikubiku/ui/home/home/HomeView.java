@@ -10,10 +10,13 @@ import java.util.ArrayList;
 
 public interface HomeView {
     void showData(ArrayList<Home> homeArrayList);
-
-    void showSaldo(String balance);
-
-    void setSaldo(int jmlSaldo);
+    
 
     void showError(String s);
+
+    void onFailedShowSaldo(String error);
+
+    void onSuccessShowSaldo(String s);
+
+    void onSuccessShowName(String s);
 }

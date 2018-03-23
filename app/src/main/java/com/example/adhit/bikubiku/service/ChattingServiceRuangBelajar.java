@@ -1,12 +1,9 @@
 package com.example.adhit.bikubiku.service;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -15,16 +12,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
-import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.presenter.ChattingPsychologyServicePresenter;
 import com.example.adhit.bikubiku.presenter.RuangBelajarPresenter;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
-import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarView;
 import com.example.adhit.bikubiku.util.Constant;
@@ -39,7 +31,6 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.example.adhit.bikubiku.service.RuangBelajarEndChattingService.QISCUS_CHAT_ROOM;
 import static com.example.adhit.bikubiku.ui.ruangBelajarChatting.RuangBelajarChattingService.NOTIF_CHANNEL_ID;
 
 public class ChattingServiceRuangBelajar extends Service implements RuangBelajarView {

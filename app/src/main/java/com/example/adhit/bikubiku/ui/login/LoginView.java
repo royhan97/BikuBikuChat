@@ -5,10 +5,10 @@ package com.example.adhit.bikubiku.ui.login;
  */
 
 public interface LoginView {
-    void showMessage(String string);
-
-
-    void showMessageSnackbar(String message);
 
     void gotoHome();
+
+    void onFailedLogin(String message);
+
+    void onSuccessLogin(String s);
 }

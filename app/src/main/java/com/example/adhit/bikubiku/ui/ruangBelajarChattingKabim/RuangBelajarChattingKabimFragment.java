@@ -57,7 +57,6 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().findViewById(R.id.navigation).setVisibility(View.GONE);
         getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
         ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Ruang Belajar");
         ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -175,7 +174,6 @@ public class RuangBelajarChattingKabimFragment extends Fragment implements Ruang
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
             ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
             ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);

@@ -8,6 +8,7 @@ import android.os.Bundle;;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,6 +21,8 @@ import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
 import com.example.adhit.bikubiku.service.RequestKabimService;
 import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
+import com.example.adhit.bikubiku.ui.home.HomeActivity;
+import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
@@ -52,6 +55,11 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
+        ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Akun");
+        ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((HomeActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
+        setHasOptionsMenu(true);
         View view= inflater.inflate(R.layout.fragment_akun, container, false);
         rvMenu = view.findViewById(R.id.rv_akun_menu);
         tvName = view.findViewById(R.id.tv_name);
@@ -107,6 +115,10 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     public void onMenuClicked(String string) {
         if(string.equals("Log Out")){
             presenter.userLogOut();
+        }else if(string.equals("Profil")){
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            intent.putExtra("detail_akun", string);
+            startActivity(intent);
         }else{
             ShowAlert.showToast(getActivity(), "Coming Soon");
 //            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
@@ -118,10 +130,23 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
     @Override
     public void onClick(View view) {
         if(view.getId()== R.id.tv_edit_profil){
-//            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
-//            intent.putExtra("detail_akun", "Profil");
-//            startActivity(intent);
-            ShowAlert.showToast(getActivity(), "Coming Soon");
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            intent.putExtra("detail_akun", "Profil");
+            startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
+            ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
+            ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getFragmentManager().beginTransaction().
+                    replace(R.id.frame_container,new HomeFragment())
+                    .commit();
+            getFragmentManager().popBackStack();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

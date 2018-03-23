@@ -2,10 +2,12 @@ package com.example.adhit.bikubiku.ui.register;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -29,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     private Button btnDaftarLine, btnRegister;
     private CoordinatorLayout coordinatorLayout;
     private EditText etUsername, etPassword, etEmail, etName;
-    private RadioGroup rgGender;
     private RegisterPresenter registerPresenter;
 
     @Override
@@ -58,7 +59,6 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
             String name = etName.getText().toString().trim();
-            rgGender.getCheckedRadioButtonId();
             if(username.isEmpty()) {
                 etUsername.setError(getResources().getString(R.string.text_email_empty));
                 etUsername.requestFocus();
@@ -71,9 +71,8 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
             }else if(name.isEmpty()){
                 etName.setError(getResources().getString(R.string.text_name_empty));
                 etName.requestFocus();
-            }else if(rgGender.getCheckedRadioButtonId()== -1){
-                ShowAlert.showSnackBar(coordinatorLayout, getResources().getString(R.string.text_gender_empty));
             }else {
+                ShowAlert.showProgresDialog(this);
                 registerPresenter = new RegisterPresenter(this);
                 registerPresenter.register(this, name, username, password, email, "belajar");
             }
@@ -94,19 +93,6 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         animateRevealClose();
     }
 
-    @Override
-    public void showMessage(String string) {
-        ShowAlert.showToast(getApplicationContext(), string);
-        if(string.equals(getResources().getString(R.string.text_register_success))){
-            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
-                animateRevealClose();
-            }else{
-                super.onBackPressed();
-            }
-        }
-
-    }
-
     private void initView(){
         fabLogin = findViewById(R.id.fab_login);
         cvRegister = findViewById(R.id.cv_register);
@@ -117,7 +103,6 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         etEmail = findViewById(R.id.et_email);
         etUsername = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
-        rgGender = findViewById(R.id.rg_gender);
         fabLogin.setOnClickListener(this);
         btnDaftarLine.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -157,6 +142,32 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     }
 
 
+    @Override
+    public void onFailedRegister(String string) {
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showSnackBar(coordinatorLayout, string);
+    }
 
+    @Override
+    public void onSuccessRegister(String string) {
+        ShowAlert.closeProgresDialog();
+        AlertDialog alertDialog = new AlertDialog.Builder(RegisterActivity.this).create();
+        alertDialog.setMessage(getResources().getString(R.string.text_activate_account_register));
+        alertDialog.setCancelable(false);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(string.equals(getResources().getString(R.string.text_register_success))){
+                            if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ){
+                                animateRevealClose();
+                            }else{
+                                alertDialog.onBackPressed();
+                            }
+                        }
+                    }
+                });
+        alertDialog.show();
+        ShowAlert.showToast(getApplicationContext(), string);
 
+    }
 }

@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,27 +17,24 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
+import com.example.adhit.bikubiku.presenter.LoadingTransactionPresenter;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.CreateTransactionReceiver;
 import com.example.adhit.bikubiku.service.ChattingService;
-import com.example.adhit.bikubiku.service.CreateTransactionService;
+import com.example.adhit.bikubiku.service.PsychologistConsultationTransactionService;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
+import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
 
-public class LoadingTransactionActivity extends AppCompatActivity implements CreateTransactionReceiver.PeriodicCheckTransactionProcess, ChattingPsychologyView, View.OnClickListener, TransactionView {
+public class LoadingTransactionActivity extends AppCompatActivity implements CreateTransactionReceiver.PeriodicCheckTransactionProcess,  View.OnClickListener, TransactionView, LoadingTransactionView {
 
     private Toolbar toolbar;
     private ImageView isLoadingImage;
     private TextView tvResultInformation;
     private Button btnGotoPschologist;
     private CreateTransactionReceiver mBroadcast;
-    private ChattingPsychologyPresenter chattingPsychologyPresenter;
+    private LoadingTransactionPresenter loadingTransactionPresenter;
     private  int animationCounter = 1;
     private Runnable runnable;
     private TransactionPresenter transactionPresenter;
@@ -99,12 +94,10 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
         };
         isLoadingImage.postDelayed(runnable,500); // set first time for 3 seconds
 
-
-
     }
 
     public  void initPresenter(){
-        chattingPsychologyPresenter = new ChattingPsychologyPresenter(this);
+        loadingTransactionPresenter = new LoadingTransactionPresenter(this);
         transactionPresenter = new TransactionPresenter(this);
     }
 
@@ -118,7 +111,7 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
     @Override
     public void onStart() {
         super.onStart();
-        mService = new Intent(this, CreateTransactionService.class);
+        mService = new Intent(this, PsychologistConsultationTransactionService.class);
         startService(mService);
 
     }
@@ -156,7 +149,6 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
 
     }
 
-
     @Override
     public void handleFromReceiver(String idRoom) {
         if(idRoom != null){
@@ -171,7 +163,7 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
                 stopService(mService);
             }
             if(Integer.parseInt(idRoom)>0){
-                chattingPsychologyPresenter.openRoomChatById(Integer.parseInt(idRoom));
+                loadingTransactionPresenter.openRoomChatById(Integer.parseInt(idRoom));
                 unregisterReceiver();
                 stopService(mService);
             }
@@ -183,38 +175,6 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
             super.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
-
-    }
-
-    @Override
-    public void canCreateRoom(boolean b) {
-
-    }
-
-    @Override
-    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-//        Intent intent1= new Intent(this, ChattingPsychologyService.class);
-//        intent1.putExtra(ChattingPsychologyService.EXTRA_DURATION, 40000);
-//        stopService(intent1);
-        transactionPresenter.saveEndTimeOfTransaction();
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
-
-        Intent intent1= new Intent(this, ChattingService.class);
-        startService(intent1);
-        stopService(mService);
-        Intent intent = ChattingPsychologyActivity.generateIntent(this, qiscusChatRoom, false);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public void sendClosedMessage(QiscusComment comment) {
-
     }
 
     @Override
@@ -229,14 +189,9 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
 
     @Override
     public void onSuccessChangeTransactionStatus(String berhasil) {
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+        SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
         SaveUserData.getInstance().removeTransaction();
         super.onBackPressed();
-    }
-
-    @Override
-    public void onFinishTransaction() {
-
     }
 
     @Override
@@ -266,4 +221,20 @@ public class LoadingTransactionActivity extends AppCompatActivity implements Cre
     }
 
 
+    @Override
+    public void onFailureOpenRoomChat(String s) {
+        ShowAlert.showToast(LoadingTransactionActivity.this, s);
+    }
+
+    @Override
+    public void onSuccessOpenRoomChat(QiscusChatRoom qiscusChatRoom) {
+        transactionPresenter.saveEndTimeOfTransaction();
+        SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
+        Intent intent1= new Intent(this, ChattingService.class);
+        startService(intent1);
+        stopService(mService);
+        Intent intent = ChattingPsychologyActivity.generateIntent(this, qiscusChatRoom, false);
+        startActivity(intent);
+        finish();
+    }
 }

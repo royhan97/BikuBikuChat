@@ -3,9 +3,7 @@ package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
@@ -28,33 +26,8 @@ public class ChattingPsychologyPresenter {
         this.chattingPsychologyView = chattingPsychologyView;
     }
 
-
-
-    public void sendFirstMessage(QiscusChatRoom qiscusChatRoom){
-        String username = null;
-        JSONObject payload = new JSONObject();
-
-        try {
-            payload.put("locked", "halo").put("description", SaveUserData.getInstance().getUser().getNama() +" ENFP");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        QiscusComment comment = QiscusComment.generateCustomMessage(SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", "user_test", payload,
-                qiscusChatRoom.getId(), qiscusChatRoom.getLastTopicId());
-      //  SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(qiscusChatRoom.getId());
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
-        chattingPsychologyView.sendFirstMessage(comment);
-
-    }
-
-    public boolean checkChattingPsychology(){
-        return SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild();
-    }
-
     public void finishChat(Context context, QiscusChatRoom qiscusChatRoom){
-
         JSONObject payload = new JSONObject();
-
         try {
             payload.put("locked", "halo")
                     .put("description", "Sesi Chat ditutup");
@@ -63,16 +36,10 @@ public class ChattingPsychologyPresenter {
         }
         QiscusComment comment = QiscusComment.generateCustomMessage("Sesi Chat Ditutup", "closed_chat", payload,
                 qiscusChatRoom.getId(), qiscusChatRoom.getLastTopicId());
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
-
+        SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
         chattingPsychologyView.sendClosedMessage(comment);
         chattingPsychologyView.onFinishTransaction();
-
-
-
     }
-
-
 
     public void openRoomChatById(int id){
         QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(id),
@@ -81,7 +48,6 @@ public class ChattingPsychologyPresenter {
                     public void onSuccess(QiscusChatRoom qiscusChatRoom) {
                         chattingPsychologyView.canCreateRoom(true);
                         chattingPsychologyView.openRoomChat(qiscusChatRoom);
-
                     }
                     @Override
                     public void onError(Throwable throwable) {

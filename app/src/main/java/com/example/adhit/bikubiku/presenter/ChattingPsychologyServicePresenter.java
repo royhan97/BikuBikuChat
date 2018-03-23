@@ -1,12 +1,9 @@
 package com.example.adhit.bikubiku.presenter;
 
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.service.ChattingPsychologyServiceView;
 import com.google.gson.JsonObject;
-import com.qiscus.sdk.data.model.QiscusChatRoom;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,29 +25,27 @@ public class ChattingPsychologyServicePresenter {
 
     public void finishChatFromService(){
         JSONObject payload = new JSONObject();
-        JSONObject payloadContent = new JSONObject();
-
         try {
-            payloadContent.put("locked", "halo")
+            payload.put("locked", "halo")
                     .put("description", "Sesi Chat ditutup");
-
-            payload.put("type", "closed_chat")
-                    .put("content", payloadContent);
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+//        QiscusComment comment = QiscusComment.generateCustomMessage("Sesi Chat Ditutup", "closed_chat", payload,
+//                Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
+//                qiscusChatRoom.getLastTopicId());
+//        SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+//        QiscusApi.getInstance().postComment(comment);
         RetrofitClient.getInstance().getApiQiscus()
                 .sendMessage(SaveUserData.getInstance().getUser().getId(),
-                        Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
+                        Integer.toString(SaveUserData.getInstance().getPsychologyConsultationRoomChat()),
                         "Sesi Chat Ditutup", payload, "custom")
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             chattingPsychologyServiceView.showMessageClosedChatFromService("success");
-                            SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+                            SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
 
                         }else{
                             finishChatFromService();

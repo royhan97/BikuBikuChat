@@ -1,25 +1,17 @@
 package com.example.adhit.bikubiku.presenter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
-import com.example.adhit.bikubiku.BikuBiku;
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SaveUserToken;
 import com.example.adhit.bikubiku.data.local.SaveUserTrxPR;
 import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.ui.home.akun.AkunView;
-import com.example.adhit.bikubiku.ui.home.home.HomeView;
-import com.example.adhit.bikubiku.ui.login.LoginActivity;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.qiscus.sdk.Qiscus;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -53,14 +45,14 @@ public class AkunPresenter {
     }
 
     public void userLogOut(){
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild() || Session.getInstance().isBuildRoomRuangBelajar()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild() || Session.getInstance().isBuildRoomRuangBelajar()){
                 akunView.onFailureLogOut();
         }else{
             Qiscus.clearUser();
             Session.getInstance().setLogin(false);
             Session.getInstance().setKabimLogin(false);
             Session.getInstance().setBuildRoomRuangBelajar(false);
-            SaveUserToken.getInstance().removeUserToken();
+            SaveUserData.getInstance().removeUserToken();
             SaveUserData.getInstance().removeUser();
             SaveUserTrxPR.getInstance().removeTrx();
             SharedPrefUtil.remove(Constant.SALDO_USER);

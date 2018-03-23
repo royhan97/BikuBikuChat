@@ -5,5 +5,7 @@ package com.example.adhit.bikubiku.ui.register;
  */
 
 public interface RegisterView {
-    void showMessage(String string);
+    void onFailedRegister(String string);
+
+    void onSuccessRegister(String string);
 }

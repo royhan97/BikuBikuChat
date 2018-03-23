@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -21,18 +20,13 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.ChatPschologyAdapter;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildChatRoomReceiver;
-import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
 import com.example.adhit.bikubiku.service.ChattingService;
 import com.example.adhit.bikubiku.service.CheckRoomIsBuildChatRoomService;
-import com.example.adhit.bikubiku.service.CheckRoomIsBuildService;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
-import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.Qiscus;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
@@ -44,9 +38,7 @@ import com.qiscus.sdk.ui.view.QiscusReplyPreviewView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.util.Date;
 import java.util.List;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -379,12 +371,6 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
         mAddPanel.setVisibility(View.GONE);
     }
 
-
-    @Override
-    public void sendFirstMessage(QiscusComment comment) {
-        sendQiscusComment(comment);
-    }
-
     @Override
     public void canCreateRoom(boolean b) {
 
@@ -426,8 +412,8 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
 
     @Override
     public void onFinishTransaction() {
-             SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
-             SavePsychologyConsultationRoomChat.getInstance().removePsychologyConsultationRoomChat();
+             SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+             SaveUserData.getInstance().removePsychologyConsultationRoomChat();
 //        SaveUserData.getInstance().removeEndTimeOfTransaction();
 //        SaveUserData.getInstance().removeTransaction();
 //        SaveUserData.getInstance().removeEndTimeOfTransaction();
@@ -438,7 +424,7 @@ public class ChattingPsychologyFragment extends QiscusBaseChatFragment<ChatPscho
     public void onClick(View view) {
         if(view.getId()== R.id.tv_finish){
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.cancel(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat());
+            notificationManager.cancel(SaveUserData.getInstance().getPsychologyConsultationRoomChat());
             transactionPresenter.changeTransacationStatus("Psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), qiscusChatRoom.getId(), "finish");
             chattingPsychologyPresenter.finishChat(getActivity(), qiscusChatRoom);
 

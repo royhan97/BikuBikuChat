@@ -72,29 +72,6 @@ public class ListChattingPsychologistHistoryPresenter {
                         chattingPsychologyHistoryView.onFailure("Server Bermasalah");
                     }
                 });
-//
-//        RetrofitClient.getInstance().getApiQiscus()
-//                .getChatRoomHistory(SaveUserData.getInstance().getUser().getId(), true)
-//                .enqueue(new Callback<JsonObject>() {
-//                    @Override
-//                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-//                        if(response.isSuccessful()){
-//                            JsonObject body = response.body();
-//                            JsonObject results = body.get("results").getAsJsonObject();
-//                            JsonArray data = results.get("rooms_info").getAsJsonArray();
-//                            Type type = new TypeToken<List<ChatRoomPsychologyHistory>>(){}.getType();
-//                        }else{
-//                            chattingPsychologyHistoryView.onFailure("Data Not Found");
-//                            System.out.println(response.toString());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<JsonObject> call, Throwable t) {
-//                        chattingPsychologyHistoryView.onFailure("Server Error");
-//                        System.out.println(t.getMessage());
-//                    }
-//                });
     }
 
     public void openRoomChatPsychologyHistoryById(Context context, int id){

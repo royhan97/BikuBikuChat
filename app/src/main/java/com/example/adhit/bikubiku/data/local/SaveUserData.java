@@ -1,6 +1,7 @@
 package com.example.adhit.bikubiku.data.local;
 
 import android.content.Context;
+import android.util.Base64;
 
 import com.example.adhit.bikubiku.data.model.Invoice;
 import com.example.adhit.bikubiku.data.model.Transaction;
@@ -65,4 +66,40 @@ public class SaveUserData {
         return SharedPrefUtil.getString(Constant.PSYCHOLOGIST_DATA);
     }
 
+    public String getUserToken() {
+        return SharedPrefUtil.getString(Constant.USER_TOKEN);
+    }
+
+    public void saveUserToken(String id, String token) {
+        byte[] encodedBytes;
+        String authorization;
+        authorization = id + ":" + token;
+        encodedBytes = Base64.encode(authorization.getBytes(), Base64.NO_WRAP);
+        authorization = "Basic " + new String(encodedBytes);
+        SharedPrefUtil.saveString(Constant.USER_TOKEN, authorization);
+    }
+
+    public void removeUserToken(){
+        SharedPrefUtil.remove(Constant.USER_TOKEN);
+    }
+
+    public int getPsychologyConsultationRoomChat() {
+        return  SharedPrefUtil.getInt(Constant.PSYCHOLOGIST_ROOM_CHAT);
+    }
+
+    public void savePsychologyConsultationRoomChat(int idRoom) {
+        SharedPrefUtil.saveInt(Constant.PSYCHOLOGIST_ROOM_CHAT, idRoom);
+    }
+
+    public void removePsychologyConsultationRoomChat(){
+        SharedPrefUtil.remove(Constant.PSYCHOLOGIST_ROOM_CHAT);
+    }
+
+    public void setRoomChatPsychologyConsultationIsBuild(boolean roomChatPsychologyConsultationIsBuild) {
+       SharedPrefUtil.saveBoolean(Constant.IS_ROOM_CHAT_CONSULTATION_BUILD, roomChatPsychologyConsultationIsBuild);
+    }
+
+    public boolean isRoomChatPsychologyConsultationBuild(){
+        return  SharedPrefUtil.getBoolean(Constant.IS_ROOM_CHAT_CONSULTATION_BUILD);
+    }
 }

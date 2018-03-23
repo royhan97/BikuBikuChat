@@ -16,7 +16,6 @@ import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
-import com.example.adhit.bikubiku.service.CreateTransactionService;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.util.Constant;
@@ -30,7 +29,6 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
 
     private TextView tvPsychologistName, tvPsychologistPriceConsultation;
     private Button btnNext;
-    private Intent mService;
     private ImageView imgPsychologist;
     private Bundle bundle;
     private PsychologistApprove psychologistApprove;
@@ -46,7 +44,6 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
         // Inflate the layout for this fragment
         ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Detail Psikolog");
         setHasOptionsMenu(true);
-
         View view =  inflater.inflate(R.layout.fragment_detail_psychologist, container, false);
         tvPsychologistName = view.findViewById(R.id.tv_psychologist_name);
         tvPsychologistPriceConsultation = view.findViewById(R.id.tv_price_consultation);
@@ -82,7 +79,6 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
         }
     }
 
-
     @Override
     public void onFailure(String failed) {
         ShowAlert.showToast(getActivity(), failed);
@@ -90,8 +86,6 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
 
     @Override
     public void onSuccessMakeTransaction(String berhasil) {
-
-
         Intent intent = new Intent(getActivity(), LoadingTransactionActivity.class);
         intent.putExtra("pychologist_name", psychologistApprove.getNama());
         startActivity(intent);
@@ -104,7 +98,4 @@ public class DetailPsychologistFragment extends Fragment implements View.OnClick
     public void onSuccessChangeTransactionStatus(String berhasil) {
 
     }
-
-
-
 }

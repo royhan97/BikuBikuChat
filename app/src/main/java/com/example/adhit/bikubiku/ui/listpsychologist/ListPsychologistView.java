@@ -14,7 +14,9 @@ public interface ListPsychologistView {
 
     void showBlock(boolean roomChatPsychologyConsultationBuild);
 
-    void openRoomChat(QiscusChatRoom qiscusChatRoom);
-
     void onFailure(String s);
+
+    void onSuccessOpenRoomChat(QiscusChatRoom qiscusChatRoom);
+
+    void onFailedOpenRoomChat(String s);
 }

@@ -9,6 +9,8 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,7 +47,6 @@ public class HomeActivity extends AppCompatActivity implements ChattingPsycholog
     private static final int GPS_REQUEST_CODE = 1000;
     private ChattingPsychologyPresenter chattingPsychologyPresenter;
     private Toolbar toolbar;
-    private BottomNavigationView navigation;
     private ImageView imgLogo;
 
     @Override
@@ -72,7 +73,6 @@ public class HomeActivity extends AppCompatActivity implements ChattingPsycholog
 
         initView();
         if(getIntent().getIntExtra("id_room",0)> 0){
-
             chattingPsychologyPresenter.openRoomChatById(getIntent().getIntExtra("id_room",0));
         }
 
@@ -84,9 +84,6 @@ public class HomeActivity extends AppCompatActivity implements ChattingPsycholog
         imgLogo = findViewById(R.id.img_logo);
         setSupportActionBar(toolbar);
         setTitle("");
-        navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         getFragmentManager().beginTransaction().
                 setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
                 replace(R.id.frame_container,
@@ -109,50 +106,15 @@ public class HomeActivity extends AppCompatActivity implements ChattingPsycholog
         }
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    getFragmentManager().beginTransaction().
-                            replace(R.id.frame_container,
-                                    new HomeFragment(),
-                                    HomeFragment.class.getSimpleName())
-                            .commit();
-                    return true;
-
-
-                case R.id.navigation_account:
-                      getFragmentManager().beginTransaction().
-                            replace(R.id.frame_container,
-                                    new AkunFragment(),
-                                    AkunFragment.class.getSimpleName())
-                            .commit();
-                    return true;
-            }
-            return false;
-        }
-    };
-
-        @Override
-        public void onBackPressed() {
-            super.onBackPressed();
-
-           if(getFragmentManager().getBackStackEntryCount()==0){
-                navigation.setVisibility(View.VISIBLE);
-                imgLogo.setVisibility(View.VISIBLE);
-                getSupportActionBar().setTitle("");
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
-
-        }
-
-
     @Override
-    public void sendFirstMessage(QiscusComment comment) {
+    public void onBackPressed() {
+        super.onBackPressed();
 
+        if(getFragmentManager().getBackStackEntryCount()==0){
+            imgLogo.setVisibility(View.VISIBLE);
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
     }
 
     @Override
@@ -180,4 +142,7 @@ public class HomeActivity extends AppCompatActivity implements ChattingPsycholog
     public void onFinishTransaction() {
 
     }
+
+
+
 }

@@ -1,26 +1,16 @@
 package com.example.adhit.bikubiku.notification;
 
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.RemoteInput;
 
 import com.example.adhit.bikubiku.BikuBiku;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
-import com.example.adhit.bikubiku.util.Constant;
-import com.example.adhit.bikubiku.util.SharedPrefUtil;
-import com.qiscus.sdk.Qiscus;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.model.QiscusNotificationBuilderInterceptor;
 import com.qiscus.sdk.util.QiscusTextUtil;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.qiscus.sdk.util.QiscusPushNotificationUtil.KEY_NOTIFICATION_REPLY;
 
 /**
@@ -72,7 +62,7 @@ public class NotificationBuilderInterceptor  implements QiscusNotificationBuilde
 //
 //        }
 
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()){
 
             PendingIntent pendingIntent;
             Intent openIntent = new Intent("com.qiscus.OPEN_COMMENT_PN");

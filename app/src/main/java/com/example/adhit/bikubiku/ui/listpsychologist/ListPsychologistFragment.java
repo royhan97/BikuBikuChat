@@ -20,8 +20,7 @@ import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.adapter.PsychologistAdapter;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
-import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 import com.example.adhit.bikubiku.presenter.ListPsychologistPresenter;
 import com.example.adhit.bikubiku.receiver.CheckRoomIsBuildReceiver;
@@ -32,6 +31,7 @@ import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.loadingtransaction.LoadingTransactionActivity;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyActivity;
 import com.example.adhit.bikubiku.util.Constant;
+import com.example.adhit.bikubiku.util.ShowAlert;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 
 import java.util.List;
@@ -61,8 +61,7 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().findViewById(R.id.navigation).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
+       getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
         ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Konsultasi Psikologi");
         ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((HomeActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -157,12 +156,6 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
 
 
     @Override
-    public void openRoomChat(QiscusChatRoom qiscusChatRoom) {
-        Intent intent = ChattingPsychologyActivity.generateIntent(getActivity(), qiscusChatRoom, false);
-        startActivity(intent);
-    }
-
-    @Override
     public void onFailure(String s) {
         tvError.setText(s);
         rvPhycologist.setVisibility(View.GONE);
@@ -170,9 +163,20 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
     }
 
     @Override
+    public void onSuccessOpenRoomChat(QiscusChatRoom qiscusChatRoom) {
+        Intent intent = ChattingPsychologyActivity.generateIntent(getActivity(), qiscusChatRoom, false);
+        startActivity(intent);
+        ShowAlert.closeProgresDialog();
+    }
+
+    @Override
+    public void onFailedOpenRoomChat(String s) {
+        ShowAlert.showToast(getActivity(), s);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().findViewById(R.id.navigation).setVisibility(View.VISIBLE);
             getActivity().findViewById(R.id.img_logo).setVisibility(View.VISIBLE);
             ((HomeActivity)getActivity()).getSupportActionBar().setTitle("");
             ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -189,8 +193,7 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
         super.onResume();
         registerReceiver();
         psychologyConsultationPresenter.isRoomChatBuild();
-        getActivity().findViewById(R.id.navigation).setVisibility(View.GONE);
-        getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
+       getActivity().findViewById(R.id.img_logo).setVisibility(View.GONE);
         ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Konsultasi Psikologi");
         ((HomeActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((HomeActivity)getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
@@ -212,10 +215,11 @@ public class ListPsychologistFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if(view.getId()==R.id.tv_go_to_chat){
-            if(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()==0){
+            if(SaveUserData.getInstance().getPsychologyConsultationRoomChat()==0){
                 Intent intent = new Intent(getActivity(), LoadingTransactionActivity.class);
                 startActivity(intent);
             }else{
+                ShowAlert.showProgresDialog(getActivity());
                 psychologyConsultationPresenter.openRoomChat(getActivity());
             }
 

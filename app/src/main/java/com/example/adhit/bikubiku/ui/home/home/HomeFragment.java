@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.slider.library.SliderLayout;
@@ -20,6 +21,7 @@ import com.example.adhit.bikubiku.data.model.Home;
 import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.HomePresenter;
+import com.example.adhit.bikubiku.ui.home.akun.AkunFragment;
 import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragment;
 import com.example.adhit.bikubiku.ui.listKabim.ListKabimFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryFragment;
@@ -46,14 +48,14 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDetailListener {
+public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDetailListener, View.OnClickListener {
 
     private SliderLayout sliderLayout;
     private RecyclerView rvMenu;
     private HomeAdapter adapter;
     private HomePresenter presenter;
-    private TextView tvSaldo;
-    private TextView tvTopUp;
+    private TextView tvSaldo, tvName;
+    private LinearLayout llProfileName;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -68,10 +70,10 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         sliderLayout = view.findViewById(R.id.slider);
         rvMenu = view.findViewById(R.id.rv_menu);
         tvSaldo = view.findViewById(R.id.tv_saldo);
-        tvTopUp = view.findViewById(R.id.tv_topup);
+        tvName = view.findViewById(R.id.tv_name);
+        llProfileName = view.findViewById(R.id.ll_profil);
         init();
         initView();
-        tvTopUp.setOnClickListener(v -> ShowAlert.showToast(getActivity(),"Coming Soon"));
         return view;
     }
 
@@ -84,10 +86,9 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         rvMenu.setLayoutManager(gridLayoutManager);
         presenter = new HomePresenter(getActivity(),this);
         presenter.showListHome();
-        presenter.getSaldo();
-            presenter = new HomePresenter(getActivity(),this);
-            presenter.showListHome();
-            presenter.showSaldo();
+        presenter.showSaldo();
+        presenter.showName();
+        llProfileName.setOnClickListener(this);
     }
 
 
@@ -95,6 +96,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     public void onResume() {
         super.onResume();
         presenter.showSaldo();
+        presenter.showName();
     }
 
     public void init(){
@@ -121,20 +123,25 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         adapter.setData(homeArrayList);
     }
 
-    @Override
-    public void showSaldo(String balance) {
-        tvSaldo.setText(balance);
-    }
-
-    @Override
-    public void setSaldo(int jmlSaldo) {
-        SharedPrefUtil.saveInt(Constant.SALDO_USER, jmlSaldo);
-        tvSaldo.setText("Rp "+SharedPrefUtil.getInt(Constant.SALDO_USER));
-    }
 
     @Override
     public void showError(String s) {
         ShowAlert.showToast(getActivity(), s);
+    }
+
+    @Override
+    public void onFailedShowSaldo(String error) {
+        tvSaldo.setText(error);
+    }
+
+    @Override
+    public void onSuccessShowSaldo(String s) {
+        tvSaldo.setText(s);
+    }
+
+    @Override
+    public void onSuccessShowName(String s) {
+        tvName.setText(s);
     }
 
     @Override
@@ -179,5 +186,16 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         }
 
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.ll_profil){
+                getFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new AkunFragment(),
+                        AkunFragment.class.getSimpleName())
+                        .addToBackStack(AkunFragment.class.getSimpleName())
+                .commit();
+        }
     }
 }

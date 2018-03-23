@@ -17,27 +17,14 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.data.model.Transaction;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.receiver.CreateTransactionReceiver;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
-import com.example.adhit.bikubiku.util.Constant;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.sql.Time;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,14 +39,14 @@ import retrofit2.Response;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class CreateTransactionService extends Service implements TransactionView {
+public class PsychologistConsultationTransactionService extends Service implements TransactionView {
     private TransactionPresenter transactionPresenter;
     private Timer  mTimer, mTimer1;
     private Handler handler;
     NotificationManager notificationManager;
     public static final String ANDROID_CHANNEL_ID = "com.chikeandroid.tutsplustalerts.ANDROID";
     public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
-    public CreateTransactionService() {
+    public PsychologistConsultationTransactionService() {
 
     }
 
@@ -79,7 +66,7 @@ public class CreateTransactionService extends Service implements TransactionView
             @Override
             public void run() {
                 showNotification("Biku Biku","Transaksi anda dibatalkan",0);
-                SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+                SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                 transactionPresenter.changeTransacationStatus("psikologi", SaveUserData.getInstance().getTransaction().getInvoice(), 0, "cancel");
 
             }
@@ -111,15 +98,14 @@ public class CreateTransactionService extends Service implements TransactionView
                                                 Log.d("id room", trxObject.get("id_room").getAsString());
                                                 if(!trxObject.get("id_room").getAsString().equals("0")  && trxObject.get("id_room").getAsString() != null ){
                                                     sendToReceiver(trxObject.get("id_room").getAsString());
-                                                    SavePsychologyConsultationRoomChat.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
-                                                    sendFirstMessage();
+                                                    SaveUserData.getInstance().savePsychologyConsultationRoomChat(Integer.parseInt(trxObject.get("id_room").getAsString()) );
                                                     showNotification("Biku Biku","Konsultasi anda telah dimulai", Integer.parseInt(trxObject.get("id_room").getAsString()));
                                                     stopSelf();
                                                 }
                                             }
                                             if(trxObject.get("status_trx").getAsString().equals("3") || trxObject.get("status_trx").getAsString().equals("1")){
                                                 sendToReceiver("0");
-                                                SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+                                                SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                                                 SaveUserData.getInstance().removeTransaction();
                                                 showNotification("Biku Biku","Transaksi anda dibatalkan", 0);
                                                 stopSelf();
@@ -145,7 +131,6 @@ public class CreateTransactionService extends Service implements TransactionView
         Intent intent = new Intent();
         intent.setAction(CreateTransactionReceiver.TAG);
         intent.putExtra("id_room_transaction", idRoom);
-        System.out.println("id "+ intent.getStringExtra("id_room_transaction"));
         sendBroadcast(intent);
     }
 
@@ -154,7 +139,6 @@ public class CreateTransactionService extends Service implements TransactionView
         super.onDestroy();
         mTimer.cancel();
         handler.removeCallbacksAndMessages(null);
-        System.out.println("destroy ti");
 
     }
 
@@ -182,38 +166,38 @@ public class CreateTransactionService extends Service implements TransactionView
         stopSelf();
     }
 
-    public void sendFirstMessage(){
-        JSONObject payload = new JSONObject();
-        JSONObject payloadContent = new JSONObject();
-
-        try {
-            payloadContent.put("locked", "halo")
-                    .put("description", SaveUserData.getInstance().getUser().getNama() +" ENFP");
-
-            payload.put("type", "user_test")
-                    .put("content", payloadContent);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RetrofitClient.getInstance().getApiQiscus()
-                .sendMessage(SaveUserData.getInstance().getUser().getId()+"b",
-                        Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
-                        SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", payload, "custom")
-                .enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-
-                    }
-                });
-
-    }
+//    public void sendFirstMessage(){
+//        JSONObject payload = new JSONObject();
+//        JSONObject payloadContent = new JSONObject();
+//
+//        try {
+//            payloadContent.put("locked", "halo")
+//                    .put("description", SaveUserData.getInstance().getUser().getNama() +" ENFP");
+//
+//            payload.put("type", "user_test")
+//                    .put("content", payloadContent);
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        RetrofitClient.getInstance().getApiQiscus()
+//                .sendMessage(SaveUserData.getInstance().getUser().getId()+"b",
+//                        Integer.toString(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
+//                        SaveUserData.getInstance().getUser().getNama()+" ingin berkonsultasi dengan anda", payload, "custom")
+//                .enqueue(new Callback<JsonObject>() {
+//                    @Override
+//                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<JsonObject> call, Throwable t) {
+//
+//                    }
+//                });
+//
+//    }
 
     public void showNotification(String title, String message, int idRoom){
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

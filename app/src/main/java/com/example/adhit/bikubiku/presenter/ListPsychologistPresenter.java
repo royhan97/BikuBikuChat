@@ -2,13 +2,10 @@ package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.listpsychologist.ListPsychologistView;
-import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -18,7 +15,6 @@ import com.qiscus.sdk.data.remote.QiscusApi;
 import com.qiscus.sdk.util.QiscusRxExecutor;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -68,24 +64,20 @@ public class ListPsychologistPresenter {
     }
 
     public void isRoomChatBuild(){
-        psychologyConsultationView.showBlock(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild());
+        psychologyConsultationView.showBlock(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild());
     }
 
     public void openRoomChat(Context context){
-        ShowAlert.showProgresDialog(context);
-        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat()),
+        QiscusRxExecutor.execute(QiscusApi.getInstance().getChatRoom(SaveUserData.getInstance().getPsychologyConsultationRoomChat()),
                 new QiscusRxExecutor.Listener<QiscusChatRoom>() {
                     @Override
                     public void onSuccess(QiscusChatRoom qiscusChatRoom) {
-                        psychologyConsultationView.openRoomChat(qiscusChatRoom);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),0,intent, PendingIntent.FLAG_ONE_SHOT);
-                        ShowAlert.closeProgresDialog();
+                        psychologyConsultationView.onSuccessOpenRoomChat(qiscusChatRoom);
                     }
                     @Override
                     public void onError(Throwable throwable) {
                         throwable.printStackTrace();
-                        ShowAlert.closeProgresDialog();
+                        psychologyConsultationView.onFailedOpenRoomChat(throwable.toString());
                     }
                 });
 

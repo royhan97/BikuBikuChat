@@ -1,6 +1,5 @@
 package com.example.adhit.bikubiku.service;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,21 +10,14 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.presenter.ChattingPsychologyPresenter;
 import com.example.adhit.bikubiku.presenter.ChattingPsychologyServicePresenter;
 import com.example.adhit.bikubiku.presenter.TransactionPresenter;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
-import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyView;
-import com.qiscus.sdk.data.model.QiscusChatRoom;
-import com.qiscus.sdk.data.model.QiscusComment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,7 +46,7 @@ public class ChattingService extends Service implements ChattingPsychologyServic
     @Override
     public void onCreate() {
         super.onCreate();
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()){
             chattingPsychologyServicePresenter = new ChattingPsychologyServicePresenter(this);
             transactionPresenter = new TransactionPresenter(this);
             mTimer = new Timer();
@@ -79,10 +71,10 @@ public class ChattingService extends Service implements ChattingPsychologyServic
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()){
             if(calendar.getTimeInMillis() >= SaveUserData.getInstance().getEndTimeOfTransaction()){
                 chattingPsychologyServicePresenter.finishChatFromService();
-                SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
+                SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(false);
                 SaveUserData.getInstance().removeEndTimeOfTransaction();
 
 
@@ -101,7 +93,7 @@ public class ChattingService extends Service implements ChattingPsychologyServic
         transactionPresenter.changeTransacationStatus(
                 "Psikologi",
                 SaveUserData.getInstance().getTransaction().getInvoice(),
-                SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat(),
+                SaveUserData.getInstance().getPsychologyConsultationRoomChat(),
                 "finish");
 
 
@@ -133,8 +125,8 @@ public class ChattingService extends Service implements ChattingPsychologyServic
     }
 
     public void showNotification(){
-        int idRoom = SavePsychologyConsultationRoomChat.getInstance().getPsychologyConsultationRoomChat();
-        SavePsychologyConsultationRoomChat.getInstance().removePsychologyConsultationRoomChat();
+        int idRoom = SaveUserData.getInstance().getPsychologyConsultationRoomChat();
+        SaveUserData.getInstance().removePsychologyConsultationRoomChat();
         SaveUserData.getInstance().removeTransaction();
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         createChannels(notificationManager);

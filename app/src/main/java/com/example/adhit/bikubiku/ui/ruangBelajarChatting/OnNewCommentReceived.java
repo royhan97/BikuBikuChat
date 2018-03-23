@@ -1,19 +1,16 @@
 package com.example.adhit.bikubiku.ui.ruangBelajarChatting;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.presenter.WaitingRequestResponPresenter;
 import com.example.adhit.bikubiku.receiver.EndChatStatusReceiver;
 import com.example.adhit.bikubiku.ui.waitingrequestresponse.WaitingRequestResponView;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
-import com.qiscus.sdk.data.model.NotificationClickListener;
 import com.qiscus.sdk.data.model.QiscusChatRoom;
 import com.qiscus.sdk.data.model.QiscusComment;
 import com.qiscus.sdk.data.remote.QiscusApi;
@@ -70,7 +67,7 @@ public class OnNewCommentReceived implements WaitingRequestResponView {
                     e.printStackTrace();
                 }
             }
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Qiscus.getChatConfig()
                         .setEnableReplyNotification(false);

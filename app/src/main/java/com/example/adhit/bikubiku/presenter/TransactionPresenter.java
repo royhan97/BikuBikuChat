@@ -2,9 +2,7 @@ package com.example.adhit.bikubiku.presenter;
 
 import android.content.Context;
 
-import com.example.adhit.bikubiku.data.local.SavePsychologyConsultationRoomChat;
 import com.example.adhit.bikubiku.data.local.SaveUserData;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
 import com.example.adhit.bikubiku.data.model.Invoice;
 import com.example.adhit.bikubiku.data.network.RetrofitClient;
 import com.example.adhit.bikubiku.ui.detailpsychologist.TransactionView;
@@ -14,7 +12,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -49,7 +46,7 @@ public class TransactionPresenter {
                             String message = body.get("message").getAsString();
                             boolean status = body.get("status").getAsBoolean();
                             if(status){
-                                SessionChatPsychology.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
+                                SaveUserData.getInstance().setRoomChatPsychologyConsultationIsBuild(true);
                                 JsonObject transactionObject = body.get("result").getAsJsonObject();
                                 Type type = new TypeToken<Invoice>(){}.getType();
                                 Invoice invoice = new Gson().fromJson(transactionObject, type);

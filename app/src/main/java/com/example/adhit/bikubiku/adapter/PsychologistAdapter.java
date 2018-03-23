@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.adhit.bikubiku.R;
-import com.example.adhit.bikubiku.data.local.Session;
-import com.example.adhit.bikubiku.data.local.SessionChatPsychology;
-import com.example.adhit.bikubiku.data.model.Psychologist;
+import com.example.adhit.bikubiku.data.local.SaveUserData;
 import com.example.adhit.bikubiku.data.model.PsychologistApprove;
 
 import java.util.List;
@@ -48,7 +46,7 @@ public class PsychologistAdapter extends RecyclerView.Adapter<PsychologistAdapte
         holder.tvNamePsychologist.setText(psychologistApprove.getNama());
         holder.tvConsultationPrice.setText(psychologistApprove.getTarif());
         holder.tvPsychologistSpecialist.setText("Psikolog Klinis");
-        if(SessionChatPsychology.getInstance().isRoomChatPsychologyConsultationBuild()){
+        if(SaveUserData.getInstance().isRoomChatPsychologyConsultationBuild()){
             holder.btnStartChat.setClickable(false);
             holder.btnStartChat.setBackgroundResource(R.color.grey_500);
         }else {
