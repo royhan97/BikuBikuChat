@@ -26,6 +26,7 @@ import com.example.adhit.bikubiku.ui.psychologychatting.ChattingPsychologyFragme
 import com.example.adhit.bikubiku.ui.listKabim.ListKabimFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingKabim.RuangBelajarChattingKabimFragment;
+import com.example.adhit.bikubiku.ui.sakubiku.SakuBikuFragment;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryFragment;
@@ -55,7 +56,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
     private HomeAdapter adapter;
     private HomePresenter presenter;
     private TextView tvSaldo, tvName;
-    private LinearLayout llProfileName;
+    private LinearLayout llProfileName, llSakuBiku;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -72,6 +73,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         tvSaldo = view.findViewById(R.id.tv_saldo);
         tvName = view.findViewById(R.id.tv_name);
         llProfileName = view.findViewById(R.id.ll_profil);
+        llSakuBiku = view.findViewById(R.id.ll_sakubiku);
         init();
         initView();
         return view;
@@ -89,6 +91,7 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
         presenter.showSaldo();
         presenter.showName();
         llProfileName.setOnClickListener(this);
+        llSakuBiku.setOnClickListener(this);
     }
 
 
@@ -196,6 +199,13 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                         AkunFragment.class.getSimpleName())
                         .addToBackStack(AkunFragment.class.getSimpleName())
                 .commit();
+        }
+        if(view.getId() == R.id.ll_sakubiku){
+            getFragmentManager().beginTransaction().replace(R.id.frame_container,
+                    new SakuBikuFragment(),
+                    SakuBikuFragment.class.getSimpleName())
+                    .addToBackStack(SakuBikuFragment.class.getSimpleName())
+                    .commit();
         }
     }
 }

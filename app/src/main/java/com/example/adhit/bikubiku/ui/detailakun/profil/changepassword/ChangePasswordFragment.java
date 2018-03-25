@@ -3,6 +3,7 @@ package com.example.adhit.bikubiku.ui.detailakun.profil.changepassword;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class ChangePasswordFragment extends Fragment implements ChangePasswordVi
     private EditText etOldPassword, etNewPassowrd, etNewPasswordConfirm;
     private Button btnSave;
     private ChangePasswordPresenter changePasswordPresenter;
+    private CoordinatorLayout clChangePassword;
 
     public ChangePasswordFragment() {
         // Required empty public constructor
@@ -36,6 +38,7 @@ public class ChangePasswordFragment extends Fragment implements ChangePasswordVi
         etNewPassowrd = view.findViewById(R.id.et_new_password);
         etNewPasswordConfirm = view.findViewById(R.id.et_new_password_confirm);
         btnSave = view.findViewById(R.id.btn_save);
+        clChangePassword = view.findViewById(R.id.coordinatorLayout);
         initView();
         return view;
     }
@@ -44,11 +47,6 @@ public class ChangePasswordFragment extends Fragment implements ChangePasswordVi
         changePasswordPresenter = new ChangePasswordPresenter(this);
         btnSave.setOnClickListener(this);
 
-    }
-
-    @Override
-    public void showMessage(String string) {
-        ShowAlert.showToast(getActivity(), string);
     }
 
     @Override
@@ -67,8 +65,21 @@ public class ChangePasswordFragment extends Fragment implements ChangePasswordVi
                 etNewPasswordConfirm.setError(getResources().getString(R.string.text_cannot_empty));
                 etNewPasswordConfirm.requestFocus();
             }else {
-                changePasswordPresenter.changePassword(getActivity(), oldPassword, newPassword, newPasswordConfirm);
+                ShowAlert.showProgresDialog(getActivity());
+                changePasswordPresenter.changePassword( oldPassword, newPassword, newPasswordConfirm);
             }
         }
+    }
+
+    @Override
+    public void onSuccessChangePassword(String message) {
+        ShowAlert.showSnackBar(clChangePassword, message);
+        ShowAlert.closeProgresDialog();
+    }
+
+    @Override
+    public void onFailedChangePassword() {
+        ShowAlert.showSnackBar(clChangePassword, getResources().getString(R.string.text_changed_failed));
+        ShowAlert.closeProgresDialog();
     }
 }

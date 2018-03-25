@@ -9,5 +9,8 @@ import com.example.adhit.bikubiku.data.model.User;
 public interface AccountSettingsView {
     void getDataAccount(User user);
 
-    void showMessage(String string);
+
+    void onFailedChangeDataAccount(String s);
+
+    void onSuccessChangeDataAccount(String message);
 }

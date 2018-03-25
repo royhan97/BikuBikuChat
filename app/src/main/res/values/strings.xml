@@ -1,19 +1,29 @@
 <resources>
     <string name="app_name">BikuBiku</string>
+
+    <string name="text_account_bank_name">Atas Nama</string>
+    <string name="text_account_bank_number">Nomor Rekening</string>
     <string name="text_activate_account_login">Akun anda belum diaktifkan. Silahkan cek kotak masuk atau spam email anda untuk melakukan aktivasi akun</string>
     <string name="text_activate_account_register">Pendaftaran berhasil. Silahkan cek kotak masuk atau spam email anda untuk melakukan aktivasi akun</string>
     <string name="text_address">Alamat</string>
     <string name="text_address_empty">Alamat Tidak Boleh Kosong</string>
+    <string name="text_aim">Tujuan</string>
+    <string name="text_aim_bank">Bank Tujuan</string>
+    <string name="text_bio">Bio</string>
+    <string name="text_cancel">Batal</string>
     <string name="text_cancel_transaction_title">Pembatalan Transaksi</string>
     <string name="text_cancel_transaction_message">Anda yakin akan membatalkan transaksi saat ini?</string>
     <string name="text_cannot_empty">Tidak Boleh Kosong</string>
+    <string name="text_cashout">Tarik Dana</string>
     <string name="text_changed_failed">Perubahan Gagal</string>
     <string name="text_chat_exist">Anda sedang melakukan konsultasi, silahkan buka ruang chat disini</string>
     <string name="text_closed_chat">Waktu Konsultasi Telah Berakhir</string>
     <string name="text_finish">Selesai</string>
     <string name="text_first_chat">Anda Dapat Memulai Konsultasi dengan Ahli Kami. Anda memiliki durasi 60 menit</string>
+    <string name="text_id_line">Id Line</string>
     <string name="text_next">Lanjutkan</string>
     <string name="text_no_history_chat">No History Chat</string>
+    <string name="text_balance">Nominal</string>
     <string name="text_password_old">Password Lama</string>
     <string name="text_password_new">Password Baru</string>
     <string name="text_password_confirm">Konfirmasi Password Baru</string>
@@ -21,14 +31,20 @@
     <string name="text_price_consultation">Harga Konsultasi</string>
     <string name="text_start_chat">Mulai Chat</string>
     <string name="text_search_psychologist">Cari Psikolog</string>
+    <string name="text_success_cashout">Permintaan penarikan dana berhasil diterima. Silahkan tunggu beberapa saat.</string>
+    <string name="text_success_topup">Permintaan topup dana berhasil diterima. Anda dapat melakukan konfirmasi via email info@bikubiku.id atau via chat wa 085645991577 </string>
+    <string name="text_wa">No WA</string>
     <string name="text_total_price_consultation">Total Harga Konsultasi</string>
+    <string name="text_topup">Top Up</string>
     <string name="text_online">Online</string>
     <string name="text_offline">Offline</string>
     <string name="text_end_waiting">Waktu tunggu anda habis, kabim tidak merespon atau menolak pesanan anda</string>
     <string name="text_waiting">Menunggu Respon Kabim</string>
-    <string name="text_request_again">Pesan Kembali</string>
+    <string name="text_request_again">Pesan Kembali</string>\
+    <string name="text_sakubiku_balance">Saldo saku biku</string>
     <string name="text_typing">Typing....</string>
     <string name="text_waiting_confirmation">Silahkan tunggu konfirmasi dari psikolog kami</string>
+    <string name="text_waiting_sakubiku">Dana menunggu pembayaran dan konfirmasi</string>
 
     <string name="text_save">Simpan</string>
     <string name="text_login_line">Login Via Line</string>
@@ -101,7 +117,9 @@
     <string name="fa_user_o">&#xf2c0;</string>
     <string name="fa_sign_out">&#xf08b;</string>
 
-    
-
-
+    <string-array name="spn_aim">
+        <item>Saya hanya ingin belajar</item>
+        <item>Saya hanya ingin mengajar</item>
+        <item>Saya ingin belajar sekaligus mengajar</item>
+    </string-array>
 </resources>

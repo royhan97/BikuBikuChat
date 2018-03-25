@@ -31,7 +31,6 @@ public class AddressPresenter {
     }
 
     public void changeDataAddress(final Context context, final String alamat){
-        ShowAlert.showProgresDialog(context);
         RetrofitClient.getInstance()
                 .getApi()
                 .changeAddress(alamat)
@@ -44,25 +43,23 @@ public class AddressPresenter {
                                          .get("status").getAsBoolean();
                                  if(status){
                                      String message = body.get("message").getAsString();
-                                     addressView.showMessage(message);
+                                     addressView.onSuccessChangeAddress(message);
                                      User user = SaveUserData.getInstance().getUser();
                                      user.setAlamat(alamat);
                                      SaveUserData.getInstance().saveUser(user);
                                  }else{
                                      String message = body.get("message").getAsString();
-                                     addressView.showMessage(message);
+                                     addressView.onFailedChangeAddress(message);
                                  }
                              }else {
-                                 addressView.showMessage(context.getResources().getString(R.string.text_changed_failed));
+                                 addressView.onFailedChangeAddress(context.getResources().getString(R.string.text_changed_failed));
                              }
-                             ShowAlert.closeProgresDialog();
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         System.out.println(t.getMessage());
-                        addressView.showMessage(context.getResources().getString(R.string.text_changed_failed));
-                        ShowAlert.closeProgresDialog();
+                        addressView.onFailedChangeAddress(context.getResources().getString(R.string.text_changed_failed));
                     }
                 });
     }

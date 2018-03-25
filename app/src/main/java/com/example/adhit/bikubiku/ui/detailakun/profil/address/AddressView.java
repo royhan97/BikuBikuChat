@@ -8,5 +8,7 @@ public interface AddressView {
 
     void getDataAddress(String alamat);
 
-    void showMessage(String string);
+    void onSuccessChangeAddress(String message);
+
+    void onFailedChangeAddress(String message);
 }

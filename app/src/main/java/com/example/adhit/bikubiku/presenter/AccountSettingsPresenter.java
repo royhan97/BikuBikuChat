@@ -30,41 +30,47 @@ public class AccountSettingsPresenter {
         accountSettingsView.getDataAccount(SaveUserData.getInstance().getUser());
     }
 
-    public void changeDataAccount(final Context context, final String name, final String username, String password, final String email, String aim){
-        ShowAlert.showProgresDialog(context);
+    public void changeDataAccount(
+                                  String name,
+                                  String username,
+                                  String email,
+                                  String aim,
+                                  String wa,
+                                  String idLine,
+                                  String bio){
         RetrofitClient.getInstance()
                 .getApi()
-                .changeAccount(name, username, password, email, aim)
+                .changeDataAccount(name, username, email, aim, wa, idLine, bio)
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
-                            boolean status = body
-                                    .get("status").getAsBoolean();
+                            boolean status = body.get("status").getAsBoolean();
                             if(status){
                                 String message = body.get("message").getAsString();
-                                accountSettingsView.showMessage(message);
+
                                 User user = SaveUserData.getInstance().getUser();
                                 user.setNama(name);
                                 user.setUsername(username);
                                 user.setEmail(email);
+                                user.setWa(wa);
+                                user.setIdLine(idLine);
+                                user.setBio(bio);
                                 SaveUserData.getInstance().saveUser(user);
+                                accountSettingsView.onSuccessChangeDataAccount(message);
                             }else{
                                 String message = body.get("message").getAsString();
-                                accountSettingsView.showMessage(message);
+                                accountSettingsView.onFailedChangeDataAccount(message);
                             }
                         }else {
-                            accountSettingsView.showMessage(context.getResources().getString(R.string.text_changed_failed));
+                            accountSettingsView.onFailedChangeDataAccount("Perubahan Gagal");
                         }
-                        ShowAlert.closeProgresDialog();
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        System.out.println(t.getMessage());
-                        accountSettingsView.showMessage(context.getResources().getString(R.string.text_changed_failed));
-                        ShowAlert.closeProgresDialog();
+                        accountSettingsView.onFailedChangeDataAccount(t.toString());
                     }
                 });
     }

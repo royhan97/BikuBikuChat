@@ -5,5 +5,8 @@ package com.example.adhit.bikubiku.ui.detailakun.profil.changepassword;
  */
 
 public interface ChangePasswordView {
-    void showMessage(String string);
+
+    void onSuccessChangePassword(String message);
+
+    void onFailedChangePassword();
 }

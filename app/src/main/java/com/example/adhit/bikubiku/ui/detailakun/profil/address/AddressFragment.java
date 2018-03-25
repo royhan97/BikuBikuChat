@@ -23,6 +23,7 @@ public class AddressFragment extends Fragment implements AddressView, View.OnCli
     private EditText etAddress;
     private Button btnSave;
     private AddressPresenter addressPresenter;
+    private CoordinatorLayout clAddress;
 
     public AddressFragment() {
         // Required empty public constructor
@@ -37,6 +38,7 @@ public class AddressFragment extends Fragment implements AddressView, View.OnCli
         etAddress = view.findViewById(R.id.et_address);
         btnSave = view.findViewById(R.id.btn_save);
         btnSave.setOnClickListener(this);
+        clAddress = view.findViewById(R.id.coordinatorLayout);
         initView();
         return  view;
 
@@ -54,8 +56,16 @@ public class AddressFragment extends Fragment implements AddressView, View.OnCli
     }
 
     @Override
-    public void showMessage(String string) {
-        ShowAlert.showToast(getActivity(), string);
+    public void onSuccessChangeAddress(String message) {
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showSnackBar(clAddress, message);
+    }
+
+
+    @Override
+    public void onFailedChangeAddress(String message) {
+        ShowAlert.closeProgresDialog();
+        ShowAlert.showSnackBar(clAddress, message);
     }
 
     @Override
@@ -63,8 +73,10 @@ public class AddressFragment extends Fragment implements AddressView, View.OnCli
         if(view.getId() == R.id.btn_save){
             String address = etAddress.getText().toString().trim();
             if(address.isEmpty()){
-                ShowAlert.showToast(getActivity(), getResources().getString(R.string.text_address_empty));
+                etAddress.setError(getResources().getString(R.string.text_cannot_empty));
+                etAddress.requestFocus();
             }else{
+                ShowAlert.showProgresDialog(getActivity());
                 addressPresenter.changeDataAddress(getActivity(), address);
             }
         }

@@ -10,6 +10,8 @@ import com.example.adhit.bikubiku.ui.detailakun.profil.changepassword.ChangePass
 import com.example.adhit.bikubiku.util.ShowAlert;
 import com.google.gson.JsonObject;
 
+import java.security.MessageDigest;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,30 +26,43 @@ public class ChangePasswordPresenter {
         this.changePasswordView = changePasswordView;
     }
 
-    public void changePassword(final Context context, String oldPassword, String newPassword, String newPasswordConfirm){
-        ShowAlert.showProgresDialog(context);
+    public void changePassword(String oldPassword, String newPassword, String newPasswordConfirm){
         RetrofitClient.getInstance()
                 .getApi()
-                .changePassword(oldPassword, newPassword, newPasswordConfirm)
+                .changePassword(stringtoSHA1(oldPassword), stringtoSHA1(newPassword), stringtoSHA1(newPasswordConfirm))
                 .enqueue(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if(response.isSuccessful()){
                             JsonObject body = response.body();
                             String message = body.get("message").getAsString();
-                            changePasswordView.showMessage(message);
+                            changePasswordView.onSuccessChangePassword(message);
                         }else {
-                            changePasswordView.showMessage(context.getResources().getString(R.string.text_changed_failed));
+                            changePasswordView.onFailedChangePassword();
                         }
-                        ShowAlert.closeProgresDialog();
-
                     }
 
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
-                        changePasswordView.showMessage(context.getResources().getString(R.string.text_changed_failed));
+                        changePasswordView.onFailedChangePassword();
                     }
                 });
+    }
+
+    public static String stringtoSHA1(String clearString) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
+            messageDigest.update(clearString.getBytes("UTF-8"));
+            byte[] bytes = messageDigest.digest();
+            StringBuilder buffer = new StringBuilder();
+            for (byte b : bytes) {
+                buffer.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            }
+            return buffer.toString();
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+            return null;
+        }
     }
 
 }

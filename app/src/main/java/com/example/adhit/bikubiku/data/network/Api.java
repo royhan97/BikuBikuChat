@@ -65,11 +65,13 @@ public interface Api {
 
     @POST("biquers/profil")
     @FormUrlEncoded
-    Call<JsonObject> changeAccount(@Field("nama") String name,
+    Call<JsonObject> changeDataAccount(@Field("nama") String name,
                                    @Field("username") String username,
-                                   @Field("password") String password,
                                    @Field("email") String email,
-                                   @Field("tujuan") String aim);
+                                   @Field("tujuan") String aim,
+                                       @Field("wa") String wa,
+                                       @Field("id_line") String idLine,
+                                       @Field("bio") String bio);
 
     @POST("biquers/ubahpassword")
     @FormUrlEncoded
@@ -82,6 +84,23 @@ public interface Api {
 
     @GET("saku/saldo")
     Call<JsonObject> getBalance();
+
+    @POST("saku/topup")
+    @FormUrlEncoded
+    Call<JsonObject> topupBalance(@Field("tujuan") String aimBank, @Field("nominal") String balance);
+
+    @POST("saku/aturrekening")
+    @FormUrlEncoded
+    Call<JsonObject> accountBankManagement(@Field("bank") String bank,
+                                    @Field("atas_nama") String accountName,
+                                    @Field("no_rekening") String accountNumber);
+
+    @GET("saku/rekening")
+    Call<JsonObject> getAccountBankData();
+
+    @POST("saku/cashout")
+    @FormUrlEncoded
+    Call<JsonObject> cashoutBalance(@Field("nominal") String balance);
 
     @POST("ruangbelajar/createtrx")
     @FormUrlEncoded

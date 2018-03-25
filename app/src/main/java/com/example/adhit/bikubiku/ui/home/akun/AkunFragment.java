@@ -119,6 +119,10 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
             Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
             intent.putExtra("detail_akun", string);
             startActivity(intent);
+        }else if(string.equals("Personalia")){
+            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
+            intent.putExtra("detail_akun", string);
+            startActivity(intent);
         }else{
             ShowAlert.showToast(getActivity(), "Coming Soon");
 //            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);

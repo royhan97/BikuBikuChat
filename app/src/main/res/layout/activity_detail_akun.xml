@@ -18,11 +18,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <ImageView
-                    android:padding="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="?android:attr/actionBarSize"
-                    android:src="@drawable/logobiku2"/>
+                <!--<ImageView-->
+                    <!--android:padding="8dp"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="?android:attr/actionBarSize"-->
+                    <!--android:src="@drawable/logobiku2"/>-->
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"

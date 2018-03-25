@@ -34,7 +34,7 @@ public class DetailAkunActivity extends AppCompatActivity implements DetailAkunV
         tabs = (TabLayout)findViewById(R.id.tabs);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("");
+        setTitle(getIntent().getStringExtra("detail_akun"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         initView();

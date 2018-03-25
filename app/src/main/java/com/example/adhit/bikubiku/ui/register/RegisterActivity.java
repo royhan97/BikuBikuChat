@@ -16,14 +16,19 @@ import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.example.adhit.bikubiku.R;
 import com.example.adhit.bikubiku.presenter.RegisterPresenter;
 import com.example.adhit.bikubiku.ui.login.LoginAnimation;
 import com.example.adhit.bikubiku.util.ShowAlert;
+
+import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity  implements View.OnClickListener, RegisterView {
     private FloatingActionButton fabLogin;
@@ -32,13 +37,15 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     private CoordinatorLayout coordinatorLayout;
     private EditText etUsername, etPassword, etEmail, etName;
     private RegisterPresenter registerPresenter;
+    private Spinner spnAim;
+    private String aim;
+    private ArrayList<String> aimString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         initView();
-
     }
 
     @Override
@@ -71,10 +78,12 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
             }else if(name.isEmpty()){
                 etName.setError(getResources().getString(R.string.text_name_empty));
                 etName.requestFocus();
-            }else {
+            } else if (aim.isEmpty()) {
+                ShowAlert.showSnackBar(coordinatorLayout, "Anda belum memilih tujuan");
+            } else {
                 ShowAlert.showProgresDialog(this);
                 registerPresenter = new RegisterPresenter(this);
-                registerPresenter.register(this, name, username, password, email, "belajar");
+                registerPresenter.register(this, name, username, password, email, aim);
             }
         }
     }
@@ -94,6 +103,7 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
     }
 
     private void initView(){
+        spnAim = findViewById(R.id.spn_aim);
         fabLogin = findViewById(R.id.fab_login);
         cvRegister = findViewById(R.id.cv_register);
         btnDaftarLine = findViewById(R.id.bt_daftar_line);
@@ -110,6 +120,22 @@ public class RegisterActivity extends AppCompatActivity  implements View.OnClick
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             RegisterAnimation.ShowEnterAnimation(this, cvRegister, fabLogin, btnDaftarLine);
         }
+        aimString = new ArrayList<>();
+        aimString.add("Saya hanya ingin belajar");
+        aimString.add("Saya hanya ingin mengajar");
+        aimString.add("Saya ingin belajar sekaligus mengajar");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_spinner, aimString);
+        spnAim.setAdapter(adapter);
+        spnAim.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                aim = aimString.get(i);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     public void animateRevealClose() {
