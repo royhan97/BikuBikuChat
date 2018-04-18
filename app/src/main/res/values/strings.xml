@@ -31,6 +31,7 @@
     <string name="text_price_consultation">Harga Konsultasi</string>
     <string name="text_start_chat">Mulai Chat</string>
     <string name="text_search_psychologist">Cari Psikolog</string>
+    <string name="text_submit">Submit</string>
     <string name="text_success_cashout">Permintaan penarikan dana berhasil diterima. Silahkan tunggu beberapa saat.</string>
     <string name="text_success_topup">Permintaan topup dana berhasil diterima. Anda dapat melakukan konfirmasi via email info@bikubiku.id atau via chat wa 085645991577 </string>
     <string name="text_wa">No WA</string>
@@ -38,6 +39,9 @@
     <string name="text_topup">Top Up</string>
     <string name="text_online">Online</string>
     <string name="text_offline">Offline</string>
+    <string name="text_question_a">Soal a</string>
+    <string name="text_question_b">Soal b</string>
+    <string name="text_question_number">Nomor Soal</string>
     <string name="text_end_waiting">Waktu tunggu anda habis, kabim tidak merespon atau menolak pesanan anda</string>
     <string name="text_waiting">Menunggu Respon Kabim</string>
     <string name="text_request_again">Pesan Kembali</string>\

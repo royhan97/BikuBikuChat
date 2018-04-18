@@ -17,7 +17,7 @@ import com.example.adhit.bikubiku.R;
  */
 
 public class ShowAlert {
-    static ProgressDialog dialog;
+    public static ProgressDialog dialog;
     public static void showSnackBar(CoordinatorLayout coordinatorLayout, String message){
         TSnackbar snackbar = TSnackbar.make(coordinatorLayout, message, TSnackbar.LENGTH_LONG);
         snackbar.setActionTextColor(Color.WHITE);

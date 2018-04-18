@@ -21,6 +21,7 @@ import com.example.adhit.bikubiku.data.model.User;
 import com.example.adhit.bikubiku.presenter.AkunPresenter;
 import com.example.adhit.bikubiku.service.RequestKabimService;
 import com.example.adhit.bikubiku.ui.detailakun.DetailAkunActivity;
+import com.example.adhit.bikubiku.ui.detailakun.personalia.PersonaliaActivity;
 import com.example.adhit.bikubiku.ui.home.HomeActivity;
 import com.example.adhit.bikubiku.ui.home.home.HomeFragment;
 import com.example.adhit.bikubiku.ui.login.LoginActivity;
@@ -120,8 +121,7 @@ public class AkunFragment extends Fragment implements View.OnClickListener, Akun
             intent.putExtra("detail_akun", string);
             startActivity(intent);
         }else if(string.equals("Personalia")){
-            Intent intent = new Intent(getActivity(), DetailAkunActivity.class);
-            intent.putExtra("detail_akun", string);
+            Intent intent = new Intent(getActivity(), PersonaliaActivity.class);
             startActivity(intent);
         }else{
             ShowAlert.showToast(getActivity(), "Coming Soon");

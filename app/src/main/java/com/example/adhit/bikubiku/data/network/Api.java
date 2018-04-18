@@ -149,4 +149,18 @@ public interface Api {
     Call<JsonObject>  detailTrx(@Query("layanan") String layanan,
                                 @Query("invoice") String invoice);
 
+    @GET("tesminat/soal")
+    Call<JsonObject>  showTesMinatQuestion();
+
+    @POST("tesminat/reset")
+    Call<JsonObject>  resetTesMinat();
+
+    @POST("tesminat/submit")
+    @FormUrlEncoded
+    Call<JsonObject>  submitTesMinat(@Field("data")JSONObject tesMinatAnswer);
+
+    @GET("tesminat/personalia")
+    Call<JsonObject>  showPersonalia();
+
+
 }

@@ -3,6 +3,7 @@ package com.example.adhit.bikubiku.ui.home.home;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +28,7 @@ import com.example.adhit.bikubiku.ui.listKabim.ListKabimFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingHistory.RuangBelajarChattingHistoryFragment;
 import com.example.adhit.bikubiku.ui.ruangBelajarChattingKabim.RuangBelajarChattingKabimFragment;
 import com.example.adhit.bikubiku.ui.sakubiku.SakuBikuFragment;
+import com.example.adhit.bikubiku.ui.tesminat.TesMinatActivity;
 import com.example.adhit.bikubiku.util.Constant;
 import com.example.adhit.bikubiku.util.SharedPrefUtil;
 import com.example.adhit.bikubiku.ui.listpsychologistchattinghistory.ListChattingPsychologistHistoryFragment;
@@ -184,6 +186,10 @@ public class HomeFragment extends Fragment implements HomeView, HomeAdapter.OnDe
                                 ListKabimFragment.class.getSimpleName())
                         .addToBackStack(ListKabimFragment.class.getSimpleName()).commit();
             }
+        } else if(menu.equals("Tes Minat")){
+            Intent intent = new Intent(getActivity(), TesMinatActivity.class);
+            startActivity(intent);
+
         }else{
             ShowAlert.showToast(getActivity(), "Coming Soon");
         }
